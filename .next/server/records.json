@@ -1,0 +1,55 @@
+{
+  "modules": {
+    "byIdentifier": {
+      "external \"react\"": 0,
+      "external \"next/head\"": 1,
+      "multi ./pages/about.js": 2,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/about.js": 3,
+      "multi ./pages/index.js": 4,
+      "multi node_modules/next/dist/pages/_app.js": 5,
+      "node_modules/next/dist/pages/_app.js": 6,
+      "external \"next/app\"": 7,
+      "multi node_modules/next/dist/pages/_error.js": 8,
+      "node_modules/next/dist/pages/_error.js": 9,
+      "external \"next/error\"": 10,
+      "multi node_modules/next/dist/pages/_document.js": 11,
+      "node_modules/next/dist/pages/_document.js": 12,
+      "external \"next/document\"": 13,
+      "node_modules/next/dist/build/webpack/loaders/next-babel-loader.js??ref--4!pages/index.js 39b171c8de3acb030b6ffe347f15d0ef": 14
+    },
+    "usedIds": {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+      "6": 6,
+      "7": 7,
+      "8": 8,
+      "9": 9,
+      "10": 10,
+      "11": 11,
+      "12": 12,
+      "13": 13,
+      "14": 14
+    }
+  },
+  "chunks": {
+    "byName": {
+      "static/J3ZgFeDkCg~ZtpxaTNkNP/pages/about.js": 0,
+      "static/J3ZgFeDkCg~ZtpxaTNkNP/pages/index.js": 1,
+      "static/J3ZgFeDkCg~ZtpxaTNkNP/pages/_app.js": 2,
+      "static/J3ZgFeDkCg~ZtpxaTNkNP/pages/_error.js": 3,
+      "static/J3ZgFeDkCg~ZtpxaTNkNP/pages/_document.js": 4
+    },
+    "bySource": {},
+    "usedIds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  }
+}

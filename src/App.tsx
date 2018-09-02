@@ -1,14 +1,14 @@
 import * as React from 'react';
-import './welcome.scss';
+import logo from './logo.svg';
 
-// const logo = require('./logo.svg');
-
-class App extends React.Component<{}, {}> {
-  render() {
+class App extends React.Component {
+  public render() {
     return (
-      <div className="welcome">
-        <h1>Moonholdings.io</h1>
-        <h2>A MERN stack cryptocurrency portfolio app.</h2>
+      <div className="app">
+        <header className="app-header">
+          <img src={logo} className="app-logo" alt="logo" />
+          <h1 className="app-title">Welcome to Moonholdings.io</h1>
+        </header>
       </div>
     );
   }

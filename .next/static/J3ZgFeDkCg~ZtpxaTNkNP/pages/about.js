@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[3],{204:function(n,t,u){__NEXT_REGISTER_PAGE("/about",function(){return n.exports=u(205),{page:n.exports.default}})},205:function(n,t,u){"use strict";u.r(t);var o=u(1),e=u.n(o);t.default=function(n){return e.a.createElement("div",null,"About Moonholdings and Futuratum")}}},[[204,1,0]]]);
