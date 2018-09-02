@@ -1,3 +1,4 @@
+
 # Moonholdings.io your cryptocurrency portfolio
 
 https://moonholdings.io
@@ -8,7 +9,4 @@ Node server repo
 https://github.com/Futuratum/moon.node
 
 **A MERN stack app**
-[MongoDB](https://www.mongodb.com/)
-[ExpressJS](https://expressjs.com/)
-[ReactJS](https://reactjs.org/)
-[NodeJS](https://nodejs.org/en/)
+[[MongoDB](https://www.mongodb.com/), [ExpressJS](https://expressjs.com/), [ReactJS](https://reactjs.org/), [NodeJS](https://nodejs.org/en/)]
