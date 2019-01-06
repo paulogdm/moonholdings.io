@@ -1,7 +1,5 @@
 ((window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/_app.js"],{
 
-<<<<<<< HEAD
-=======
 /***/ "./components/Meta.js":
 /*!****************************!*\
   !*** ./components/Meta.js ***!
@@ -205,7 +203,6 @@ module.exports = __webpack_require__(/*! core-js/library/fn/array/from */ "./nod
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/@babel/runtime-corejs2/core-js/array/is-array.js":
 /*!***********************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/core-js/array/is-array.js ***!
@@ -228,8 +225,6 @@ module.exports = __webpack_require__(/*! core-js/library/fn/get-iterator */ "./n
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/@babel/runtime-corejs2/core-js/is-iterable.js":
 /*!********************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/core-js/is-iterable.js ***!
@@ -241,7 +236,6 @@ module.exports = __webpack_require__(/*! core-js/library/fn/is-iterable */ "./no
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/@babel/runtime-corejs2/core-js/object/assign.js":
 /*!**********************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/core-js/object/assign.js ***!
@@ -402,8 +396,6 @@ module.exports = _arrayWithHoles;
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/arrayWithoutHoles.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/arrayWithoutHoles.js ***!
@@ -427,7 +419,6 @@ module.exports = _arrayWithoutHoles;
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/assertThisInitialized.js":
 /*!******************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/assertThisInitialized.js ***!
@@ -756,8 +747,6 @@ module.exports = _interopRequireWildcard;
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/iterableToArray.js":
 /*!************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/iterableToArray.js ***!
@@ -777,7 +766,6 @@ module.exports = _iterableToArray;
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/iterableToArrayLimit.js":
 /*!*****************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/iterableToArrayLimit.js ***!
@@ -832,8 +820,6 @@ module.exports = _nonIterableRest;
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/nonIterableSpread.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/nonIterableSpread.js ***!
@@ -849,7 +835,6 @@ module.exports = _nonIterableSpread;
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/objectSpread.js":
 /*!*********************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/objectSpread.js ***!
@@ -955,8 +940,6 @@ module.exports = _slicedToArray;
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/toConsumableArray.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/toConsumableArray.js ***!
@@ -978,7 +961,6 @@ module.exports = _toConsumableArray;
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/typeof.js":
 /*!***************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/typeof.js ***!
@@ -1022,8 +1004,6 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/core-js/library/fn/array/from.js":
 /*!*******************************************************!*\
   !*** ./node_modules/core-js/library/fn/array/from.js ***!
@@ -1038,7 +1018,6 @@ module.exports = __webpack_require__(/*! ../../modules/_core */ "./node_modules/
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/core-js/library/fn/array/is-array.js":
 /*!***********************************************************!*\
   !*** ./node_modules/core-js/library/fn/array/is-array.js ***!
@@ -1066,8 +1045,6 @@ module.exports = __webpack_require__(/*! ../modules/core.get-iterator */ "./node
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/core-js/library/fn/is-iterable.js":
 /*!********************************************************!*\
   !*** ./node_modules/core-js/library/fn/is-iterable.js ***!
@@ -1082,7 +1059,6 @@ module.exports = __webpack_require__(/*! ../modules/core.is-iterable */ "./node_
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/core-js/library/fn/object/assign.js":
 /*!**********************************************************!*\
   !*** ./node_modules/core-js/library/fn/object/assign.js ***!
@@ -1833,8 +1809,6 @@ if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/core-js/library/modules/_create-property.js":
 /*!******************************************************************!*\
   !*** ./node_modules/core-js/library/modules/_create-property.js ***!
@@ -1855,7 +1829,6 @@ module.exports = function (object, index, value) {
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/core-js/library/modules/_ctx.js":
 /*!******************************************************!*\
   !*** ./node_modules/core-js/library/modules/_ctx.js ***!
@@ -3650,8 +3623,6 @@ module.exports = __webpack_require__(/*! ./_core */ "./node_modules/core-js/libr
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/core-js/library/modules/core.is-iterable.js":
 /*!******************************************************************!*\
   !*** ./node_modules/core-js/library/modules/core.is-iterable.js ***!
@@ -3722,7 +3693,6 @@ $export($export.S + $export.F * !__webpack_require__(/*! ./_iter-detect */ "./no
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/core-js/library/modules/es6.array.is-array.js":
 /*!********************************************************************!*\
   !*** ./node_modules/core-js/library/modules/es6.array.is-array.js ***!
@@ -5120,17 +5090,10 @@ function createUrl(router) {
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "./node_modules/next/dist/lib/p-queue.js":
-/*!***********************************************!*\
-  !*** ./node_modules/next/dist/lib/p-queue.js ***!
-  \***********************************************/
-=======
 /***/ "./node_modules/next/dist/lib/head.js":
 /*!********************************************!*\
   !*** ./node_modules/next/dist/lib/head.js ***!
   \********************************************/
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5142,77 +5105,15 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime-corejs2/help
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-<<<<<<< HEAD
-exports.default = void 0;
-
-var _promise = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/core-js/promise */ "./node_modules/@babel/runtime-corejs2/core-js/promise.js"));
-
-var _assign = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/core-js/object/assign */ "./node_modules/@babel/runtime-corejs2/core-js/object/assign.js"));
-=======
 exports.defaultHead = defaultHead;
 exports.default = void 0;
 
 var _set = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/core-js/set */ "./node_modules/@babel/runtime-corejs2/core-js/set.js"));
->>>>>>> 30c2475... - replacing typescript project with nowjs
 
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/helpers/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/classCallCheck.js"));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/helpers/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/createClass.js"));
 
-<<<<<<< HEAD
-// based on https://github.com/sindresorhus/p-queue (MIT)
-// modified for browser support
-var Queue =
-/*#__PURE__*/
-function () {
-  function Queue() {
-    (0, _classCallCheck2.default)(this, Queue);
-    this._queue = [];
-  }
-
-  (0, _createClass2.default)(Queue, [{
-    key: "enqueue",
-    value: function enqueue(run) {
-      this._queue.push(run);
-    }
-  }, {
-    key: "dequeue",
-    value: function dequeue() {
-      return this._queue.shift();
-    }
-  }, {
-    key: "size",
-    get: function get() {
-      return this._queue.length;
-    }
-  }]);
-  return Queue;
-}();
-
-var PQueue =
-/*#__PURE__*/
-function () {
-  function PQueue(opts) {
-    (0, _classCallCheck2.default)(this, PQueue);
-    opts = (0, _assign.default)({
-      concurrency: Infinity,
-      queueClass: Queue
-    }, opts);
-
-    if (opts.concurrency < 1) {
-      throw new TypeError('Expected `concurrency` to be a number from 1 and up');
-    }
-
-    this.queue = new opts.queueClass(); // eslint-disable-line new-cap
-
-    this._pendingCount = 0;
-    this._concurrency = opts.concurrency;
-
-    this._resolveEmpty = function () {};
-  }
-
-  (0, _createClass2.default)(PQueue, [{
-=======
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime-corejs2/helpers/possibleConstructorReturn.js"));
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/helpers/getPrototypeOf */ "./node_modules/@babel/runtime-corejs2/helpers/getPrototypeOf.js"));
@@ -5424,7 +5325,6 @@ function () {
   }
 
   (0, _createClass2.default)(PQueue, [{
->>>>>>> 30c2475... - replacing typescript project with nowjs
     key: "_next",
     value: function _next() {
       this._pendingCount--;
@@ -6642,8 +6542,6 @@ function shallowEquals(a, b) {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/next/dist/lib/side-effect.js":
 /*!***************************************************!*\
   !*** ./node_modules/next/dist/lib/side-effect.js ***!
@@ -6790,7 +6688,6 @@ function withSideEffect(reduceComponentsToState, handleStateChangeOnClient, mapS
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/next/dist/lib/utils.js":
 /*!*********************************************!*\
   !*** ./node_modules/next/dist/lib/utils.js ***!
@@ -6932,16 +6829,6 @@ function getURL() {
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "./node_modules/next/dist/pages/_app.js":
-/*!**********************************************!*\
-  !*** ./node_modules/next/dist/pages/_app.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! next/app */ "./node_modules/next/app.js")
-=======
 /***/ "./node_modules/next/head.js":
 /*!***********************************!*\
   !*** ./node_modules/next/head.js ***!
@@ -6950,7 +6837,6 @@ module.exports = __webpack_require__(/*! next/app */ "./node_modules/next/app.js
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./dist/lib/head */ "./node_modules/next/dist/lib/head.js")
->>>>>>> 30c2475... - replacing typescript project with nowjs
 
 
 /***/ }),
@@ -8121,8 +8007,6 @@ module.exports = (__webpack_require__(/*! dll-reference dll_669f0732a7e04673e1dc
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/process/browser.js":
 /*!*****************************************!*\
   !*** ./node_modules/process/browser.js ***!
@@ -8318,7 +8202,6 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/querystring-es3/decode.js":
 /*!************************************************!*\
   !*** ./node_modules/querystring-es3/decode.js ***!
@@ -8528,21 +8411,6 @@ exports.encode = exports.stringify = __webpack_require__(/*! ./encode */ "./node
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "./node_modules/react/index.js":
-/*!*******************************************************************************************!*\
-  !*** delegated ./node_modules/react/index.js from dll-reference dll_669f0732a7e04673e1dc ***!
-  \*******************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = (__webpack_require__(/*! dll-reference dll_669f0732a7e04673e1dc */ "dll-reference dll_669f0732a7e04673e1dc"))("./node_modules/react/index.js");
-
-/***/ }),
-
-/***/ "./node_modules/regenerator-runtime/runtime-module.js":
-/*!************************************************************!*\
-=======
 /***/ "./node_modules/react-is/cjs/react-is.development.js":
 /*!***********************************************************!*\
   !*** ./node_modules/react-is/cjs/react-is.development.js ***!
@@ -8812,7 +8680,6 @@ module.exports = (__webpack_require__(/*! dll-reference dll_669f0732a7e04673e1dc
 
 /***/ "./node_modules/regenerator-runtime/runtime-module.js":
 /*!************************************************************!*\
->>>>>>> 30c2475... - replacing typescript project with nowjs
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
 /*! no static exports found */
@@ -9412,183 +9279,6 @@ if (hadRuntime) {
     stop: function() {
       this.done = true;
 
-<<<<<<< HEAD
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-})(
-  // In sloppy mode, unbound `this` refers to the global object, fallback to
-  // Function constructor if we're in global strict mode. That is sadly a form
-  // of indirect eval which violates Content Security Policy.
-  (function() {
-    return this || (typeof self === "object" && self);
-  })() || Function("return this")()
-);
-=======
       var rootEntry = this.tryEntries[0];
       var rootRecord = rootEntry.completion;
       if (rootRecord.type === "throw") {
@@ -14000,7 +13690,6 @@ module.exports = hyphenateStyleName;
 
 	return stylis
 }));
->>>>>>> 30c2475... - replacing typescript project with nowjs
 
 
 /***/ }),
@@ -14788,8 +14477,6 @@ module.exports = (__webpack_require__(/*! dll-reference dll_669f0732a7e04673e1dc
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/webpack/buildin/harmony-module.js":
 /*!*******************************************!*\
   !*** (webpack)/buildin/harmony-module.js ***!
@@ -14825,7 +14512,6 @@ module.exports = function(originalModule) {
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/webpack/buildin/module.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
@@ -14859,12 +14545,6 @@ module.exports = function(module) {
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ 1:
-/*!****************************************************!*\
-  !*** multi ./node_modules/next/dist/pages/_app.js ***!
-  \****************************************************/
-=======
 /***/ "./pages/_app.js":
 /*!***********************!*\
   !*** ./pages/_app.js ***!
@@ -14970,16 +14650,11 @@ function (_App) {
 /*!*****************************!*\
   !*** multi ./pages/_app.js ***!
   \*****************************/
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __NEXT_REGISTER_PAGE('/_app', function() {
-<<<<<<< HEAD
-module.exports = __webpack_require__(/*! /Users/leongaban/projects/Futuratum/moonholdings.io/node_modules/next/dist/pages/_app.js */"./node_modules/next/dist/pages/_app.js");
-=======
 module.exports = __webpack_require__(/*! ./pages/_app.js */"./pages/_app.js");
->>>>>>> 30c2475... - replacing typescript project with nowjs
 
 return { page: module.exports.default }});
 
@@ -14996,9 +14671,5 @@ module.exports = dll_669f0732a7e04673e1dc;
 
 /***/ })
 
-<<<<<<< HEAD
-},[[1,"static/runtime/webpack.js"]]]));;
-=======
 },[[1,"static/runtime/webpack.js","styles"]]]));;
->>>>>>> 30c2475... - replacing typescript project with nowjs
 //# sourceMappingURL=_app.js.map

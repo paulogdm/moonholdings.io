@@ -6134,11 +6134,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ 2:
-=======
 /***/ 3:
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /*!******************************************************!*\
   !*** multi ./node_modules/next/dist/pages/_error.js ***!
   \******************************************************/
@@ -6163,9 +6159,5 @@ module.exports = dll_669f0732a7e04673e1dc;
 
 /***/ })
 
-<<<<<<< HEAD
-},[[2,"static/runtime/webpack.js"]]]));;
-=======
 },[[3,"static/runtime/webpack.js"]]]));;
->>>>>>> 30c2475... - replacing typescript project with nowjs
 //# sourceMappingURL=_error.js.map

@@ -93,17 +93,6 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-<<<<<<< HEAD
-/***/ "./node_modules/next/dist/pages/_app.js":
-/*!**********************************************!*\
-  !*** ./node_modules/next/dist/pages/_app.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! next/app */ "next/app")
-
-=======
 /***/ "./components/Meta.js":
 /*!****************************!*\
   !*** ./components/Meta.js ***!
@@ -387,20 +376,10 @@ function (_App) {
 }(next_app__WEBPACK_IMPORTED_MODULE_1___default.a);
 
 /* harmony default export */ __webpack_exports__["default"] = (MoonApp);
->>>>>>> 30c2475... - replacing typescript project with nowjs
 
 /***/ }),
 
 /***/ 0:
-<<<<<<< HEAD
-/*!****************************************************!*\
-  !*** multi ./node_modules/next/dist/pages/_app.js ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! /Users/leongaban/projects/Futuratum/moonholdings.io/node_modules/next/dist/pages/_app.js */"./node_modules/next/dist/pages/_app.js");
-=======
 /*!*****************************!*\
   !*** multi ./pages/_app.js ***!
   \*****************************/
@@ -408,7 +387,6 @@ module.exports = __webpack_require__(/*! /Users/leongaban/projects/Futuratum/moo
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./pages/_app.js */"./pages/_app.js");
->>>>>>> 30c2475... - replacing typescript project with nowjs
 
 
 /***/ }),
@@ -422,8 +400,6 @@ module.exports = __webpack_require__(/*! ./pages/_app.js */"./pages/_app.js");
 
 module.exports = require("next/app");
 
-<<<<<<< HEAD
-=======
 /***/ }),
 
 /***/ "next/head":
@@ -457,7 +433,6 @@ module.exports = require("react");
 
 module.exports = require("styled-components");
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ })
 
 /******/ });

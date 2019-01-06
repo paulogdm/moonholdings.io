@@ -1,32 +1,4 @@
 {
-<<<<<<< HEAD
-  "devFiles": [],
-  "pages": {
-    "/about": [
-      "static/runtime/webpack-42652fa8b82c329c0559.js",
-      "static/chunks/commons.751fec521a982ea7e0a4.js",
-      "static/runtime/main-9c5d4dd79d7fab8379fb.js"
-    ],
-    "/index": [
-      "static/runtime/webpack-42652fa8b82c329c0559.js",
-      "static/chunks/commons.751fec521a982ea7e0a4.js",
-      "static/runtime/main-9c5d4dd79d7fab8379fb.js"
-    ],
-    "/_app": [
-      "static/runtime/webpack-42652fa8b82c329c0559.js",
-      "static/chunks/commons.751fec521a982ea7e0a4.js",
-      "static/runtime/main-9c5d4dd79d7fab8379fb.js"
-    ],
-    "/_error": [
-      "static/runtime/webpack-42652fa8b82c329c0559.js",
-      "static/chunks/commons.751fec521a982ea7e0a4.js",
-      "static/runtime/main-9c5d4dd79d7fab8379fb.js"
-    ],
-    "/": [
-      "static/runtime/webpack-42652fa8b82c329c0559.js",
-      "static/chunks/commons.751fec521a982ea7e0a4.js",
-      "static/runtime/main-9c5d4dd79d7fab8379fb.js"
-=======
   "devFiles": [
     "static/development/dll/dll_b1bcefaeb127edd863d1.js"
   ],
@@ -48,7 +20,6 @@
     "/": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
->>>>>>> 30c2475... - replacing typescript project with nowjs
     ]
   }
 }

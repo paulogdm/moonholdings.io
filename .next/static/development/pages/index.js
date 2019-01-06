@@ -1,11 +1,5 @@
 ((window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/index.js"],{
 
-<<<<<<< HEAD
-/***/ "./components/meta/meta.js":
-/*!*********************************!*\
-  !*** ./components/meta/meta.js ***!
-  \*********************************/
-=======
 /***/ "./components/Board.js":
 /*!*****************************!*\
   !*** ./components/Board.js ***!
@@ -133,7 +127,6 @@ function (_React$Component) {
 /*!****************************!*\
   !*** ./components/Meta.js ***!
   \****************************/
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -143,11 +136,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/head */ "./node_modules/next/head.js");
 /* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_head__WEBPACK_IMPORTED_MODULE_1__);
-<<<<<<< HEAD
-var _jsxFileName = "/Users/leongaban/projects/Futuratum/moonholdings.io/components/meta/meta.js";
-=======
 var _jsxFileName = "/Users/leongaban/projects/Futuratum/moonholdings.io/components/Meta.js";
->>>>>>> 30c2475... - replacing typescript project with nowjs
 
 
 /* harmony default export */ __webpack_exports__["default"] = (function () {
@@ -4176,8 +4165,6 @@ for (var i = 0; i < DOMIterables.length; i++) {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js":
 /*!**********************************************************************************!*\
   !*** ./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js ***!
@@ -4258,7 +4245,6 @@ module.exports = hoistNonReactStatics;
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/next/dist/lib/head.js":
 /*!********************************************!*\
   !*** ./node_modules/next/dist/lib/head.js ***!
@@ -5351,8 +5337,6 @@ module.exports = (__webpack_require__(/*! dll-reference dll_669f0732a7e04673e1dc
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/process/browser.js":
 /*!*****************************************!*\
   !*** ./node_modules/process/browser.js ***!
@@ -5804,7 +5788,6 @@ if (false) {} else {
 
 /***/ }),
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /***/ "./node_modules/react/index.js":
 /*!*******************************************************************************************!*\
   !*** delegated ./node_modules/react/index.js from dll-reference dll_669f0732a7e04673e1dc ***!
@@ -6596,42 +6579,6 @@ if (hadRuntime) {
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "./node_modules/webpack/buildin/harmony-module.js":
-/*!*******************************************!*\
-  !*** (webpack)/buildin/harmony-module.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function(originalModule) {
-	if (!originalModule.webpackPolyfill) {
-		var module = Object.create(originalModule);
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		Object.defineProperty(module, "exports", {
-			enumerable: true
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-=======
 /***/ "./node_modules/styled-components/dist/styled-components.browser.esm.js":
 /*!******************************************************************************!*\
   !*** ./node_modules/styled-components/dist/styled-components.browser.esm.js ***!
@@ -10902,7 +10849,6 @@ module.exports = function(originalModule) {
 
 
 /***/ }),
->>>>>>> 30c2475... - replacing typescript project with nowjs
 
 /***/ "./pages/index.js":
 /*!************************!*\
@@ -10915,60 +10861,32 @@ module.exports = function(originalModule) {
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-<<<<<<< HEAD
-/* harmony import */ var _components_meta_meta__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/meta/meta */ "./components/meta/meta.js");
-var _jsxFileName = "/Users/leongaban/projects/Futuratum/moonholdings.io/pages/index.js";
-
-
-=======
 /* harmony import */ var _components_Meta__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Meta */ "./components/Meta.js");
 /* harmony import */ var _components_Board__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Board */ "./components/Board.js");
 var _jsxFileName = "/Users/leongaban/projects/Futuratum/moonholdings.io/pages/index.js";
 
 
 
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     __source: {
       fileName: _jsxFileName,
-<<<<<<< HEAD
-      lineNumber: 4
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_meta_meta__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 5
-    },
-    __self: this
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-=======
       lineNumber: 5
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Meta__WEBPACK_IMPORTED_MODULE_1__["default"], {
->>>>>>> 30c2475... - replacing typescript project with nowjs
     __source: {
       fileName: _jsxFileName,
       lineNumber: 6
     },
     __self: this
-<<<<<<< HEAD
-  }, "Hello world! Welcome to"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-=======
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Board__WEBPACK_IMPORTED_MODULE_2__["default"], {
->>>>>>> 30c2475... - replacing typescript project with nowjs
     __source: {
       fileName: _jsxFileName,
       lineNumber: 7
     },
     __self: this
-<<<<<<< HEAD
-  }, "Moonholdings.io"));
-=======
   }));
->>>>>>> 30c2475... - replacing typescript project with nowjs
 });
     (function (Component, route) {
       if(!Component) return
@@ -10992,11 +10910,7 @@ var _jsxFileName = "/Users/leongaban/projects/Futuratum/moonholdings.io/pages/in
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ 3:
-=======
 /***/ 4:
->>>>>>> 30c2475... - replacing typescript project with nowjs
 /*!******************************!*\
   !*** multi ./pages/index.js ***!
   \******************************/
@@ -11021,9 +10935,5 @@ module.exports = dll_669f0732a7e04673e1dc;
 
 /***/ })
 
-<<<<<<< HEAD
-},[[3,"static/runtime/webpack.js"]]]));;
-=======
 },[[4,"static/runtime/webpack.js"]]]));;
->>>>>>> 30c2475... - replacing typescript project with nowjs
 //# sourceMappingURL=index.js.map

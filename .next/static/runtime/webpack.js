@@ -113,11 +113,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-<<<<<<< HEAD
-/******/ 	var hotCurrentHash = "023fecaa47906b749bed";
-=======
-/******/ 	var hotCurrentHash = "12b48ef91590cd05f452";
->>>>>>> 30c2475... - replacing typescript project with nowjs
+/******/ 	var hotCurrentHash = "783b7b68e6c37700bfb1";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;

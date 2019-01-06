@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"/about":"static/J3ZgFeDkCg~ZtpxaTNkNP/pages/about.js","/index":"static/J3ZgFeDkCg~ZtpxaTNkNP/pages/index.js","/_app":"static/J3ZgFeDkCg~ZtpxaTNkNP/pages/_app.js","/_error":"static/J3ZgFeDkCg~ZtpxaTNkNP/pages/_error.js","/_document":"static/J3ZgFeDkCg~ZtpxaTNkNP/pages/_document.js","/":"static/J3ZgFeDkCg~ZtpxaTNkNP/pages/index.js"}
-=======
 {"/_app":"static/development/pages/_app.js","/_error":"static/development/pages/_error.js","/_document":"static/development/pages/_document.js","/index":"static/development/pages/index.js","/":"static/development/pages/index.js"}
->>>>>>> 30c2475... - replacing typescript project with nowjs
