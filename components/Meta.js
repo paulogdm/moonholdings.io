@@ -7,5 +7,6 @@ export default () => (
     <meta name="keywords" content="cryptocurrency, crypto, portfolio, bitcoin, ethereum, holdings"/>
     <meta name="robots" content="index, follow" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <link href="https://fonts.googleapis.com/css?family=Abel|Overpass:200,700" rel="stylesheet"></link>
   </Head>
 )
