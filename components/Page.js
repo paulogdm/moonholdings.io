@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled, { ThemeProvider, injectGlobal } from 'styled-components';
+import { ThemeProvider, injectGlobal } from 'styled-components';
 
 import Meta from '../components/Meta';
 import { page } from '../styles';
@@ -20,6 +20,7 @@ const { StyledPage, Inner } = page;
 
 injectGlobal`
   html {
+    width: 100%;
     height: 100%;
     box-sizing: border-box;
     font-size: 10px;
@@ -30,12 +31,9 @@ injectGlobal`
   }
 
   body {
-    display: flex;
-    overflow-y: auto;
     margin: 0;
     padding: 0;
-    font-size: 1.5rem;
-    line-height: 2;
+    height: 100%;
     font-family: 'Abel', sans-serif;
   }
 

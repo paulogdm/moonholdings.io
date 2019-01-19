@@ -11,16 +11,12 @@ export const WelcomeContainer = styled.div`
 
 
 export const WelcomeMessage = styled.div`
-  flex: 0 1 auto;
-  position: relative;
-  z-index: 2;
-  margin: 10px;
-  padding: 5px;
-  width: 355px;
   height: 200px;
+  font-size: 1.5rem;
+  line-height: 2;
 
   h1 {
-    margin: 10px 0 5px;
+    margin: 10px 0 0;
     height: 9rem;
     font-size: 5.5rem;
   }
