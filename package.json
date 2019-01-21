@@ -13,13 +13,6 @@
   },
   "author": "Futuratum",
   "license": "ISC",
-  "now": {
-    "name": "moonholdings",
-    "engines": {
-      "node": "8.11.3"
-    },
-    "alias": "moonholdings"
-  },
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
     "apollo-boost": "^0.1.16",
@@ -69,7 +62,6 @@
       "^.+\\.js?$": "babel-jest"
     }
   },
-  "//": "This is our babel config, I prefer this over a .babelrc file",
   "babel": {
     "env": {
       "development": {
