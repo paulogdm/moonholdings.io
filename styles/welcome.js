@@ -5,10 +5,10 @@ export const WelcomeContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex: 1 1 auto;
+  position: fixed;
   width: 100%;
   height: 100%;
 `;
-
 
 export const WelcomeMessage = styled.div`
   height: 200px;
