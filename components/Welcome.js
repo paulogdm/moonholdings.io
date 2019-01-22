@@ -4,7 +4,7 @@ import { welcome } from '../styles';
 
 const { WelcomeContainer, WelcomeMessage } = welcome;
 
-class Board extends React.Component {
+export default class Board extends React.Component {
   render() {
     return (
       <WelcomeContainer>
@@ -17,5 +17,3 @@ class Board extends React.Component {
     );
   }
 }
-
-export default Board;
