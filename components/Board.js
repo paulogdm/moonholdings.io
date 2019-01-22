@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Welcome from './Welcome';
 import Astronaut from './Astronaut';
+import NomicsLink from './NomicsLink';
 
 const StyledBoard = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ class Board extends React.Component {
         <Welcome />
         {/* <PlusButton toggleSearch={this.handleSearchButton} /> */}
         {/* <Affiliates /> */}
-        {/* <Nomics /> */}
+        <NomicsLink />
         <Astronaut showLogo={hasPortfolio} />
       </StyledBoard>
     );
