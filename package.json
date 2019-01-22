@@ -1,8 +1,8 @@
 {
   "name": "moon.holdings",
   "version": "2.0.0",
-  "description": "Moonholdings.io",
-  "main": "index.ts",
+  "description": "Moon Holdings, your cryptocurrency portfolio.",
+  "main": "index.js",
   "scripts": {
     "dev": "next -p 7777",
     "build": "next build",
