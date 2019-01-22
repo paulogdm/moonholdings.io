@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Meta from '../components/Meta';
 import Board from '../components/Board';
 

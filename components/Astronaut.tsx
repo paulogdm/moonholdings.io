@@ -1,12 +1,17 @@
 import React from 'react';
 
+import { moonHoldings } from '../shared/models';
 import { astronaut } from '../styles';
 
 const { AstronautContainer, Heading } = astronaut;
 
-export default ({ showLogo }) => (
+interface LogoCheck {
+  showLogo: boolean;
+}
+
+export default (showLogo: LogoCheck) =>  (
   <AstronautContainer>
-    { showLogo === true ? <Heading>MOON.HOLDINGS</Heading> : null }
+    { showLogo.showLogo === true ? <Heading>{moonHoldings}</Heading> : null }
     <img src="static/astronaut.png" alt="astronaut" />
   </AstronautContainer>
 );

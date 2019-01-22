@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ThemeProvider, injectGlobal } from 'styled-components';
 
-import Meta from '../components/Meta';
+import Meta from './Meta';
 import { page } from '../styles';
 import './global.scss';
 

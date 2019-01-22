@@ -5,6 +5,11 @@ import Welcome from './Welcome';
 import Astronaut from './Astronaut';
 import NomicsLink from './NomicsLink';
 
+interface IState {
+  portfolio: [];
+  loading: boolean;
+}
+
 const StyledBoard = styled.div`
   display: flex;
   justify-content: center;
@@ -14,8 +19,8 @@ const StyledBoard = styled.div`
   height: 100%;
 `;
 
-class Board extends React.Component {
-  constructor(props) {
+class Board extends React.Component<{}, IState> {
+  constructor(props: IState) {
     super(props);
 
     this.state = {

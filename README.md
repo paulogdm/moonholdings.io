@@ -1,7 +1,8 @@
 # Moon Holdings, your cryptocurrency portfolio.
 
-production: https://moon.holdings
-dev: https://dev.moon.holdings
+Production: https://moon.holdings
+
+Development: https://dev.moon.holdings
 
 ![enter image description here](https://raw.githubusercontent.com/leongaban/github_images/master/moon-holdings-square.png)
 
