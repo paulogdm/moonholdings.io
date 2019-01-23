@@ -25,6 +25,7 @@ export const PlusButtonStyle = styled.button`
   span {
     font-size: 7rem;
     line-height: 7rem;
+    color: ${props => props.theme.apricot};
   }
 
   :hover {
