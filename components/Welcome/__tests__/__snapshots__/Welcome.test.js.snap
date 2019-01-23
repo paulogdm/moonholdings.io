@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Astronaut /> component rendering should render a component matching the snapshot 1`] = `
+<welcome__WelcomeContainer>
+  <welcome__WelcomeMessage>
+    <h1>
+      MOON.HOLDINGS
+    </h1>
+    <h4>
+      A Futuratum Project
+    </h4>
+    <h2>
+      Click the 
+      <span>
+        +
+      </span>
+       button to create your portfolio.
+    </h2>
+  </welcome__WelcomeMessage>
+</welcome__WelcomeContainer>
+`;

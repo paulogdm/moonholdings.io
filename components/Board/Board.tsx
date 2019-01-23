@@ -1,8 +1,8 @@
-import React from 'react';
-import { bind } from 'decko';
-import styled from 'styled-components';
+import React from 'react'
+import { bind } from 'decko'
+import styled from 'styled-components'
 
-import { Welcome, Astronaut, NomicsLink, PlusButton } from './';
+import { Welcome, Astronaut, NomicsLink, PlusButton } from '../'
 
 interface IState {
   portfolio: [];

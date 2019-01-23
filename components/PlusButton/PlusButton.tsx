@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-import { PlusButtonStyle } from '../styles/plusButton';
+import { PlusButtonStyle } from '../../styles/plusButton'
 
 interface IProps {
   toggleSearch(): void;

@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Astronaut /> component rendering should render a component matching the snapshot 1`] = `
+<Board__StyledBoard>
+  <Board />
+  <PlusButton
+    toggleSearch={[Function]}
+  />
+  <NomicsLink />
+  <_default
+    showLogo={false}
+  />
+</Board__StyledBoard>
+`;

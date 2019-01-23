@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Astronaut /> component rendering should render a component matching the snapshot 1`] = `
+<astronaut__AstronautContainer>
+  <astronaut__Heading>
+    MOON.HOLDINGS
+  </astronaut__Heading>
+  <img
+    alt="astronaut"
+    src="static/astronaut.png"
+  />
+</astronaut__AstronautContainer>
+`;

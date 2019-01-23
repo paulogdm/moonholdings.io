@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-import { moonHoldings } from '../shared/models';
-import { astronaut } from '../styles';
+import { moonHoldings } from '../../shared'
+import { astronaut } from '../../styles'
 
 const { AstronautContainer, Heading } = astronaut;
 

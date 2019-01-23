@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
+import Head from 'next/head'
 
-import Head from 'next/head';
-import { moonHoldings } from '../shared/models';
+import { moonHoldings } from '../../shared'
 
 export default () => (
   <Head>

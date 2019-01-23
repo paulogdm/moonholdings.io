@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NomicsLink /> component rendering should render a component matching the snapshot 1`] = `
+<NomicsLink__Link>
+  Powered by 
+  <a
+    href="https://nomics.com/"
+    target="blank"
+  >
+    Nomics APIs.
+  </a>
+</NomicsLink__Link>
+`;

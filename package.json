@@ -7,7 +7,7 @@
     "dev": "next -p 7777",
     "build": "next build",
     "start": "next start -p 8000",
-    "test": "NODE_ENV=test jest --watch",
+    "test": "NODE_ENV=test jest --watch --no-cache",
     "test-win": "SET NODE_ENV=test&& jest --watch",
     "heroku-postbuild": "next build"
   },
@@ -45,6 +45,8 @@
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.3.0",
     "@babel/preset-typescript": "^7.1.0",
+    "@types/enzyme": "^3.1.15",
+    "@types/jest": "^23.3.13",
     "@types/next": "^7.0.6",
     "@types/react": "^16.7.20",
     "@types/react-dom": "^16.0.11",
@@ -52,6 +54,7 @@
     "@types/zeit__next-typescript": "^0.1.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
+    "babel-plugin-sass-vars": "^0.2.1",
     "babel-plugin-styled-components": "^1.7.1",
     "casual": "^1.5.19",
     "enzyme-to-json": "^3.3.4",
@@ -65,9 +68,21 @@
       "<rootDir>/node_modules/"
     ],
     "transform": {
-      "\\.(gql|graphql)$": "jest-transform-graphql",
       ".*": "babel-jest",
-      "^.+\\.js?$": "babel-jest"
-    }
+      "^.+\\.js?$": "babel-jest",
+      "^.+\\.ts?$": "babel-jest",
+      "^.+\\.tsx?$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts",
+      "tsx"
+    ],
+    "modulePaths": [
+      "<rootDir>/components/",
+      "<rootDir>/pages/",
+      "<rootDir>/shared/"
+    ]
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { nomicsLink } from '../shared/models';
+import { nomicsLink } from '../../shared';
 
 export const Link = styled.p`
   position: absolute;

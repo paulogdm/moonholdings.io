@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { ThemeProvider, injectGlobal } from 'styled-components';
+import React, { Component } from 'react'
+import { ThemeProvider, injectGlobal } from 'styled-components'
 
-import Meta from './Meta';
-import { page } from '../styles';
-import './global.scss';
+import Meta from '../Meta/Meta'
+import { page } from '../../styles'
+import '../global.scss'
 
 const theme = {
   red: '#FF0000',

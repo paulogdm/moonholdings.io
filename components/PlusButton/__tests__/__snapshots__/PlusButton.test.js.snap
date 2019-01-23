@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PlusButton /> component rendering should render a component matching the snapshot 1`] = `
+<plusButton__PlusButtonStyle
+  onClick={[MockFunction]}
+  tabIndex={0}
+>
+  <span>
+    +
+  </span>
+  <h1>
+    Add Asset
+  </h1>
+</plusButton__PlusButtonStyle>
+`;
