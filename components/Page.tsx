@@ -12,8 +12,12 @@ const theme = {
   lightgrey: '#E1E1E1',
   offWhite: '#EDEDED',
   apricot: '#FEBE7E',
+  brightPurple: '#B987C0',
+  lightPurple: '#8F6894',
+  darkPurple: '#57385C',
   margin: 0,
   padding: 0,
+  transitionAll: 'all .2s ease-in-out',
 };
 
 const { StyledPage, Inner } = page;
@@ -46,7 +50,7 @@ export default class Page extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <StyledPage className="app-bg">
+        <StyledPage>
           <Meta />
           <Inner>{this.props.children}</Inner>
         </StyledPage>

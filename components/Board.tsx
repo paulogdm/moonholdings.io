@@ -1,9 +1,8 @@
 import React from 'react';
+import { bind } from 'decko';
 import styled from 'styled-components';
 
-import Welcome from './Welcome';
-import Astronaut from './Astronaut';
-import NomicsLink from './NomicsLink';
+import { Welcome, Astronaut, NomicsLink, PlusButton } from './';
 
 interface IState {
   portfolio: [];
@@ -36,12 +35,16 @@ class Board extends React.Component<{}, IState> {
     return (
       <StyledBoard>
         <Welcome />
-        {/* <PlusButton toggleSearch={this.handleSearchButton} /> */}
-        {/* <Affiliates /> */}
+        <PlusButton toggleSearch={this.handleOnSearch} />
         <NomicsLink />
         <Astronaut showLogo={hasPortfolio} />
       </StyledBoard>
     );
+  }
+
+  @bind
+  private handleOnSearch() {
+    console.log('handleSearchButton...');
   }
 }
 
