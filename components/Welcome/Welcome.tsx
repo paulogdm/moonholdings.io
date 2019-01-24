@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { moonHoldings } from '../../shared'
+import { moonHoldings } from '../../shared/models'
 import { welcome } from '../../styles'
 
 const { WelcomeContainer, WelcomeMessage } = welcome;

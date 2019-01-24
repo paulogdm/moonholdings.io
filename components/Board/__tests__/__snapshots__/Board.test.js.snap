@@ -8,7 +8,7 @@ exports[`<Astronaut /> component rendering should render a component matching th
   />
   <NomicsLink />
   <_default
-    showLogo={false}
+    showLogo={true}
   />
 </Board__StyledBoard>
 `;
