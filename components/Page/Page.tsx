@@ -27,7 +27,7 @@ injectGlobal`
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    font-size: 10px;
+    font-size: 16px;
   }
 
   *, *:before, *:after  {

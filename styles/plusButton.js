@@ -6,8 +6,8 @@ export const PlusButtonStyle = styled.button`
   bottom: 2rem;
   left: 2rem;
   padding-top: 2rem;
-  width: 14rem;
-  height: 14rem;
+  width: 8rem;
+  height: 8rem;
   text-align: center;
   background: rgba(87, 56, 92, 0.85);
   border: 2px solid rgba(87, 56, 92, 0);
@@ -15,16 +15,16 @@ export const PlusButtonStyle = styled.button`
   cursor: pointer;
 
   h1 {
-    margin: 0;
-    height: 2rem;
+    margin-top: 0.25rem;
+    height: 5rem;
     font-family: 'Abel', sans-serif;
-    font-size: 2rem;
+    font-size: 1rem;
     color: ${props => props.theme.offWhite};
   }
 
   span {
-    font-size: 7rem;
-    line-height: 7rem;
+    font-size: 5rem;
+    line-height: 3rem;
     color: ${props => props.theme.apricot};
   }
 

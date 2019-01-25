@@ -7,7 +7,7 @@ export const AstronautContainer = styled.div`
 `;
 
 export const Heading = styled.div`
-  font-size: 3.25rem;
+  font-size: 2rem;
   position: absolute;
   bottom: 20px;
   right: 10px;

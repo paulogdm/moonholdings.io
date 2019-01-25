@@ -38,11 +38,10 @@ class Board extends React.Component<{}, IState> {
   render() {
     const { portfolio } = this.state;
     const hasPortfolio = portfolio.length > 0;
-    console.log('portfolio', portfolio);
 
     return (
       <StyledBoard>
-        <Welcome />
+        { !hasPortfolio && <Welcome /> }
         <Portfolio
           coins={portfolio}
           edit={this.toggleSquareEdit}
