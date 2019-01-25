@@ -10,6 +10,9 @@ export const PortfolioBalance = styled.div`
 `
 
 export const PortfolioContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   position: relative;
   top: 10rem;
   z-index: 1;

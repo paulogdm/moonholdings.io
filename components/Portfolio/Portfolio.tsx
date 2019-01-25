@@ -42,12 +42,9 @@ export default class Portfolio extends React.PureComponent<IProps> {
           ${portfolioBalance(coins)}
         </PortfolioBalance>
         <PortfolioContainer>
-          Portfolio goes here...
-        </PortfolioContainer>
-        {/* <div className="flex-grid portfolio-container">
           {coins.map((coin, i) =>
             (<Square key={coin.symbol} coin={coin} edit={edit} index={i} />))}
-        </div> */}
+        </PortfolioContainer>
       </div>
     );
   }
