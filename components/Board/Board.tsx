@@ -1,30 +1,18 @@
 import React from 'react'
 import { bind } from 'decko'
-import styled from 'styled-components'
 
-import {
-  Welcome,
-  Astronaut,
-  NomicsLink,
-  PlusButton,
-  Portfolio
-} from '../'
+import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio } from '../'
 import { IPortfolioItem } from '../../shared/types';
+import { board } from '../../styles'
 
 interface IState {
   portfolio: IPortfolioItem[];
   loading: boolean;
 }
 
-const StyledBoard = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-`;
+const { StyledBoard } = board;
 
+//@TODO to remove...
 const tempPortfolio = [
   {
     balance: 2.46781018,

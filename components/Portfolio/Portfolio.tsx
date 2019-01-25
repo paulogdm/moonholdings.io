@@ -3,7 +3,6 @@ import React from 'react';
 import Square from '../Square/Square';
 import { IPortfolioItem } from '../../shared/types';
 
-// Utils
 import {
   portfolioBalance,
   // calculateBalance
