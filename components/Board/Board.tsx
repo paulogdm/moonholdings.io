@@ -2,7 +2,13 @@ import React from 'react'
 import { bind } from 'decko'
 import styled from 'styled-components'
 
-import { Welcome, Astronaut, NomicsLink, PlusButton } from '../'
+import {
+  Welcome,
+  Astronaut,
+  NomicsLink,
+  PlusButton,
+  Portfolio
+} from '../'
 import { IPortfolioItem } from '../../shared/types';
 
 interface IState {
@@ -49,6 +55,10 @@ class Board extends React.Component<{}, IState> {
     return (
       <StyledBoard>
         <Welcome />
+        <Portfolio
+          coins={portfolio}
+          edit={this.toggleSquareEdit}
+        />
         <PlusButton toggleSearch={this.handleOnSearch} />
         <NomicsLink />
         <Astronaut showLogo={hasPortfolio} />
@@ -59,6 +69,11 @@ class Board extends React.Component<{}, IState> {
   @bind
   private handleOnSearch() {
     console.log('handleSearchButton...');
+  }
+
+  @bind
+  private toggleSquareEdit() {
+    console.log('toggleSquareEdit...');
   }
 }
 
