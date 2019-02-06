@@ -1,0 +1,356 @@
+{
+  "ada": {
+    "color": "#FFF",
+    "backgroundColor": "#6297DF"
+  },
+  "ae": {
+    "color": "#F35C8E",
+    "backgroundColor": "#000"
+  },
+  "aion": {
+    "color": "#47BEEB",
+    "backgroundColor": "#131944"
+  },
+  "ant": {
+    "color": "#FFF",
+    "backgroundColor": "#26B9DD"
+  },
+  "ark": {
+    "color": "#FFF",
+    "backgroundColor": "#EF3A40"
+  },
+  "elf": {
+    "color": "#FFF",
+    "backgroundColor": "#2e60b7"
+  },
+  "bat": {
+    "color": "#FFF",
+    "backgroundColor": "#FC511F"
+  },
+  "bch": {
+    "color": "#FFF",
+    "backgroundColor": "#61BE42"
+  },
+  "bcn": {
+    "color": "#FFF",
+    "backgroundColor": "#EE4486"
+  },
+  "blt": {
+    "color": "#FFF",
+    "backgroundColor": "#555CEF"
+  },
+  "bnb": {
+    "color": "#F2B940",
+    "backgroundColor": "#3E3E3E"
+  },
+  "bnt": {
+    "color": "#FFF",
+    "backgroundColor": "#3B3B3B"
+  },
+  "brd": {
+    "color": "#FFF",
+    "backgroundColor": "#FA7B52"
+  },
+  "btc": {
+    "color": "#FFF",
+    "backgroundColor": "#F5922F"
+  },
+  "btg": {
+    "color": "#FBBE2D",
+    "backgroundColor": "#222423"
+  },
+  "bts": {
+    "color": "#FFF",
+    "backgroundColor": "#3EBBE9"
+  },
+  "cvc": {
+    "color": "#FFF",
+    "backgroundColor": "#359F74"
+  },
+  "dai": {
+    "color": "#FFF",
+    "backgroundColor": "#f7B04A"
+  },
+  "dash": {
+    "color": "#FFF",
+    "backgroundColor": "#1175B4"
+  },
+  "dcr": {
+    "color": "#3AD6A3",
+    "backgroundColor": "#2F76FB"
+  },
+  "dgb": {
+    "color": "#FFF",
+    "backgroundColor": "#022552"
+  },
+  "dgd": {
+    "color": "#F0C838",
+    "backgroundColor": "#212429"
+  },
+  "doge": {
+    "color": "#333333",
+    "backgroundColor": "#B99E3D"
+  },
+  "dnt": {
+    "color": "#71F7F9",
+    "backgroundColor": "#273284"
+  },
+  "gbyte": {
+    "color": "#FFF",
+    "backgroundColor": "#2D3E4F"
+  },
+  "eos": {
+    "color": "#F0F5F8",
+    "backgroundColor": "#443F53"
+  },
+  "enj": {
+    "color": "#26D1CC",
+    "backgroundColor": "#36245E"
+  },
+  "etc": {
+    "color": "#FFF",
+    "backgroundColor": "#678F74"
+  },
+  "eth": {
+    "color": "#FFF",
+    "backgroundColor": "#5C607F"
+  },
+  "fct": {
+    "color": "#FFF",
+    "backgroundColor": "#578299"
+  },
+  "fuel": {
+    "color": "#FFF",
+    "backgroundColor": "#093156"
+  },
+  "fun": {
+    "color": "#9E235C",
+    "backgroundColor": "#FFF"
+  },
+  "gas": {
+    "color": "#FFF",
+    "backgroundColor": "#719361"
+  },
+  "gno": {
+    "color": "#009CBC",
+    "backgroundColor": "#FFF"
+  },
+  "gnt": {
+    "color": "#FFF",
+    "backgroundColor": "#083F6C"
+  },
+  "lend": {
+    "color": "#0DA2C2",
+    "backgroundColor": "#FFF"
+  },
+  "icn": {
+    "color": "#4D6F8B",
+    "backgroundColor": "#829AAE"
+  },
+  "icx": {
+    "color": "#FFF",
+    "backgroundColor": "#3CA8B9"
+  },
+  "iot": {
+    "color": "#FFF",
+    "backgroundColor": "#333"
+  },
+  "lsk": {
+    "color": "#FFF",
+    "backgroundColor": "#0D468F"
+  },
+  "ltc": {
+    "color": "#FFF",
+    "backgroundColor": "#CDCDCD"
+  },
+  "lun": {
+    "color": "#F04725",
+    "backgroundColor": "#191B22"
+  },
+  "kmd": {
+    "color": "#FFF",
+    "backgroundColor": "#3C6363"
+  },
+  "maid": {
+    "color": "#FFF",
+    "backgroundColor": "#5C91C9"
+  },
+  "mana": {
+    "color": "#F57028",
+    "backgroundColor": "#D1C7BE"
+  },
+  "mco": {
+    "color": "#FFF",
+    "backgroundColor": "#111A32"
+  },
+  "mkr": {
+    "color": "#F0F2F3",
+    "backgroundColor": "#2ABB9C"
+  },
+  "mona": {
+    "color": "#FFF",
+    "backgroundColor": "#B6A170"
+  },
+  "nano": {
+    "color": "#4E92DF",
+    "backgroundColor": "#FFF",
+    "lightBg": true
+  },
+  "nem": {
+    "color": "#212033",
+    "backgroundColor": "#2DB5AB"
+  },
+  "neo": {
+    "color": "#FFF",
+    "backgroundColor": "#4EB704"
+  },
+  "nmr": {
+    "color": "#FFF",
+    "backgroundColor": "#000"
+  },
+  "omg": {
+    "color": "#FFF",
+    "backgroundColor": "#2159EC"
+  },
+  "ont": {
+    "color": "#FFF",
+    "backgroundColor": "#39A4BC"
+  },
+  "pay": {
+    "color": "#FFF",
+    "backgroundColor": "#353437"
+  },
+  "pivx": {
+    "color": "#FFF",
+    "backgroundColor": "#7C68A4"
+  },
+  "poe": {
+    "color": "#FFF",
+    "backgroundColor": "#292929"
+  },
+  "poly": {
+    "color": "#FFF",
+    "backgroundColor": "#4C5995"
+  },
+  "powr": {
+    "color": "#FFF",
+    "backgroundColor": "#1FBBA9"
+  },
+  "qash": {
+    "color": "#FFF",
+    "backgroundColor": "#1F4BB4"
+  },
+  "qtum": {
+    "color": "#359bce",
+    "backgroundColor": "#FFF",
+    "lightBg": true
+  },
+  "rep": {
+    "color": "#FFF",
+    "backgroundColor": "#412766"
+  },
+  "salt": {
+    "color": "#22272f",
+    "backgroundColor": "#FFF",
+    "lightBg": true
+  },
+  "sia": {
+    "color": "#34EC86",
+    "backgroundColor": "#7F8C8D"
+  },
+  "spank": {
+    "color": "#FFF",
+    "backgroundColor": "#FF6195"
+  },
+  "snm": {
+    "color": "#FFF",
+    "backgroundColor": "#131822"
+  },
+  "snt": {
+    "color": "#0BD09F",
+    "backgroundColor": "#FFF"
+  },
+  "steem": {
+    "color": "#0BD09F",
+    "backgroundColor": "#FFF",
+    "lightBg": true
+  },
+  "strat": {
+    "color": "#FFF",
+    "backgroundColor": "#1f88c7"
+  },
+  "storj": {
+    "color": "#FFF",
+    "backgroundColor": "#2E86FB"
+  },
+  "theta": {
+    "color": "#20D7C2",
+    "backgroundColor": "#1A1D25"
+  },
+  "trx": {
+    "color": "#FFF",
+    "backgroundColor": "#222423"
+  },
+  "tusd": {
+    "color": "#62C6FF",
+    "backgroundColor": "#1D294F"
+  },
+  "usdt": {
+    "color": "#FFF",
+    "backgroundColor": "#2EA07C"
+  },
+  "usd": {
+    "color": "#FFF",
+    "backgroundColor": "#CACCB7"
+  },
+  "usdc": {
+    "color": "#FFF",
+    "backgroundColor": "#2775C9"
+  },
+  "waves": {
+    "color": "#000",
+    "backgroundColor": "#105CFB"
+  },
+  "wtc": {
+    "color": "#8125FB",
+    "backgroundColor": "#59EFDC"
+  },
+  "vet": {
+    "color": "#AA77CE",
+    "backgroundColor": "#B4E8FF",
+    "lightBg": true
+  },
+  "xmr": {
+    "color": "#4C4C4C",
+    "backgroundColor": "#FC6621"
+  },
+  "xlm": {
+    "color": "#07A2CC",
+    "backgroundColor": "#CEEBF6",
+    "lightBg": true
+  },
+  "xrp": {
+    "color": "#23292F",
+    "backgroundColor": "#1B84E6"
+  },
+  "xvg": {
+    "color": "#FFF",
+    "backgroundColor": "#3BA3CA"
+  },
+  "zec": {
+    "color": "#000",
+    "backgroundColor": "#EBB451"
+  },
+  "zen": {
+    "color": "#5EFFB5",
+    "backgroundColor": "#1C3871"
+  },
+  "zil": {
+    "color": "#50C0BE",
+    "backgroundColor": "#46494B"
+  },
+  "zrx": {
+    "color": "#FFF",
+    "backgroundColor": "#383838"
+  }
+}

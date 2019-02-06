@@ -5,9 +5,7 @@ import toJson from 'enzyme-to-json'
 // @ts-ignore (works with .tsx)
 import Astronaut from '../Astronaut.tsx'
 import { moonHoldings } from '../../../shared/models'
-import { astronaut } from '../../../styles'
-
-const { AstronautContainer, Heading } = astronaut;
+import { AstronautContainer, Heading } from '../../../styles'
 
 describe('<Astronaut /> component', () => {
   describe('rendering', () => {

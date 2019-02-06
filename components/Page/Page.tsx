@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { ThemeProvider, injectGlobal } from 'styled-components'
 
 import Meta from '../Meta/Meta'
-import { page } from '../../styles'
+import { StyledPage, Inner } from '../../styles'
 import '../global.scss'
 
 const theme = {
   red: '#FF0000',
   black: '#393939',
   grey: '#3A3A3A',
+  midGray: '#515151',
   lightgrey: '#E1E1E1',
   offWhite: '#EDEDED',
   apricot: '#FEBE7E',
@@ -19,8 +20,6 @@ const theme = {
   padding: 0,
   transitionAll: 'all .2s ease-in-out',
 };
-
-const { StyledPage, Inner } = page;
 
 injectGlobal`
   html {

@@ -1,58 +1,55 @@
-import React from 'react';
+import React from 'react'
 
-import { IPortfolioItem } from '../../shared/types';
-import { numberWithCommas, round } from '../../shared/utils/math';
-// import {
-//   setStyle,
-//   styleModifier
-// } from '../../utils/modifiers';
+import { IPortfolioItem } from '../../shared/types'
+import { numberWithCommas, round } from '../../shared/utils/math'
+import { SquareShade, CoinSquare, CoinRank, CoinStat } from '../../styles'
+
+import {
+  setStyle,
+  styleModifier
+} from '../../shared/utils/modifiers'
 
 interface IProps {
   coin: IPortfolioItem;
   index: number;
-  edit(): void;
+  edit(toggle: boolean, coin: IPortfolioItem): void;
 }
 
 export default class Portfolio extends React.PureComponent<IProps> {
   public render() {
-    const { coin, index } = this.props;
+    const { coin, edit, index } = this.props;
     const { balance, price, symbol } = coin;
 
     return (
-      // <div
-      //   className={styleModifier(coin.currency)}
-      //   style={setStyle(coin.currency)}
-      //   onClick={() => clicked(coin, edit)}
-      // >
-      <div>
-        <section className="square-shade">
-          <div className="coin-stats">
-            <div className="coin-index">
-              <span className="stat">#</span>
-              <span>{index + 1}</span>
-            </div>
-          </div>
-          <h1>
-            <div className="fl">{symbol}</div>
-          </h1>
-          <p className="coin-stat"><span className="mr3 o7">Price:</span>
-            <span className="fr">${price ? round(Number(price)) : 0}</span>
-          </p>
-          <p className="coin-stat"><span className="mr3 o7">Position:</span>
-            <span className="fr">{balance}</span>
-          </p>
-          <p className="coin-stat"><span className="mr3 o7">Allocation:</span>
-            <span className="fr">
-              <span className="coin-percentage">
-                <span>{coin.percentage}</span>
-                <span className="stat">%</span>
-              </span>
-            </span>
-          </p>
-          <p className="coin-stat"><span className="mr3 o7">Value:</span>
-            <span className="fr f20">${numberWithCommas(coin.value)}</span>
-          </p>
-        </section>
+      <div
+        className={styleModifier(coin.symbol)}
+        style={setStyle(coin.symbol)}
+        onClick={() => edit(true, coin)}
+      >
+        <CoinSquare className="coin-square">
+          <SquareShade>
+            <CoinRank>
+              <span><h1>{symbol}</h1></span>
+              <span><h4>#{index + 1}</h4></span>
+            </CoinRank>
+            <CoinStat>
+              <p><em>Price:</em></p>
+              <p>${price ? round(Number(price)) : 0}</p>
+            </CoinStat>
+            <CoinStat>
+              <p><em>Position:</em></p>
+              <p>{balance}</p>
+            </CoinStat>
+            <CoinStat>
+              <p><em>Allocation:</em></p>
+              <p>{coin.percentage}%</p>
+            </CoinStat>
+            <CoinStat>
+              <p><em>Value:</em></p>
+              <p>${numberWithCommas(coin.value)}</p>
+            </CoinStat>
+          </SquareShade>
+        </CoinSquare>
       </div>
     );
   }

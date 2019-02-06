@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
-import Square from '../Square/Square';
-import { IPortfolioItem } from '../../shared/types';
-import { portfolio } from '../../styles'
+import Square from '../Square/Square'
+import { IPortfolioItem } from '../../shared/types'
+import { PortfolioBalance, PortfolioContainer } from '../../styles'
 
 import {
   portfolioBalance,
@@ -11,10 +11,8 @@ import {
 
 interface IProps {
   coins: IPortfolioItem[];
-  edit(): void;
+  edit(toggle: boolean, coin: IPortfolioItem): void;
 }
-
-const { PortfolioBalance, PortfolioContainer } = portfolio;
 
 // const Portfolio = ({ coins: IPortfolioItem, edit }) => (
 // const Portfolio = (coins: IPortfolioItem[], edit => {

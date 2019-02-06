@@ -1,9 +1,7 @@
 import React from 'react'
 
 import { moonHoldings } from '../../shared/models'
-import { welcome } from '../../styles'
-
-const { WelcomeContainer, WelcomeMessage } = welcome;
+import { WelcomeContainer, WelcomeMessage } from '../../styles'
 
 export default class Board extends React.Component {
   render() {
