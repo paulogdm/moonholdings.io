@@ -1,9 +1,6 @@
-import * as page from './page';
-import * as welcome from './welcome';
-import * as astronaut from './astronaut';
-
-export {
-  page,
-  welcome,
-  astronaut
-};
+export * from './astronaut'
+export * from './board'
+export * from './squares'
+export * from './page'
+export * from './portfolio'
+export * from './welcome'

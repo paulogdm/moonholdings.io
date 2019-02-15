@@ -1,14 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Astronaut /> component rendering should render a component matching the snapshot 1`] = `
-<Board__StyledBoard>
-  <Board />
+<board__StyledBoard>
+  <Portfolio
+    coins={
+      Array [
+        Object {
+          "balance": 2.46781018,
+          "marketCap": 63636922279.28325,
+          "name": "Bitcoin",
+          "percentage": 66.4,
+          "price": 3637.33607,
+          "symbol": "BTC",
+          "value": 8976.25,
+        },
+      ]
+    }
+    edit={[Function]}
+  />
   <PlusButton
     toggleSearch={[Function]}
   />
   <NomicsLink />
   <_default
-    showLogo={false}
+    showLogo={true}
   />
-</Board__StyledBoard>
+</board__StyledBoard>
 `;

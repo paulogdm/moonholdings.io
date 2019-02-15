@@ -4,7 +4,7 @@ import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 
 import NomicsLink, { Link } from '../NomicsLink'
-import { nomicsLink } from '../../../shared'
+import { nomicsLink } from '../../../shared/models'
 
 describe('<NomicsLink /> component', () => {
   describe('rendering', () => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 
-import { moonHoldings } from '../../shared'
+import { moonHoldings } from '../../shared/models'
 
 export default () => (
   <Head>

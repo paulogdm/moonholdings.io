@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { nomicsLink } from '../../shared';
+import { nomicsLink } from '../../shared/models';
 
 export const Link = styled.p`
   position: absolute;
   z-index: 10;
-  bottom: 20px;
+  bottom: 0.4rem;
   right: 300px;
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 1rem;
   text-align: right;
   cursor: pointer;
 

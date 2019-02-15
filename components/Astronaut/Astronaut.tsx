@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { moonHoldings } from '../../shared'
-import { astronaut } from '../../styles'
-
-const { AstronautContainer, Heading } = astronaut;
+import { moonHoldings } from '../../shared/models'
+import { AstronautContainer, Heading } from '../../styles'
 
 interface LogoCheck {
   showLogo: boolean;
