@@ -3,7 +3,7 @@ import { defaultInitialState } from '../../store'
 
 export default (state = defaultInitialState, action: any) => {
   switch (action.type) {
-    case Actions.GET_PRICES_REQUEST: {
+    case Actions.GET_ALL_ASSETS: {
       const { assets } = action;
       return {
         ...state,

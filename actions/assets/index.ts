@@ -3,7 +3,7 @@ import { formatAssets } from '../../services/coinFactory';
 // import { multiply, roundFloat } from '../../utils';
 
 export const Actions = {
-  GET_PRICES_REQUEST: 'GET_PRICES_REQUEST',
+  GET_ALL_ASSETS: 'GET_ALL_ASSETS',
   ADD_COIN_PORTFOLIO: 'ADD_COIN_PORTFOLIO',
   ADD_COINS_PORTFOLIO: 'ADD_COINS_PORTFOLIO',
   UPDATE_COIN_PORTFOLIO: 'UPDATE_COIN_PORTFOLIO',
@@ -11,8 +11,8 @@ export const Actions = {
 };
 
 // Action creators
-const getPricesRequest = data => ({
-  type: Actions.GET_PRICES_REQUEST,
+const getAllAssets = (data: any) => ({
+  type: Actions.GET_ALL_ASSETS,
   assets: data
 });
 
@@ -39,10 +39,11 @@ const getPricesRequest = data => ({
 const fetchAll = (array: any[]) => Promise.all(array);
 
 // Fetch assets from Nomics API V1.
-export const startGetPrices = () => dispatch =>
+export const fetchAllAssets = () => (dispatch: any) =>
   fetchAll([getPrices(), getAvailableSupply()]).then((responses) => {
     const formattedAssets = formatAssets(responses);
-    dispatch(getPricesRequest(formattedAssets));
+    console.log('formattedAssets', formattedAssets);
+    dispatch(getAllAssets(formattedAssets));
   });
 
 // Fetch the coins form localStorage.

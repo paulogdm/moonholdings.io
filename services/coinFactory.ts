@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as R from 'ramda'
 import { additionalAssets, supportedAssets } from '../shared/models'
+import { IAssetResponse, IResponseConfig } from '../shared/types'
 import { multiply, roundFloat } from '../shared/utils'
 
 const textMatch = (part: string, str: string) => str.search(part) !== -1;
@@ -21,13 +22,21 @@ export const findAsset = (txt: string, assets: any[]) => {
   return R.uniq(combinedSearch);
 };
 
-export const filterAssets = (assets: any) => {
+export const filterAssets = (assets: IAssetResponse[]) => {
   const mergedAssets = mergeByCurrency(supportedAssets, assets);
-  const filteredAssets = mergedAssets.filter(asset => asset.name ? asset : null);
-  return filteredAssets;
+  return mergedAssets.filter(asset => asset.name ? asset : null);
 };
 
-export const sortByValue = (portfolio: any) => portfolio.sort((a, b) => b.value - a.value);
+const pluckValuableAssets = (assets: IAssetResponse[]) => {
+  const cleanedAssets = assets.filter((asset) => {
+    if (asset.availableSupply) return asset;
+    if (asset.price) return asset;
+  });
+  return cleanedAssets;
+}
+
+//@ TODO create Interfaces for portfolio types:
+export const sortByValue = (portfolio: any) => portfolio.sort((a: any, b: any) => b.value - a.value);
 
 const keysToClean = [
   'close',
@@ -65,11 +74,15 @@ export const cleanAssets = (assets: any) =>
         : newObj
     ), {}));
 
-export const formatAssets = (responses: any) => {
+// Filter assets by supportedAssets then merge asset arrays.
+// Remove assets without price & availableSupply.
+// Multiply price * availableSupply to add marketCap, then add additionalAssets.
+// Finally return assets sorted by marketCap.
+export const formatAssets = (responses: IResponseConfig[]) => {
   let prices: any;
   let availableSupplies: any;
 
-  responses.forEach((response: any) => {
+  responses.forEach((response: IResponseConfig) => {
     const { config } = response;
     const { url } = config;
     if (url.includes('prices')) {
@@ -84,11 +97,12 @@ export const formatAssets = (responses: any) => {
   });
 
   const assetsPrices = filterAssets(prices);
-  const availableSupply = filterAssets(availableSupplies);
-  const mergedAssets = mergeByCurrency(assetsPrices, availableSupply);
+  const assetsAvailableSupply = filterAssets(availableSupplies);
+  const mergedAssets = mergeByCurrency(assetsPrices, assetsAvailableSupply);
+  const assetsWithValue = pluckValuableAssets(mergedAssets);
 
-  const assetsWithMarketCap = mergedAssets.map((asset) => {
-    const multipliedCap = multiply(asset.price, asset.availableSupply);
+  const assetsWithMarketCap = assetsWithValue.map((asset) => {
+    const multipliedCap = multiply(Number(asset.price), Number(asset.availableSupply));
     const roundedCap = roundFloat(multipliedCap, 2);
     const marketCap = roundedCap ? Number(roundedCap) : 0;
     return {
@@ -97,10 +111,8 @@ export const formatAssets = (responses: any) => {
     };
   });
 
-  const assetsWithPrice = assetsWithMarketCap.filter(asset => asset.price);
-  const sortedAssets = assetsWithPrice.sort((a, b) => b.marketCap - a.marketCap);
+  const sortedAssets = assetsWithMarketCap.sort((a, b) => b.marketCap - a.marketCap);
 
-  // Add additional assets.
   additionalAssets.map((asset: any) => sortedAssets.push(asset));
 
   return sortedAssets;

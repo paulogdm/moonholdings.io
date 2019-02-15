@@ -3,14 +3,16 @@ import { nomicsKey } from '../nomicsKey'
 
 const nomicsAPI = 'https://api.nomics.com/v1/';
 
+const headers = {
+  baseURL: nomicsAPI,
+  params: {
+    key: nomicsKey
+  }
+};
+
 // Nomics API | GET Prices
 export const getPrices = async () => {
-  const nomics = axios.create({
-    baseURL: nomicsAPI,
-    params: {
-      key: nomicsKey
-    }
-  });
+  const nomics = axios.create(headers);
 
   try {
     const prices = await nomics.get('/prices');
@@ -22,12 +24,7 @@ export const getPrices = async () => {
 
 // Nomics API | GET Dashboard (For getting availableSupply to calculate MarketCap)
 export const getAvailableSupply = async () => {
-  const nomics = axios.create({
-    baseURL: nomicsAPI,
-    params: {
-      key: nomicsKey
-    }
-  });
+  const nomics = axios.create(headers);
 
   try {
     const supplies = await nomics.get('/dashboard');
