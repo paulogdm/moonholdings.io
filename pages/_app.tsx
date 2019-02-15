@@ -1,20 +1,28 @@
 import React from 'react'
 import App, { Container } from 'next/app'
+import withReduxStore from '../lib/withReduxStore'
+import { Provider } from 'react-redux'
 
 import Page from '../components/Page/Page'
 
-class MoonApp extends App {
+interface IProps {
+  reduxStore: any;
+}
+
+class MoonApp extends App<IProps> {
   render() {
-    const { Component } = this.props;
+    const { Component, reduxStore } = this.props;
 
     return (
       <Container>
-        <Page>
-          <Component />
-        </Page>
+        <Provider store={reduxStore}>
+          <Page>
+            <Component />
+          </Page>
+        </Provider>
       </Container>
     )
   }
 }
 
-export default MoonApp;
+export default withReduxStore(MoonApp);

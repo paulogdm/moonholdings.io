@@ -1,2 +1,2 @@
-export * from './portfolio'
+export * from './assets'
 export * from './styles'
