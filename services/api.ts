@@ -1,21 +1,37 @@
 import axios from 'axios'
+import { nomicsKey } from '../nomicsKey'
 
-const fixerURL = 'https://data.fixer.io/api/';
-const fixerKey = '35a3ad0f2f253d37131b68cd1b5953fc';
+const nomicsAPI = 'https://api.nomics.com/v1/';
 
-// Fixer API
-export const getEURrates = async (currency: string = 'USD') => {
-  const fixerAPI = axios.create({
-    baseURL: fixerURL,
+// Nomics API | GET Prices
+export const getPrices = async () => {
+  const nomics = axios.create({
+    baseURL: nomicsAPI,
     params: {
-      base: currency,
-      access_key: fixerKey
+      key: nomicsKey
     }
   });
 
   try {
-    const res = await fixerAPI.get('latest');
-    return res;
+    const prices = await nomics.get('/prices');
+    return prices;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Nomics API | GET Dashboard (For getting availableSupply to calculate MarketCap)
+export const getAvailableSupply = async () => {
+  const nomics = axios.create({
+    baseURL: nomicsAPI,
+    params: {
+      key: nomicsKey
+    }
+  });
+
+  try {
+    const supplies = await nomics.get('/dashboard');
+    return supplies;
   } catch (err) {
     console.error(err);
   }

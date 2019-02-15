@@ -1,5 +1,5 @@
-// import { getPrices, getAvailableSupply } from '../../services/api';
-// import { formatAssets } from '../../services/coinFactory';
+import { getPrices, getAvailableSupply } from '../../services/api';
+import { formatAssets } from '../../services/coinFactory';
 // import { multiply, roundFloat } from '../../utils';
 
 export const Actions = {
