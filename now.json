@@ -2,6 +2,11 @@
   "name": "moonholdings",
   "version": 2,
   "alias": "moonholdings.io",
+  "build": {
+    "env": {
+      "NOMICS_KEY": "@nomicskey"
+    }
+  },
   "builds": [
     { "src": "package.json", "use": "@now/next" }
   ]
