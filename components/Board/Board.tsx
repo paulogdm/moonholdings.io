@@ -1,13 +1,19 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { bind } from 'decko'
 
 import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio } from '../'
-import { IPortfolioItem } from '../../shared/types'
+import { IAsset } from '../../shared/types'
 import { StyledBoard } from '../../styles'
+import { fetchAllAssets } from '../../actions/assets'
 
 interface IState {
-  portfolio: IPortfolioItem[];
+  portfolio: IAsset[];
   loading: boolean;
+}
+
+interface IProps {
+  fetchAllAssets(): void;
 }
 
 //@TODO to remove...
@@ -103,14 +109,31 @@ const tempPortfolio = [
   }
 ]
 
-class Board extends React.Component<{}, IState> {
-  constructor(props: IState) {
+class Board extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
 
     this.state = {
       portfolio: tempPortfolio,
       loading: true
     };
+  }
+
+  componentDidMount() {
+    const { localStorage } = window;
+    const { portfolio } = this.state;
+
+    this.props.fetchAllAssets();
+
+    if (portfolio.length === 0) {
+      const storedPortfolio = JSON.parse(localStorage.getItem('moonPortfolio') || '{}');
+
+      if (storedPortfolio) {
+        const reconstructedPortfolio = Object.values(storedPortfolio);
+        this.props.fetchAllAssets();
+        // this.props.addCoins(reconstructedPortfolio);
+      }
+    }
   }
 
   render() {
@@ -137,9 +160,20 @@ class Board extends React.Component<{}, IState> {
   }
 
   @bind
-  private toggleSquareEdit(toggle: boolean, coin: IPortfolioItem) {
+  private toggleSquareEdit(toggle: boolean, coin: IAsset) {
     console.log('toggleSquareEdit...', coin);
   }
 }
 
-export default Board;
+const mapDispatchToProps = (dispatch: any) => ({
+  fetchAllAssets: () => dispatch(fetchAllAssets())
+});
+
+const mapStateToProps = (state: { portfolio: IAsset[], loading: boolean }) => ({
+  portfolio: state.portfolio,
+  loading: state.loading
+});
+
+export const BoardJest = Board;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

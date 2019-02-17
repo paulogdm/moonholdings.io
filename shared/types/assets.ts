@@ -1,4 +1,4 @@
-export interface IPortfolioItem {
+export interface IAsset {
   balance: number;
   marketCap: number;
   name: string;
@@ -6,4 +6,10 @@ export interface IPortfolioItem {
   price: number;
   symbol: string;
   value: number;
+}
+
+export interface IinitialState {
+  assets: IAsset[];
+  portfolio: IAsset[];
+  loading: boolean;
 }

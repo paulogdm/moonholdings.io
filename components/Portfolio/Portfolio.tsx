@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Square from '../Square/Square'
-import { IPortfolioItem } from '../../shared/types'
+import { IAsset } from '../../shared/types'
 import { PortfolioBalance, PortfolioContainer } from '../../styles'
 
 import {
@@ -10,12 +10,12 @@ import {
 } from '../../shared/utils/math';
 
 interface IProps {
-  coins: IPortfolioItem[];
-  edit(toggle: boolean, coin: IPortfolioItem): void;
+  coins: IAsset[];
+  edit(toggle: boolean, coin: IAsset): void;
 }
 
-// const Portfolio = ({ coins: IPortfolioItem, edit }) => (
-// const Portfolio = (coins: IPortfolioItem[], edit => {
+// const Portfolio = ({ coins: IAsset, edit }) => (
+// const Portfolio = (coins: IAsset[], edit => {
 //   console.log('props, props')
 //   return (
 //     <div>
