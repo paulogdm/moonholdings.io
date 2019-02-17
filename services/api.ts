@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { nomicsKey } from '../nomicsKey'
 
 const nomicsAPI = 'https://api.nomics.com/v1/';
+const nomicsKey = '8feb5b31914ce3584de5c396d7d65a39';
 
 const headers = {
   baseURL: nomicsAPI,
