@@ -1,3 +1,6 @@
+const nextEnv = require('next-env');
+const dotenvLoad = require('dotenv-load');
+
 const { PHASE_PRODUCTION_SERVER } =
   process.env.NODE_ENV === 'development'
     ? {}

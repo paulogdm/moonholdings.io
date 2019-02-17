@@ -20,6 +20,10 @@ export const supportedAssets = [
     name: 'EOS'
   },
   {
+    currency: 'ENG',
+    name: 'Enigma'
+  },
+  {
     currency: 'XLM',
     name: 'Stellar'
   },
@@ -64,6 +68,10 @@ export const supportedAssets = [
     name: 'Ethereum Classic'
   },
   {
+    currency: 'EURS',
+    name: 'EURS'
+  },
+  {
     currency: 'XEM',
     name: 'NEM'
   },
@@ -96,12 +104,20 @@ export const supportedAssets = [
     name: 'OmiseGo'
   },
   {
+    currency: 'CHX',
+    name: 'Own'
+  },
+  {
     currency: 'BTG',
     name: 'Bitcoin Gold'
   },
   {
     currency: 'QTUM',
     name: 'Qtum'
+  },
+  {
+    currency: 'QKC',
+    name: 'QuarkChain'
   },
   {
     currency: 'ONT',
@@ -198,6 +214,10 @@ export const supportedAssets = [
   {
     currency: 'KMD',
     name: 'Komodo'
+  },
+  {
+    currency: 'KIN',
+    name: 'Kin'
   },
   {
     currency: 'LINK',
@@ -300,6 +320,10 @@ export const supportedAssets = [
     name: 'QASH'
   },
   {
+    currency: 'QNT',
+    name: 'Quant'
+  },
+  {
     currency: 'LOOM',
     name: 'Loom Network'
   },
@@ -310,6 +334,10 @@ export const supportedAssets = [
   {
     currency: 'NAS',
     name: 'Nebulas'
+  },
+  {
+    currency: 'NULS',
+    name: 'Nuls'
   },
   {
     currency: 'DCN',
@@ -492,8 +520,16 @@ export const supportedAssets = [
     name: 'Cobinhood'
   },
   {
+    currency: 'CVC',
+    name: 'Civic'
+  },
+  {
     currency: 'R',
     name: 'Revain'
+  },
+  {
+    currency: 'REQ',
+    name: 'Request Network'
   },
   {
     currency: 'ZCL',
@@ -516,12 +552,20 @@ export const supportedAssets = [
     name: 'PotCoin'
   },
   {
+    currency: 'AGI',
+    name: 'SingularityNET'
+  },
+  {
     currency: 'SNM',
     name: 'SONM'
   },
   {
     currency: 'SPANK',
     name: 'SpankChain'
+  },
+  {
+    currency: 'TKN',
+    name: 'TokenCard'
   },
 ];
 

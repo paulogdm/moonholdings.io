@@ -12,6 +12,7 @@ export const PlusButtonStyle = styled.button`
   background: rgba(87, 56, 92, 0.85);
   border: 2px solid rgba(87, 56, 92, 0);
   transition: ${props => props.theme.transitionAll};
+  outline-width: 0;
   cursor: pointer;
 
   h1 {
