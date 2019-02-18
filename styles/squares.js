@@ -19,7 +19,6 @@ export const CoinSquare = styled.div`
   position: relative;
   align-self: auto;
   padding: 20px 20px 0;
-  /* margin: 0 1px 20px 0; */
   max-width: 170px;
   min-width: 170px;
   max-height: 190px;
@@ -44,6 +43,73 @@ export const CoinSquare = styled.div`
   }
 
   p { font-weight: 200; }
+`;
+
+export const EditSquareWrapper = styled.section`
+  display: flex;
+  position: absolute;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`
+
+export const EditSquare = styled(CoinSquare)`
+  z-index: 12;
+  display: block;
+  margin-top: 200px;
+  padding: 2rem;
+  max-width: 500px;
+  min-width: 500px;
+  max-height: 500px;
+  min-height: 500px;
+  font-size: 1.5rem;
+  cursor: default;
+
+  h2 { margin-top: 0; }
+
+  input {
+    width: 96%;
+    height: 3rem;
+    font-size: 1.5rem;
+    padding-left: 1rem;
+    background: none;
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    border-bottom: 1px solid ${props => props.theme.offWhite};
+    outline-width: 0;
+  }
+
+  &:hover {
+    border: 2px solid rgba(87, 56, 92, 0);
+    opacity: 1;
+  }
+`
+
+export const EditSquareData = styled.section`
+  height: 100%;
+
+  h3 {
+    margin: 2rem 0 0;
+    font-size: 5rem;
+  }
+
+  p { line-height: 1rem; }
+`;
+
+export const EditButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  bottom: 2rem;
+
+  button {
+    margin-top: 1rem;
+    width: 50%;
+    height: 4rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
 `;
 
 export const CoinStat = styled.div`

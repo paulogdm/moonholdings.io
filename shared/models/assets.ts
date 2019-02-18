@@ -585,3 +585,13 @@ export const additionalAssets = [
     price: '1',
   }
 ];
+
+export const coinModel = {
+  position: 0,
+  marketCap: 0,
+  name: '',
+  percentage: 0,
+  price: 0,
+  symbol: '',
+  value: 0
+};
