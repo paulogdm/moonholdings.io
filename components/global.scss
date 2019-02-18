@@ -4,6 +4,12 @@ body {
   background: linear-gradient(135deg,#3e1f43,#8f6894);
 }
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
 .square {
   margin: 0 1px 1px 0;
 

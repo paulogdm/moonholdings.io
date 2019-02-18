@@ -56,6 +56,7 @@ export const EditSquareWrapper = styled.section`
 export const EditSquare = styled(CoinSquare)`
   z-index: 12;
   display: block;
+  left: 0;
   margin-top: 200px;
   padding: 2rem;
   max-width: 500px;
