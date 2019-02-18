@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { IPortfolioItem } from '../../shared/types'
+import { IAsset } from '../../shared/types'
 import { numberWithCommas, round } from '../../shared/utils/math'
 import { SquareShade, CoinSquare, CoinRank, CoinStat } from '../../styles'
 
@@ -10,15 +10,15 @@ import {
 } from '../../shared/utils/modifiers'
 
 interface IProps {
-  coin: IPortfolioItem;
+  coin: IAsset;
   index: number;
-  edit(toggle: boolean, coin: IPortfolioItem): void;
+  edit(toggle: boolean, coin: IAsset): void;
 }
 
 export default class Portfolio extends React.PureComponent<IProps> {
   public render() {
     const { coin, edit, index } = this.props;
-    const { balance, price, symbol } = coin;
+    const { position, price, symbol } = coin;
 
     return (
       <div
@@ -38,7 +38,7 @@ export default class Portfolio extends React.PureComponent<IProps> {
             </CoinStat>
             <CoinStat>
               <p><em>Position:</em></p>
-              <p>{balance}</p>
+              <p>{position}</p>
             </CoinStat>
             <CoinStat>
               <p><em>Allocation:</em></p>
