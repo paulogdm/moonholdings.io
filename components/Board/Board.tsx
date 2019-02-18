@@ -2,14 +2,17 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bind } from 'decko'
 
-import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio } from '../'
+import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEdit } from '../'
 import { IAsset } from '../../shared/types'
-import { StyledBoard } from '../../styles'
+import { coinModel } from '../../shared/models'
+import { StyledBoard, EditSquareWrapper, Overlay } from '../../styles'
 import { fetchAllAssets } from '../../actions/assets'
 
 interface IState {
   portfolio: IAsset[];
+  coin: IAsset;
   loading: boolean;
+  edit: boolean;
 }
 
 interface IProps {
@@ -19,7 +22,7 @@ interface IProps {
 //@TODO to remove...
 const tempPortfolio = [
   {
-    balance: 2.46781018,
+    position: 2.46781018,
     symbol: 'BTC',
     marketCap: 63636922279.28325,
     name: 'Bitcoin',
@@ -28,7 +31,7 @@ const tempPortfolio = [
     value: 8976.25,
   },
   {
-    balance: 2.46781018,
+    position: 2.46781018,
     symbol: 'DCR',
     marketCap: 63636922279.28325,
     name: 'Decred',
@@ -37,7 +40,7 @@ const tempPortfolio = [
     value: 8976.25,
   },
   {
-    balance: 2.46781018,
+    position: 2.46781018,
     symbol: 'ETH',
     marketCap: 63636922279.28325,
     name: 'Ethereum',
@@ -46,7 +49,7 @@ const tempPortfolio = [
     value: 8976.25,
   },
   {
-    balance: 2.46781018,
+    position: 2.46781018,
     symbol: 'BNB',
     marketCap: 63636922279.28325,
     name: 'Binance',
@@ -55,7 +58,7 @@ const tempPortfolio = [
     value: 8976.25,
   },
   {
-    balance: 2.46781018,
+    position: 2.46781018,
     symbol: 'LTC',
     marketCap: 63636922279.28325,
     name: 'Litecoin',
@@ -64,7 +67,7 @@ const tempPortfolio = [
     value: 8976.25,
   },
   {
-    balance: 2.46781018,
+    position: 2.46781018,
     symbol: 'LSK',
     marketCap: 63636922279.28325,
     name: 'Lisk',
@@ -72,7 +75,7 @@ const tempPortfolio = [
     price: 3637.33607,
     value: 8976.25,
   },{
-    balance: 2.46781018,
+    position: 2.46781018,
     symbol: 'ZRX',
     marketCap: 63636922279.28325,
     name: '0xProject',
@@ -81,7 +84,7 @@ const tempPortfolio = [
     value: 8976.25,
   },
   {
-    balance: 2.46781018,
+    position: 2.46781018,
     symbol: 'MKR',
     marketCap: 63636922279.28325,
     name: 'Maker',
@@ -90,7 +93,7 @@ const tempPortfolio = [
     value: 8976.25,
   },
   {
-    balance: 2.46781018,
+    position: 2.46781018,
     symbol: 'USDT',
     marketCap: 63636922279.28325,
     name: 'Tether',
@@ -99,7 +102,7 @@ const tempPortfolio = [
     value: 8976.25,
   },
   {
-    balance: 2.46781018,
+    position: 2.46781018,
     symbol: 'NANO',
     marketCap: 63636922279.28325,
     name: 'Nano',
@@ -115,7 +118,9 @@ class Board extends React.Component<IProps, IState> {
 
     this.state = {
       portfolio: tempPortfolio,
-      loading: true
+      coin: coinModel,
+      loading: true,
+      edit: false
     };
   }
 
@@ -137,20 +142,23 @@ class Board extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { portfolio } = this.state;
+    const { coin, edit, portfolio } = this.state;
     const hasPortfolio = portfolio.length > 0;
 
     return (
-      <StyledBoard>
-        { !hasPortfolio && <Welcome /> }
-        <Portfolio
-          coins={portfolio}
-          edit={this.toggleSquareEdit}
-        />
-        <PlusButton toggleSearch={this.handleOnSearch} />
-        <NomicsLink />
-        <Astronaut showLogo={hasPortfolio} />
-      </StyledBoard>
+      <div>
+        { edit && this.renderSquareEdit(coin) }
+        <StyledBoard>
+          { !hasPortfolio && <Welcome /> }
+          <Portfolio
+            coins={portfolio}
+            edit={this.toggleSquareEdit}
+          />
+          <PlusButton toggleSearch={this.handleOnSearch} />
+          <NomicsLink />
+          <Astronaut showLogo={hasPortfolio} />
+        </StyledBoard>
+      </div>
     );
   }
 
@@ -160,8 +168,20 @@ class Board extends React.Component<IProps, IState> {
   }
 
   @bind
-  private toggleSquareEdit(toggle: boolean, coin: IAsset) {
-    console.log('toggleSquareEdit...', coin);
+  private toggleSquareEdit(toggle: boolean, coin?: IAsset) {
+    coin ?
+      this.setState({ coin, edit: toggle }) :
+      this.setState({ edit: toggle });
+  }
+
+  @bind
+  private renderSquareEdit(coin: IAsset) {
+    return (
+      <EditSquareWrapper>
+        <SquareEdit coin={coin} toggle={this.toggleSquareEdit} />
+        <Overlay onClick={() => this.toggleSquareEdit(false, coinModel)} />
+      </EditSquareWrapper>
+    );
   }
 }
 

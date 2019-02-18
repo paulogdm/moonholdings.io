@@ -1,5 +1,5 @@
 export interface IAsset {
-  balance: number;
+  position: number;
   marketCap: number;
   name: string;
   percentage: number;

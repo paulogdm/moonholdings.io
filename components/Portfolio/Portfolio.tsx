@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Square from '../Square/Square'
+import Square from '../Squares/Square'
 import { IAsset } from '../../shared/types'
 import { PortfolioBalance, PortfolioContainer } from '../../styles'
 
