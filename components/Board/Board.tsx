@@ -148,7 +148,7 @@ class Board extends React.Component<IProps, IState> {
     const { assets } = this.props;
     const { coin, edit, portfolio } = this.state;
     const hasPortfolio = portfolio.length > 0;
-    console.log('1', assets);
+
     return (
       <div>
         { edit && this.renderSquareEdit(coin) }

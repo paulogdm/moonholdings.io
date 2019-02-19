@@ -12,7 +12,7 @@ const mergeByCurrency = (matchArray: any[], nextArray: any[]) =>
 
 // Return coins that match text | search by currency symbol or name.
 export const findAsset = (txt: string, assets: any[]) => {
-  const checkText = (k: string, a: any) => (textMatch(txt, a[k].toLowerCase()) ? a : null);
+  const checkText = (k: string, a: any) => (textMatch(txt.toLowerCase(), a[k].toLowerCase()) ? a : null);
   const curriedCheckText = R.curry(checkText);
   const byName = R.map(curriedCheckText('name'), assets);
   const bySymbol = R.map(curriedCheckText('currency'), assets);

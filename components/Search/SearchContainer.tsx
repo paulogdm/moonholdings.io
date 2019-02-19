@@ -4,9 +4,9 @@ import { bind } from 'decko'
 
 import { findAsset } from '../../services/coinFactory';
 import { IAsset } from '../../shared/types'
-// import { coinModel } from '../../shared/models'
-import { SearchContainerDiv } from '../../styles'
+import { SearchContainerDiv, SearchSection, SearchList, SearchButtons } from '../../styles'
 import { coinModel } from '../../shared/models';
+import { numberWithCommas } from '../../shared/utils/math'
 
 interface IProps {
   assets: IAsset[];
@@ -46,17 +46,13 @@ class SearchContainer extends React.Component<IProps, IState> {
     console.log('searchList', searchList);
     return (
       <SearchContainerDiv>
-        SearchContainer
-        <section>
-          <header className="search-header">
-            <input
-              id="coin-search"
-              type="text"
-              placeholder="Search"
-              onChange={this.handleSearchTyping}
-            />
-          </header>
-          <ul>
+        <SearchSection>
+          <input
+            type="text"
+            placeholder="Search here"
+            onChange={this.handleSearchTyping}
+          />
+          <SearchList>
             { searchList.length > 0
               ? searchList.map((asset, i) => (
                 <li
@@ -66,19 +62,20 @@ class SearchContainer extends React.Component<IProps, IState> {
                   // onFocus={() => this.setFocus(asset)}
                   onClick={() => this.handleSelect(asset)}
                 >
-                  {asset.name}
+                  <p>{asset.name}</p>
                   <span className="symbol">{asset.currency}</span>
+                  <em>${numberWithCommas(Math.round(asset.marketCap))}</em>
                 </li>))
               : <li>Loading...</li>
             }
-          </ul>
-        </section>
+          </SearchList>
+        </SearchSection>
         {/* <section>
           ExchangeSelect
         </section> */}
-        <section>
+        <SearchButtons>
           SearchButtons
-        </section>
+        </SearchButtons>
       </SearchContainerDiv>
     );
   }
