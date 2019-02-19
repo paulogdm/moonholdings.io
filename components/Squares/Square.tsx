@@ -18,18 +18,18 @@ interface IProps {
 export default class Portfolio extends React.PureComponent<IProps> {
   public render() {
     const { coin, edit, index } = this.props;
-    const { position, price, symbol } = coin;
+    const { position, price, currency } = coin;
 
     return (
       <div
-        className={styleModifier(coin.symbol)}
-        style={setStyle(coin.symbol)}
+        className={styleModifier(coin.currency)}
+        style={setStyle(coin.currency)}
         onClick={() => edit(true, coin)}
       >
         <CoinSquare className="coin-square">
           <SquareShade>
             <CoinRank>
-              <span><h1>{symbol}</h1></span>
+              <span><h1>{currency}</h1></span>
               <span><h4>#{index + 1}</h4></span>
             </CoinRank>
             <CoinStat>

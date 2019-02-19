@@ -14,6 +14,7 @@ export const SquareShade = styled.section`
 `;
 
 export const CoinSquare = styled.div`
+  display: inline-block;
   flex-grow: 1;
   box-sizing: content-box;
   position: relative;

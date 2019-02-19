@@ -4,7 +4,7 @@ export interface IAsset {
   name: string;
   percentage: number;
   price: number;
-  symbol: string;
+  currency: string;
   value: number;
 }
 

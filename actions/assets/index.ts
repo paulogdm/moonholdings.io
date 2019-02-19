@@ -40,11 +40,8 @@ const fetchAll = (array: any[]) => Promise.all(array);
 
 // Fetch assets from Nomics API V1.
 export const fetchAllAssets = () => (dispatch: any) =>
-  fetchAll([getPrices(), getAvailableSupply()]).then((responses) => {
-    const formattedAssets = formatAssets(responses);
-    console.log('formattedAssets', formattedAssets);
-    dispatch(getAllAssets(formattedAssets));
-  });
+  fetchAll([getPrices(), getAvailableSupply()]).then((responses) =>
+    dispatch(getAllAssets(formatAssets(responses))));
 
 // Fetch the coins form localStorage.
 // export const addCoins = coins => dispatch => getPrices().then((res) => {

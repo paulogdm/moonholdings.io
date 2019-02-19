@@ -2,8 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bind } from 'decko'
 
-import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEdit } from '../'
-import { IAsset } from '../../shared/types'
+import {
+  Welcome, Astronaut, NomicsLink, PlusButton,
+  Portfolio, SquareEdit, SearchContainer
+} from '../' // components
+import { IAsset, IinitialState } from '../../shared/types'
 import { coinModel } from '../../shared/models'
 import { StyledBoard, EditSquareWrapper, Overlay } from '../../styles'
 import { fetchAllAssets } from '../../actions/assets'
@@ -11,11 +14,12 @@ import { fetchAllAssets } from '../../actions/assets'
 interface IState {
   portfolio: IAsset[];
   coin: IAsset;
-  loading: boolean;
   edit: boolean;
 }
 
 interface IProps {
+  assets: IAsset[];
+  loading: boolean;
   fetchAllAssets(): void;
 }
 
@@ -23,7 +27,7 @@ interface IProps {
 const tempPortfolio = [
   {
     position: 2.46781018,
-    symbol: 'BTC',
+    currency: 'BTC',
     marketCap: 63636922279.28325,
     name: 'Bitcoin',
     percentage: 66.4,
@@ -32,7 +36,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'DCR',
+    currency: 'DCR',
     marketCap: 63636922279.28325,
     name: 'Decred',
     percentage: 66.4,
@@ -41,7 +45,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'ETH',
+    currency: 'ETH',
     marketCap: 63636922279.28325,
     name: 'Ethereum',
     percentage: 66.4,
@@ -50,7 +54,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'BNB',
+    currency: 'BNB',
     marketCap: 63636922279.28325,
     name: 'Binance',
     percentage: 66.4,
@@ -59,7 +63,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'LTC',
+    currency: 'LTC',
     marketCap: 63636922279.28325,
     name: 'Litecoin',
     percentage: 66.4,
@@ -68,7 +72,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'LSK',
+    currency: 'LSK',
     marketCap: 63636922279.28325,
     name: 'Lisk',
     percentage: 66.4,
@@ -76,7 +80,7 @@ const tempPortfolio = [
     value: 8976.25,
   },{
     position: 2.46781018,
-    symbol: 'ZRX',
+    currency: 'ZRX',
     marketCap: 63636922279.28325,
     name: '0xProject',
     percentage: 66.4,
@@ -85,7 +89,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'MKR',
+    currency: 'MKR',
     marketCap: 63636922279.28325,
     name: 'Maker',
     percentage: 66.4,
@@ -94,7 +98,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'USDT',
+    currency: 'USDT',
     marketCap: 63636922279.28325,
     name: 'Tether',
     percentage: 66.4,
@@ -103,7 +107,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'NANO',
+    currency: 'NANO',
     marketCap: 63636922279.28325,
     name: 'Nano',
     percentage: 66.4,
@@ -119,7 +123,6 @@ class Board extends React.Component<IProps, IState> {
     this.state = {
       portfolio: tempPortfolio,
       coin: coinModel,
-      loading: true,
       edit: false
     };
   }
@@ -142,14 +145,16 @@ class Board extends React.Component<IProps, IState> {
   }
 
   render() {
+    const { assets } = this.props;
     const { coin, edit, portfolio } = this.state;
     const hasPortfolio = portfolio.length > 0;
-
+    console.log('1', assets);
     return (
       <div>
         { edit && this.renderSquareEdit(coin) }
         <StyledBoard>
           { !hasPortfolio && <Welcome /> }
+          <SearchContainer assets={assets} />
           <Portfolio
             coins={portfolio}
             edit={this.toggleSquareEdit}
@@ -189,7 +194,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   fetchAllAssets: () => dispatch(fetchAllAssets())
 });
 
-const mapStateToProps = (state: { portfolio: IAsset[], loading: boolean }) => ({
+const mapStateToProps = (state: IinitialState) => ({
+  assets: state.assets,
   portfolio: state.portfolio,
   loading: state.loading
 });

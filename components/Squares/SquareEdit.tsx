@@ -52,7 +52,7 @@ class SquareEdit extends React.Component<IProps, IState> {
   componentWillMount() {
     const { coin, balance: stateBalance } = this.state;
     const { portfolio } = this.state;
-    const inPortfolio = portfolio.filter(c => c.symbol === coin.symbol);
+    const inPortfolio = portfolio.filter(c => c.currency === coin.currency);
     const portCoin = inPortfolio[0] ? inPortfolio[0] : coin;
     const balance = portCoin.position ? portCoin.position : stateBalance;
 
@@ -78,11 +78,11 @@ class SquareEdit extends React.Component<IProps, IState> {
 
   render() {
     const { coin, value, inPortfolio } = this.state;
-    const { symbol, price } = coin;
+    const { currency, price } = coin;
 
     return (
-      <EditSquare className={styleModifier(symbol)} style={setStyle(symbol)}>
-        <h2 style={setStyle(symbol)}>{renderInstructions(inPortfolio)} your position below</h2>
+      <EditSquare className={styleModifier(currency)} style={setStyle(currency)}>
+        <h2 style={setStyle(currency)}>{renderInstructions(inPortfolio)} your position below</h2>
         <input
           type="number"
           placeholder="0"
@@ -91,7 +91,7 @@ class SquareEdit extends React.Component<IProps, IState> {
           onChange={this.handleChange}
         />
         <EditSquareData>
-          <h3>{symbol}</h3>
+          <h3>{currency}</h3>
           <p>Price: ${round(price)} </p>
           <p>Value: ${numberWithCommas(value)} </p>
           <p>Allocation: ${numberWithCommas(value)} </p>

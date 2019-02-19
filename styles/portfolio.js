@@ -10,17 +10,15 @@ export const PortfolioBalance = styled.div`
 `
 
 export const PortfolioContainer = styled.div`
+  z-index: 1;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  position: relative;
-  top: 10rem;
-  z-index: 1;
-  display: flex;
   flex-flow: row wrap;
   flex-direction: row;
-  flex-wrap: wrap;
   align-content: stretch;
-  padding: 20px;
+  position: relative;
+  top: 10rem;
+  padding: 30px;
   margin-bottom: 160px;
 `

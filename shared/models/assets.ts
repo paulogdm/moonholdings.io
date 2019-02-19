@@ -587,11 +587,11 @@ export const additionalAssets = [
 ];
 
 export const coinModel = {
+  currency: '',
   position: 0,
   marketCap: 0,
   name: '',
   percentage: 0,
   price: 0,
-  symbol: '',
   value: 0
 };
