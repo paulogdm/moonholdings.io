@@ -4,23 +4,29 @@ import { bind } from 'decko'
 
 import {
   Welcome, Astronaut, NomicsLink, PlusButton,
-  Portfolio, SquareEdit, SearchContainer
+  Portfolio, SquareEdit, Search, Overlay
 } from '../' // components
-import { IAsset, IinitialState } from '../../shared/types'
+import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
-import { StyledBoard, EditSquareWrapper, Overlay } from '../../styles'
+import { StyledBoard, EditSquareWrapper } from '../../styles'
 import { fetchAllAssets } from '../../actions/assets'
+import { setOverlayState } from '../../actions/board'
 
 interface IState {
   portfolio: IAsset[];
   coin: IAsset;
   edit: boolean;
+  search: boolean;
 }
 
 interface IProps {
   assets: IAsset[];
+  exchanges: IMarketAsset[];
   loading: boolean;
+  overlay: boolean;
+  fetchingMarkets: boolean;
   fetchAllAssets(): void;
+  setOverlayState(overlay: boolean): void;
 }
 
 //@TODO to remove...
@@ -123,7 +129,8 @@ class Board extends React.Component<IProps, IState> {
     this.state = {
       portfolio: tempPortfolio,
       coin: coinModel,
-      edit: false
+      edit: false,
+      search: false
     };
   }
 
@@ -145,20 +152,24 @@ class Board extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { assets } = this.props;
-    const { coin, edit, portfolio } = this.state;
+    const { assets, overlay, exchanges, fetchingMarkets } = this.props;
+    const { coin, edit, portfolio, search } = this.state;
     const hasPortfolio = portfolio.length > 0;
 
     return (
       <div>
         { edit && this.renderSquareEdit(coin) }
+        { search &&
+          <Search
+            assets={assets}
+            exchanges={exchanges}
+            cancel={this.handleOverlayClick}
+            fetching={fetchingMarkets}
+          />}
+        { overlay && <Overlay handleClick={this.handleOverlayClick} /> }
         <StyledBoard>
           { !hasPortfolio && <Welcome /> }
-          <SearchContainer assets={assets} />
-          <Portfolio
-            coins={portfolio}
-            edit={this.toggleSquareEdit}
-          />
+          <Portfolio coins={portfolio} edit={this.toggleSquareEdit} />
           <PlusButton toggleSearch={this.handleOnSearch} />
           <NomicsLink />
           <Astronaut showLogo={hasPortfolio} />
@@ -169,7 +180,8 @@ class Board extends React.Component<IProps, IState> {
 
   @bind
   private handleOnSearch() {
-    console.log('handleSearchButton...');
+    this.setState({ search: true });
+    this.props.setOverlayState(true);
   }
 
   @bind
@@ -177,6 +189,8 @@ class Board extends React.Component<IProps, IState> {
     coin ?
       this.setState({ coin, edit: toggle }) :
       this.setState({ edit: toggle });
+ 
+    this.props.setOverlayState(true);
   }
 
   @bind
@@ -184,20 +198,31 @@ class Board extends React.Component<IProps, IState> {
     return (
       <EditSquareWrapper>
         <SquareEdit coin={coin} toggle={this.toggleSquareEdit} />
-        <Overlay onClick={() => this.toggleSquareEdit(false, coinModel)} />
       </EditSquareWrapper>
     );
+  }
+
+  @bind
+  private handleOverlayClick() {
+    const { edit, search } = this.state;
+    if (edit) this.toggleSquareEdit(false, coinModel);
+    if (search) this.setState({ search: false });
+    this.props.setOverlayState(false);
   }
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchAllAssets: () => dispatch(fetchAllAssets())
+  fetchAllAssets: () => dispatch(fetchAllAssets()),
+  setOverlayState: (overlay: boolean) => dispatch(setOverlayState(overlay))
 });
 
 const mapStateToProps = (state: IinitialState) => ({
-  assets: state.assets,
-  portfolio: state.portfolio,
-  loading: state.loading
+  assets: state.AssetsReducer.assets,
+  portfolio: state.AssetsReducer.portfolio,
+  exchanges: state.AssetsReducer.exchanges,
+  loading: state.AssetsReducer.loading,
+  fetchingMarkets: state.AssetsReducer.fetchingMarkets,
+  overlay: state.BoardReducer.overlay
 });
 
 export const BoardJest = Board;

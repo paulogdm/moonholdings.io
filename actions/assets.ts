@@ -1,9 +1,13 @@
-import { getPrices, getAvailableSupply } from '../../services/api';
-import { formatAssets } from '../../services/coinFactory';
+import { getPrices, getAvailableSupply, getMarkets } from '../services/api';
+import { formatAssets } from '../services/coinFactory';
+import { IMarketAsset } from '../shared/types'
 // import { multiply, roundFloat } from '../../utils';
 
+// Action types
 export const Actions = {
   GET_ALL_ASSETS: 'GET_ALL_ASSETS',
+  GET_MARKET_PRICES: 'GET_MARKET_PRICES',
+  SET_MARKET_PRICES: 'SET_MARKET_PRICES',
   ADD_COIN_PORTFOLIO: 'ADD_COIN_PORTFOLIO',
   ADD_COINS_PORTFOLIO: 'ADD_COINS_PORTFOLIO',
   UPDATE_COIN_PORTFOLIO: 'UPDATE_COIN_PORTFOLIO',
@@ -11,9 +15,20 @@ export const Actions = {
 };
 
 // Action creators
-const getAllAssets = (data: any) => ({
+const actionGetAllAssets = (data: any) => ({
   type: Actions.GET_ALL_ASSETS,
   assets: data
+});
+
+const actionGetMarketPrices = ({
+  type: Actions.GET_MARKET_PRICES,
+  fetchingMarkets: true
+});
+
+const actionSetMarketPrices = (data: any) => ({
+  type: Actions.SET_MARKET_PRICES,
+  exchanges: data,
+  fetchingMarkets: false
 });
 
 // const addCoinPortfolio = coin => ({
@@ -38,10 +53,23 @@ const getAllAssets = (data: any) => ({
 
 const fetchAll = (array: any[]) => Promise.all(array);
 
+// Actions
 // Fetch assets from Nomics API V1.
 export const fetchAllAssets = () => (dispatch: any) =>
   fetchAll([getPrices(), getAvailableSupply()]).then((responses) =>
-    dispatch(getAllAssets(formatAssets(responses))));
+    dispatch(actionGetAllAssets(formatAssets(responses))));
+
+// Fetch USD, USDC & USDT markets to filter out Exchange List.
+export const fetchMarketPrices = (asset: string) => (dispatch: any) => {
+  dispatch(actionGetMarketPrices);
+  return getMarkets().then((res) => {
+    const { marketUSD, marketUSDC, marketUSDT } = res;
+    const combinedExchanges = marketUSD.concat(marketUSDC).concat(marketUSDT);
+    const exchangesForAsset = combinedExchanges.filter((marketAsset: IMarketAsset) =>
+      marketAsset.base === asset);
+    return dispatch(actionSetMarketPrices(exchangesForAsset));
+  });
+}
 
 // Fetch the coins form localStorage.
 // export const addCoins = coins => dispatch => getPrices().then((res) => {

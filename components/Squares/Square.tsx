@@ -1,24 +1,28 @@
 import React from 'react'
+import { bind } from 'decko'
 
 import { IAsset } from '../../shared/types'
 import { numberWithCommas, round } from '../../shared/utils/math'
-import { SquareShade, CoinSquare, CoinRank, CoinStat } from '../../styles'
-
 import {
-  setStyle,
-  styleModifier
-} from '../../shared/utils/modifiers'
+  SquareShade, SquareInSearch, SquareShadeInSearch,
+  CoinSquare, CoinRank, CoinStat
+} from '../../styles'
+import { setStyle, styleModifier } from '../../shared/utils/modifiers'
 
 interface IProps {
   coin: IAsset;
   index: number;
+  inSearch?: boolean;
   edit(toggle: boolean, coin: IAsset): void;
 }
 
-export default class Portfolio extends React.PureComponent<IProps> {
+export default class Square extends React.PureComponent<IProps> {
   public render() {
-    const { coin, edit, index } = this.props;
-    const { position, price, currency } = coin;
+    const { coin, edit, index, inSearch } = this.props;
+    const { currency, position, percentage, price, marketCap, value } = coin;
+
+    const SquareStyle = !inSearch ? CoinSquare : SquareInSearch;
+    const Shade = !inSearch ? SquareShade : SquareShadeInSearch;
 
     return (
       <div
@@ -26,31 +30,41 @@ export default class Portfolio extends React.PureComponent<IProps> {
         style={setStyle(coin.currency)}
         onClick={() => edit(true, coin)}
       >
-        <CoinSquare className="coin-square">
-          <SquareShade>
+        <SquareStyle className="coin-square">
+          <Shade>
             <CoinRank>
               <span><h1>{currency}</h1></span>
-              <span><h4>#{index + 1}</h4></span>
+              { !inSearch && <span><h4>#{index + 1}</h4></span> }
             </CoinRank>
-            <CoinStat>
-              <p><em>Price:</em></p>
-              <p>${price ? round(Number(price)) : 0}</p>
-            </CoinStat>
-            <CoinStat>
-              <p><em>Position:</em></p>
-              <p>{position}</p>
-            </CoinStat>
-            <CoinStat>
-              <p><em>Allocation:</em></p>
-              <p>{coin.percentage}%</p>
-            </CoinStat>
-            <CoinStat>
-              <p><em>Value:</em></p>
-              <p>${numberWithCommas(coin.value)}</p>
-            </CoinStat>
-          </SquareShade>
-        </CoinSquare>
+            { price && this.renderRow('Price:', price) }
+            { inSearch && this.renderRow('Marketcap:', marketCap) }
+            { inSearch && this.renderRow('Exchange:', 'Aggregate data') }
+            { position && this.renderRow('Position:', position) }
+            { percentage && this.renderRow('Allocation:', percentage) }
+            { value && this.renderRow('Value:', value)}
+          </Shade>
+        </SquareStyle>
       </div>
     );
+  }
+
+  @bind
+  private renderRow(type: string, value: number | string) {
+    const isPrice = type === 'Price:';
+    const isLargeNumber = type === 'Marketcap:' || type === 'Value:';
+    const isExchangeRow = type === 'Exchange:';
+    const isPosition = type === 'Position:';
+    const isAllocation = type === 'Allocation:';
+    const largeNumber = (num: number) => <p>${numberWithCommas(num)}</p>;
+    return (
+      <CoinStat>
+        <p><em>{type}</em></p>
+        {isPrice && <p>${value ? round(Number(value)) : 0}</p>}
+        {isLargeNumber && largeNumber(Number(value))}
+        {isExchangeRow && <p>{value}</p>}
+        {isPosition && <p>{value}</p>}
+        {isAllocation && <p>{value}%</p>}
+      </CoinStat>
+    )
   }
 }

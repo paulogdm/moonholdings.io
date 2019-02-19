@@ -37,13 +37,22 @@ export const CoinSquare = styled.div`
     opacity: 0.8;
   }
 
-  em {
-    font-style: normal;
-    opacity: 0.7;
-  }
+  em { font-style: normal; opacity: 0.7 }
 
   p { font-weight: 200; }
 `;
+
+export const SquareInSearch = styled(CoinSquare)`
+  max-width: 200px;
+  min-width: 200px;
+  max-height: 207px;
+  min-height: 207px;
+`;
+
+export const SquareShadeInSearch = styled(SquareShade)`
+  width: 221px;
+  height: 210px;
+`
 
 export const EditSquareWrapper = styled.section`
   display: flex;
@@ -90,10 +99,7 @@ export const EditSquare = styled(CoinSquare)`
 export const EditSquareData = styled.section`
   height: 100%;
 
-  h3 {
-    margin: 2rem 0 0;
-    font-size: 5rem;
-  }
+  h3 { margin: 2rem 0 0; font-size: 5rem; }
 
   p { line-height: 1rem; }
 `;
@@ -120,10 +126,7 @@ export const CoinStat = styled.div`
   margin: 0 0 10px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
-  h1 {
-    font-size: 1.5rem;
-    line-height: 0;
-  }
+  h1 { font-size: 1.5rem; line-height: 0; }
 
   h4 { line-height: 0.15rem; }
 
