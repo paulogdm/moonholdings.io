@@ -8,9 +8,9 @@ import '../global.scss'
 const theme = {
   red: '#FF0000',
   black: '#393939',
-  grey: '#3A3A3A',
-  midGray: '#515151',
-  lightgrey: '#E1E1E1',
+  lightGrey: '#DADADA',
+  midGray: '#A4A4A4',
+  grey: '#575757',
   offWhite: '#EDEDED',
   apricot: '#FEBE7E',
   brightPurple: '#B987C0',
@@ -29,9 +29,7 @@ injectGlobal`
     font-size: 16px;
   }
 
-  *, *:before, *:after  {
-    box-sizing: inherit;
-  }
+  *, *:before, *:after { box-sizing: inherit; }
 
   body {
     margin: 0;

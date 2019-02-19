@@ -27,7 +27,7 @@ export const SearchSection = styled.section`
     font-size: 1.5rem;
     padding-left: 1rem;
     color: ${props => props.theme.darkPurple};
-    background: ${props => props.theme.brightPurple};
+    background: ${props => props.theme.offWhite};
     border: 1px solid ${props => props.theme.darkPurple};
     outline-width: 0;
 
@@ -52,8 +52,9 @@ export const SearchList = styled.ul`
 
   li {
     padding: 0.5rem 0.5rem 0.5rem 1rem;
-    list-style: none;
     font-size: 1.2rem;
+    line-height: 1rem;
+    list-style: none;
     outline-width: 0;
     cursor: pointer;
 
@@ -85,6 +86,41 @@ export const SearchList = styled.ul`
 `
 
 export const SearchButtons = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   margin-left: 2rem;
   width: 50%;
+
+  button {
+    margin-bottom: 1rem;
+    height: 4rem;
+    font-size: 1.2rem;
+    color: ${props => props.theme.apricot};
+    border: 1px solid ${props => props.theme.brightPurple};
+    background: ${props => props.theme.darkPurple};
+    transition: ${props => props.theme.transitionAll};
+    outline-width: 0;
+    cursor: pointer;
+
+    &:hover {
+      color: ${props => props.theme.darkPurple};
+      border: 1px solid ${props => props.theme.offWhite};
+      background: ${props => props.theme.apricot};
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+      transform: translateY(150px);
+      color: ${props => props.theme.grey};
+      border: 1px solid ${props => props.theme.offWhite};
+      background: ${props => props.theme.lightGrey};
+
+      &:hover {  
+        color: #fff;
+        border: 1px solid ${props => props.theme.midGray};
+        background: ${props => props.theme.grey};
+      }
+    }
+  }
 `;

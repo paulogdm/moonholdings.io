@@ -25,7 +25,6 @@ export const CoinSquare = styled.div`
   max-height: 190px;
   min-height: 190px;
   font-size: em(14);
-  color: #fff;
   background: $lightGray;
   border: 2px solid rgba(87, 56, 92, 0);
   box-shadow: 1px 1px 0 rgba(47, 38, 90, 0.2),

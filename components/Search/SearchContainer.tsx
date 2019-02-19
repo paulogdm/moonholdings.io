@@ -59,7 +59,6 @@ class SearchContainer extends React.Component<IProps, IState> {
                   key={asset.currency}
                   role="button"
                   tabIndex={i}
-                  // onFocus={() => this.setFocus(asset)}
                   onClick={() => this.handleSelect(asset)}
                 >
                   <p>{asset.name}</p>
@@ -74,7 +73,9 @@ class SearchContainer extends React.Component<IProps, IState> {
           ExchangeSelect
         </section> */}
         <SearchButtons>
-          SearchButtons
+          <button>Add to Portfolio</button>
+          <button>Add to Watchlist</button>
+          <button>Cancel Search</button>
         </SearchButtons>
       </SearchContainerDiv>
     );
