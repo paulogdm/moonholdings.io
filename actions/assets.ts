@@ -1,9 +1,7 @@
 import { getPrices, getAvailableSupply, getMarkets } from '../services/api';
-import { formatAssets } from '../services/coinFactory';
-import { IMarketAsset } from '../shared/types'
-// import { multiply, roundFloat } from '../../utils';
+import { combineExchangeData, formatAssets } from '../services/coinFactory';
 
-// Action types
+// ACTION TYPES
 export const Actions = {
   GET_ALL_ASSETS: 'GET_ALL_ASSETS',
   GET_MARKET_PRICES: 'GET_MARKET_PRICES',
@@ -14,7 +12,7 @@ export const Actions = {
   REMOVE_COIN_PORTFOLIO: 'REMOVE_COIN_PORTFOLIO'
 };
 
-// Action creators
+// ACTION CREATORS
 const actionGetAllAssets = (data: any) => ({
   type: Actions.GET_ALL_ASSETS,
   assets: data
@@ -53,8 +51,9 @@ const actionSetMarketPrices = (data: any) => ({
 
 const fetchAll = (array: any[]) => Promise.all(array);
 
-// Actions
+// ACTIONS
 // Fetch assets from Nomics API V1.
+//@ TODO Create dispatch type.
 export const fetchAllAssets = () => (dispatch: any) =>
   fetchAll([getPrices(), getAvailableSupply()]).then((responses) =>
     dispatch(actionGetAllAssets(formatAssets(responses))));
@@ -63,11 +62,13 @@ export const fetchAllAssets = () => (dispatch: any) =>
 export const fetchMarketPrices = (asset: string) => (dispatch: any) => {
   dispatch(actionGetMarketPrices);
   return getMarkets().then((res) => {
-    const { marketUSD, marketUSDC, marketUSDT } = res;
-    const combinedExchanges = marketUSD.concat(marketUSDC).concat(marketUSDT);
-    const exchangesForAsset = combinedExchanges.filter((marketAsset: IMarketAsset) =>
-      marketAsset.base === asset);
-    return dispatch(actionSetMarketPrices(exchangesForAsset));
+    if (res && res.marketUSD && res.marketUSDC && res.marketUSDT) {
+      const exchangesForAsset = combineExchangeData(asset, res);
+      return dispatch(actionSetMarketPrices(exchangesForAsset));
+    }
+    else {
+      return dispatch(actionSetMarketPrices([]));
+    }
   });
 }
 

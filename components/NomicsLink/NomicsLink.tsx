@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import { nomicsLink } from '../../shared/models';
+import { NOMICS_LINK } from '../../shared/constants/copy'
 
 export const Link = styled.p`
   position: absolute;
@@ -17,14 +17,12 @@ export const Link = styled.p`
     color: ${(props) => props.theme.apricot};
     cursor: pointer;
 
-    :hover {
-      color: ${(props) => props.theme.offWhite};
-    }
+    &:hover { color: ${(props) => props.theme.offWhite}; }
   }
 `;
 
 export default class NomicsLink extends React.Component {
   render() {
-    return (<Link>Powered by <a href={nomicsLink} target="blank">Nomics APIs.</a></Link>)
+    return (<Link>Powered by <a href={NOMICS_LINK} target="blank">Nomics APIs.</a></Link>)
   }
 }

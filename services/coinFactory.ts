@@ -1,7 +1,6 @@
-/* eslint-disable no-param-reassign */
 import * as R from 'ramda'
 import { additionalAssets, supportedAssets } from '../shared/models'
-import { IAssetResponse, IResponseConfig } from '../shared/types'
+import { IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
 import { multiply, roundFloat } from '../shared/utils'
 
 const textMatch = (part: string, str: string) => str.search(part) !== -1;
@@ -112,8 +111,11 @@ export const formatAssets = (responses: IResponseConfig[]) => {
   });
 
   const sortedAssets = assetsWithMarketCap.sort((a, b) => b.marketCap - a.marketCap);
-
   additionalAssets.map((asset: any) => sortedAssets.push(asset));
-
   return sortedAssets;
 };
+
+export const combineExchangeData = (asset: string, { marketUSD, marketUSDC, marketUSDT }: IGetMarketsRes) => {
+  const combined = marketUSD.concat(marketUSDC).concat(marketUSDT);
+  return combined.filter((marketAsset: IMarketAsset) => marketAsset.base === asset);
+}

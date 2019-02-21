@@ -22,7 +22,6 @@ export const AssetsReducer = (state = defaultAssetsState, action: IAssetsAction)
   switch (action.type) {
     case Actions.GET_ALL_ASSETS: {
       const { assets } = action;
-      console.log('assets', assets);
       return {
         ...state,
         assets,

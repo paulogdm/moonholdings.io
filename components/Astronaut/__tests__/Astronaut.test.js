@@ -4,7 +4,7 @@ import toJson from 'enzyme-to-json'
 
 // @ts-ignore (works with .tsx)
 import Astronaut from '../Astronaut.tsx'
-import { moonHoldings } from '../../../shared/models'
+import { MOON_HOLDINGS } from '../../../shared/constants/copy'
 import { AstronautContainer, Heading } from '../../../styles'
 
 describe('<Astronaut /> component', () => {
@@ -22,14 +22,14 @@ describe('<Astronaut /> component', () => {
     it('should display the Heading if showLogo is true', () => {
       const wrapperShowLogoTrue = shallow(<Astronaut showLogo={true} />);
       expect(wrapperShowLogoTrue.containsAllMatchingElements([
-        <Heading>{moonHoldings}</Heading>
+        <Heading>{MOON_HOLDINGS}</Heading>
       ])).toEqual(true);
     });
 
     it('should not display the Heading if showLogo is false', () => {
       const wrapperShowLogoFalse = shallow(<Astronaut showLogo={false} />);
       expect(wrapperShowLogoFalse.containsAllMatchingElements([
-        <Heading>{moonHoldings}</Heading>
+        <Heading>{MOON_HOLDINGS}</Heading>
       ])).toEqual(false);
     });
   });

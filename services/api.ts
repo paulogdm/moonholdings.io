@@ -1,11 +1,9 @@
 import axios from 'axios'
 import * as R from 'ramda'
 
-import { IMarketAsset } from '../shared/types'
-
-const nomicsAPI = 'https://api.nomics.com/v1/';
-const nomicsKey = '8feb5b31914ce3584de5c396d7d65a39';
-const exchangeMarketPrices = 'exchange-markets/prices';
+import { NOMICS_API_BASE_URL, NOMICS_KEY, EXCHANGE_MARKET_PRICES, BASE_CURRENCIES }
+  from '../shared/constants/api'
+import { IGetMarketsRes, IMarketRes } from '../shared/types'
 
 interface IParams {
   key: string;
@@ -18,9 +16,9 @@ interface IHeaders {
 }
 
 const headers: IHeaders = {
-  baseURL: nomicsAPI,
+  baseURL: NOMICS_API_BASE_URL,
   params: {
-    key: nomicsKey
+    key: NOMICS_KEY
   }
 };
 
@@ -55,35 +53,36 @@ export const getAvailableSupply = async () => {
   }
 }
 
-interface IGetMarketsRes {
-  marketUSD: IMarketAsset[],
-  marketUSDC: IMarketAsset[],
-  marketUSDT: IMarketAsset[]
+export const fetchMarket = async (currency: string): Promise<any> => {
+  try {
+    const request = prepHeaders(currency);
+    const response =  await request.get(EXCHANGE_MARKET_PRICES);
+    if (!response) {
+      throw new Error('USD Markets unavailable.');
+    }
+    return response.data;
+  }
+  catch(err) {
+    console.error(err);
+  }
 }
 
-// Get Market prices
+// GET Market prices
 // http://docs.nomics.com/#operation/getMarkets
+// CodeReview question: https://tinyurl.com/y6efxxo6
 export const getMarkets = async (): Promise<IGetMarketsRes | undefined> => {
   try {
-    const nomicsUSD = prepHeaders('111');
-    const marketUSD = await nomicsUSD.get(exchangeMarketPrices);
-    const nomicsUSDC = prepHeaders('222');
-    const marketUSDC = await nomicsUSDC.get(exchangeMarketPrices);
-    const nomicsUSDT = prepHeaders('333');
-    const marketUSDT = await nomicsUSDT.get(exchangeMarketPrices);
-  
-    const { data: dataUSD } = marketUSD;
-    const { data: dataUSDC } = marketUSDC;
-    const { data: dataUSDT } = marketUSDT;
-  
-    if (R.isEmpty(dataUSD) || R.isEmpty(dataUSDC) || R.isEmpty(dataUSDT)) {
-      console.error('Market data unavailable');
+    const markets: IMarketRes = {};
+
+    for (let currency of BASE_CURRENCIES) {
+      const key = 'market' + currency;
+      markets[key] = await fetchMarket(currency);
     }
-    
+
     return {
-      marketUSD: marketUSD.data,
-      marketUSDC: marketUSDC.data,
-      marketUSDT: marketUSDT.data
+      marketUSD: markets['marketUSD'],
+      marketUSDC: markets['marketUSDC'],
+      marketUSDT: markets['marketUSDT'],
     }
   } catch (error) {
     console.error(error);

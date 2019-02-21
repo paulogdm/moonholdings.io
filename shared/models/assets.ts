@@ -180,10 +180,6 @@ export const supportedAssets = [
     name: 'Verge'
   },
   {
-    currency: 'NPXS',
-    name: 'Pundi X'
-  },
-  {
     currency: 'WAVES',
     name: 'Waves'
   },
@@ -402,6 +398,10 @@ export const supportedAssets = [
   {
     currency: 'THETA',
     name: 'Theta Token'
+  },
+  {
+    currency: 'NPXS',
+    name: 'Pundi X'
   },
   {
     currency: 'NXT',

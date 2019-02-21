@@ -2,11 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bind } from 'decko'
 
-// components
-import { SearchInput, SelectedAsset, SearchList, SearchSelect } from '../'
-import { findAsset } from '../../services/coinFactory';
+import { SearchInput, SelectedAsset, SearchList, SearchSelect } from '../../components'
 import { IAsset, IMarketAsset } from '../../shared/types'
-import { SearchContainerDiv, SearchSection, SearchButtons } from '../../styles'
+import { SearchContainerDiv, SearchSection, SearchButtons, FunctionButton, CommonButton }
+  from '../../styles'
+import { setSearchBtnDisabled } from '../../shared/utils'
+import { findAsset } from '../../services/coinFactory';
 import { fetchMarketPrices } from '../../actions/assets'
 
 interface IProps {
@@ -51,12 +52,16 @@ class Search extends React.Component<IProps, IState> {
   render() {
     const { assets, cancel, exchanges, fetching } = this.props;
     const { exchange, searchList, selected } = this.state;
+    const disabled = setSearchBtnDisabled(selected, exchange, exchanges);
+    console.log('selected', selected);
+    console.log('exchange', exchange);
+    console.log('exchanges', exchanges);
 
     return (
       <SearchContainerDiv>
         <SearchSection>
           { selected
-            ? <SelectedAsset asset={selected}/>
+            ? <SelectedAsset asset={selected} clearSelected={this.handleClearSelected}/>
             : <SearchInput handleSearchTyping={this.handleSearchTyping}/> }
           { selected
             ? <SearchSelect
@@ -70,12 +75,12 @@ class Search extends React.Component<IProps, IState> {
             : <SearchList
                 searchList={searchList}
                 onSelect={this.handleSelect}
-              /> }          
+              /> }
         </SearchSection>
         <SearchButtons>
-          <button>Add to Portfolio</button>
-          <button>Add to Watchlist</button>
-          <button onClick={cancel}>Cancel Search</button>
+          <FunctionButton disabled={disabled}>Add to Portfolio</FunctionButton>
+          <FunctionButton disabled={disabled}>Add to Watchlist</FunctionButton>
+          <CommonButton onClick={cancel}>Cancel Search</CommonButton>
         </SearchButtons>
       </SearchContainerDiv>
     );
@@ -89,6 +94,16 @@ class Search extends React.Component<IProps, IState> {
   }
 
   @bind
+  handleClearSelected() {
+    const { saved } = this.state;
+    this.setState({
+      searchList: saved,
+      selected: null,
+      exchange: ''
+    });
+  }
+
+  @bind
   handleSearchTyping(event: React.FormEvent<HTMLInputElement>) {
     const target = event.target as HTMLInputElement;
     const { value: searchText } = target;
@@ -99,9 +114,7 @@ class Search extends React.Component<IProps, IState> {
       this.setState({ searchList: searchedCoins });
     };
 
-    const clearSearch = () => {
-      this.setState({ searchList: this.state.saved });
-    };
+    const clearSearch = () => this.setState({ searchList: this.state.saved });
 
     const handleUpdate = (num: number) => (num > 1 ? search(searchText) : clearSearch());
 

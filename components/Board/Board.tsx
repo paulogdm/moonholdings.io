@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { bind } from 'decko'
 
 import {
-  Welcome, Astronaut, NomicsLink, PlusButton,
-  Portfolio, SquareEdit, Search, Overlay
-} from '../' // components
+  Welcome, Astronaut, NomicsLink, PlusButton, Portfolio,
+  SquareEditWrapper, Search, Overlay
+}  from '../../components'
 import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
-import { StyledBoard, EditSquareWrapper } from '../../styles'
+import { StyledBoard } from '../../styles'
 import { fetchAllAssets } from '../../actions/assets'
 import { setOverlayState } from '../../actions/board'
 
@@ -32,93 +32,93 @@ interface IProps {
 //@TODO to remove...
 const tempPortfolio = [
   {
-    position: 2.46781018,
+    position: 21,
     currency: 'BTC',
     marketCap: 63636922279.28325,
     name: 'Bitcoin',
     percentage: 66.4,
     price: 3637.33607,
-    value: 8976.25,
+    value: 76384.05747,
   },
   {
-    position: 2.46781018,
+    position: 125,
     currency: 'DCR',
     marketCap: 63636922279.28325,
     name: 'Decred',
     percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
+    price: 125.45,
+    value: 15681.25,
   },
   {
-    position: 2.46781018,
+    position: 32,
     currency: 'ETH',
     marketCap: 63636922279.28325,
     name: 'Ethereum',
     percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
+    price: 145,
+    value: 4640,
   },
   {
-    position: 2.46781018,
+    position: 50,
     currency: 'BNB',
     marketCap: 63636922279.28325,
     name: 'Binance',
     percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
+    price: 10.60,
+    value: 530,
   },
   {
-    position: 2.46781018,
+    position: 10,
     currency: 'LTC',
     marketCap: 63636922279.28325,
     name: 'Litecoin',
     percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
+    price: 51.17,
+    value: 511.7,
   },
   {
-    position: 2.46781018,
+    position: 200,
     currency: 'LSK',
     marketCap: 63636922279.28325,
     name: 'Lisk',
     percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
+    price: 1.27,
+    value: 254,
   },{
-    position: 2.46781018,
+    position: 100,
     currency: 'ZRX',
     marketCap: 63636922279.28325,
     name: '0xProject',
     percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
+    price: 0.32,
+    value: 32,
   },
   {
-    position: 2.46781018,
+    position: 1,
     currency: 'MKR',
     marketCap: 63636922279.28325,
     name: 'Maker',
     percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
+    price: 650.79,
+    value: 650.79,
   },
   {
-    position: 2.46781018,
+    position: 200,
     currency: 'USDT',
     marketCap: 63636922279.28325,
     name: 'Tether',
     percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
+    price: 1.01,
+    value: 202,
   },
   {
-    position: 2.46781018,
+    position: 100,
     currency: 'NANO',
     marketCap: 63636922279.28325,
     name: 'Nano',
     percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
+    price: 0.99,
+    value: 99,
   }
 ]
 
@@ -158,7 +158,7 @@ class Board extends React.Component<IProps, IState> {
 
     return (
       <div>
-        { edit && this.renderSquareEdit(coin) }
+        { edit && <SquareEditWrapper coin={coin} toggle={this.toggleSquareEdit}/> }
         { search &&
           <Search
             assets={assets}
@@ -191,15 +191,6 @@ class Board extends React.Component<IProps, IState> {
       this.setState({ edit: toggle });
  
     this.props.setOverlayState(true);
-  }
-
-  @bind
-  private renderSquareEdit(coin: IAsset) {
-    return (
-      <EditSquareWrapper>
-        <SquareEdit coin={coin} toggle={this.toggleSquareEdit} />
-      </EditSquareWrapper>
-    );
   }
 
   @bind

@@ -8,6 +8,7 @@ import {
   CoinSquare, CoinRank, CoinStat
 } from '../../styles'
 import { setStyle, styleModifier } from '../../shared/utils/modifiers'
+import { sortByValue } from '../../services/coinFactory';
 
 interface IProps {
   coin: IAsset;
@@ -51,15 +52,17 @@ export default class Square extends React.PureComponent<IProps> {
   @bind
   private renderRow(type: string, value: number | string) {
     const isPrice = type === 'Price:';
+    const priceUSD = Number(value) > 1 ? round(Number(value)) : value;
     const isLargeNumber = type === 'Marketcap:' || type === 'Value:';
     const isExchangeRow = type === 'Exchange:';
     const isPosition = type === 'Position:';
     const isAllocation = type === 'Allocation:';
     const largeNumber = (num: number) => <p>${numberWithCommas(num)}</p>;
+
     return (
       <CoinStat>
         <p><em>{type}</em></p>
-        {isPrice && <p>${value ? round(Number(value)) : 0}</p>}
+        {isPrice && <p>${priceUSD}</p>}
         {isLargeNumber && largeNumber(Number(value))}
         {isExchangeRow && <p>{value}</p>}
         {isPosition && <p>{value}</p>}

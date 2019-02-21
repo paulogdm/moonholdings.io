@@ -36,16 +36,6 @@ export const SelectedAssetStyle = styled.div`
     margin: 0.7rem 1rem 0 0;
     height: 1.5rem;
     font-size: 0.8rem;
-    color: ${props => props.theme.grey};
-    border: 1px solid ${props => props.theme.offWhite};
-    background: ${props => props.theme.lightGrey};
-    border: none;
-
-    &:hover {  
-      color: #fff;
-      border: 1px solid ${props => props.theme.midGray};
-      background: ${props => props.theme.grey};
-    }
   }
 `
 
@@ -122,30 +112,8 @@ export const SearchButtons = styled.section`
     margin-bottom: 1rem;
     height: 4rem;
     font-size: 1.2rem;
-    color: ${props => props.theme.apricot};
-    border: 1px solid ${props => props.theme.brightPurple};
-    background: ${props => props.theme.darkPurple};
-    transition: ${props => props.theme.transitionAll};
-    outline-width: 0;
 
-    &:hover {
-      color: ${props => props.theme.darkPurple};
-      border: 1px solid ${props => props.theme.offWhite};
-      background: ${props => props.theme.apricot};
-    }
-
-    &:last-child {
-      margin-bottom: 0;
-      color: ${props => props.theme.grey};
-      border: 1px solid ${props => props.theme.offWhite};
-      background: ${props => props.theme.lightGrey};
-
-      &:hover {  
-        color: #fff;
-        border: 1px solid ${props => props.theme.midGray};
-        background: ${props => props.theme.grey};
-      }
-    }
+    &:last-child { margin-bottom: 0; }
   }
 `;
 
@@ -154,6 +122,8 @@ export const SearchSelectContainer = styled.section`
     margin: 1rem 0 0 0;
     font-size: 1rem;
     color: ${props => props.theme.offWhite};
+
+    span { color: ${props => props.theme.apricot}; }
   }
 `;
 
@@ -184,9 +154,8 @@ export const SearchSelectLoader = styled(LoaderDiv)`
   width: 350px;
   height: 300px;
 `
-export const SquareContainer = styled.div`
-  width: 245px;
-`
+export const SquareContainer = styled.div`width: 245px;`
+
 export const SearchSelectAsset = styled.section`
   h2 { margin: 1.5rem 0; font-size: 1rem; }
 
