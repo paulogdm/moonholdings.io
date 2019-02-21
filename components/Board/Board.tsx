@@ -2,28 +2,38 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bind } from 'decko'
 
-import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEdit } from '../'
-import { IAsset } from '../../shared/types'
+import {
+  Welcome, Astronaut, NomicsLink, PlusButton,
+  Portfolio, SquareEdit, Search, Overlay
+} from '../' // components
+import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
-import { StyledBoard, EditSquareWrapper, Overlay } from '../../styles'
+import { StyledBoard, EditSquareWrapper } from '../../styles'
 import { fetchAllAssets } from '../../actions/assets'
+import { setOverlayState } from '../../actions/board'
 
 interface IState {
   portfolio: IAsset[];
   coin: IAsset;
-  loading: boolean;
   edit: boolean;
+  search: boolean;
 }
 
 interface IProps {
+  assets: IAsset[];
+  exchanges: IMarketAsset[];
+  loading: boolean;
+  overlay: boolean;
+  fetchingMarkets: boolean;
   fetchAllAssets(): void;
+  setOverlayState(overlay: boolean): void;
 }
 
 //@TODO to remove...
 const tempPortfolio = [
   {
     position: 2.46781018,
-    symbol: 'BTC',
+    currency: 'BTC',
     marketCap: 63636922279.28325,
     name: 'Bitcoin',
     percentage: 66.4,
@@ -32,7 +42,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'DCR',
+    currency: 'DCR',
     marketCap: 63636922279.28325,
     name: 'Decred',
     percentage: 66.4,
@@ -41,7 +51,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'ETH',
+    currency: 'ETH',
     marketCap: 63636922279.28325,
     name: 'Ethereum',
     percentage: 66.4,
@@ -50,7 +60,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'BNB',
+    currency: 'BNB',
     marketCap: 63636922279.28325,
     name: 'Binance',
     percentage: 66.4,
@@ -59,7 +69,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'LTC',
+    currency: 'LTC',
     marketCap: 63636922279.28325,
     name: 'Litecoin',
     percentage: 66.4,
@@ -68,7 +78,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'LSK',
+    currency: 'LSK',
     marketCap: 63636922279.28325,
     name: 'Lisk',
     percentage: 66.4,
@@ -76,7 +86,7 @@ const tempPortfolio = [
     value: 8976.25,
   },{
     position: 2.46781018,
-    symbol: 'ZRX',
+    currency: 'ZRX',
     marketCap: 63636922279.28325,
     name: '0xProject',
     percentage: 66.4,
@@ -85,7 +95,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'MKR',
+    currency: 'MKR',
     marketCap: 63636922279.28325,
     name: 'Maker',
     percentage: 66.4,
@@ -94,7 +104,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'USDT',
+    currency: 'USDT',
     marketCap: 63636922279.28325,
     name: 'Tether',
     percentage: 66.4,
@@ -103,7 +113,7 @@ const tempPortfolio = [
   },
   {
     position: 2.46781018,
-    symbol: 'NANO',
+    currency: 'NANO',
     marketCap: 63636922279.28325,
     name: 'Nano',
     percentage: 66.4,
@@ -119,8 +129,8 @@ class Board extends React.Component<IProps, IState> {
     this.state = {
       portfolio: tempPortfolio,
       coin: coinModel,
-      loading: true,
-      edit: false
+      edit: false,
+      search: false
     };
   }
 
@@ -142,18 +152,24 @@ class Board extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { coin, edit, portfolio } = this.state;
+    const { assets, overlay, exchanges, fetchingMarkets } = this.props;
+    const { coin, edit, portfolio, search } = this.state;
     const hasPortfolio = portfolio.length > 0;
 
     return (
       <div>
         { edit && this.renderSquareEdit(coin) }
+        { search &&
+          <Search
+            assets={assets}
+            exchanges={exchanges}
+            cancel={this.handleOverlayClick}
+            fetching={fetchingMarkets}
+          />}
+        { overlay && <Overlay handleClick={this.handleOverlayClick} /> }
         <StyledBoard>
           { !hasPortfolio && <Welcome /> }
-          <Portfolio
-            coins={portfolio}
-            edit={this.toggleSquareEdit}
-          />
+          <Portfolio coins={portfolio} edit={this.toggleSquareEdit} />
           <PlusButton toggleSearch={this.handleOnSearch} />
           <NomicsLink />
           <Astronaut showLogo={hasPortfolio} />
@@ -164,7 +180,8 @@ class Board extends React.Component<IProps, IState> {
 
   @bind
   private handleOnSearch() {
-    console.log('handleSearchButton...');
+    this.setState({ search: true });
+    this.props.setOverlayState(true);
   }
 
   @bind
@@ -172,6 +189,8 @@ class Board extends React.Component<IProps, IState> {
     coin ?
       this.setState({ coin, edit: toggle }) :
       this.setState({ edit: toggle });
+ 
+    this.props.setOverlayState(true);
   }
 
   @bind
@@ -179,19 +198,31 @@ class Board extends React.Component<IProps, IState> {
     return (
       <EditSquareWrapper>
         <SquareEdit coin={coin} toggle={this.toggleSquareEdit} />
-        <Overlay onClick={() => this.toggleSquareEdit(false, coinModel)} />
       </EditSquareWrapper>
     );
+  }
+
+  @bind
+  private handleOverlayClick() {
+    const { edit, search } = this.state;
+    if (edit) this.toggleSquareEdit(false, coinModel);
+    if (search) this.setState({ search: false });
+    this.props.setOverlayState(false);
   }
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchAllAssets: () => dispatch(fetchAllAssets())
+  fetchAllAssets: () => dispatch(fetchAllAssets()),
+  setOverlayState: (overlay: boolean) => dispatch(setOverlayState(overlay))
 });
 
-const mapStateToProps = (state: { portfolio: IAsset[], loading: boolean }) => ({
-  portfolio: state.portfolio,
-  loading: state.loading
+const mapStateToProps = (state: IinitialState) => ({
+  assets: state.AssetsReducer.assets,
+  portfolio: state.AssetsReducer.portfolio,
+  exchanges: state.AssetsReducer.exchanges,
+  loading: state.AssetsReducer.loading,
+  fetchingMarkets: state.AssetsReducer.fetchingMarkets,
+  overlay: state.BoardReducer.overlay
 });
 
 export const BoardJest = Board;

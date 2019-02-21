@@ -11,7 +11,7 @@ export const StyledBoard = styled.div`
   height: 100%;
 `;
 
-export const Overlay = styled.div`
+export const OverlayStyle = styled.div`
   position: fixed;
   z-index: 10;
   animation: ${FadeIn} .5s;
