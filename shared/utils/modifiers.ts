@@ -1,5 +1,5 @@
 import styles from '../../coinStyles.json'
-import { IAsset, ICoinStyle, IMarketAsset } from '../types'
+import { IAsset, ICoinStyle, IDisableCheck } from '../types'
 import { defaultSquareStyle } from '../models'
 
 export const capitalizeFirstLetter = (word: string) =>
@@ -26,17 +26,35 @@ export const styleModifier = (id: string) =>
     ? `square bg-${id.toLowerCase()} bg-lite`
     : `square bg-${id.toLowerCase()}`);
 
-export const setSearchBtnDisabled = (selected: IAsset | null, exchange: string, exchanges: IMarketAsset[]) => {
-  if (!selected || selected && Array.isArray(exchanges) && exchanges.length > 0 && !exchange) {
-    return true;
+export const setSearchBtnDisabled = (disableCheck: IDisableCheck | null) => {
+  if (disableCheck) {
+    const { type, position, selected, exchange, exchanges } = disableCheck;
+    const exchangeArrayExists = selected && Array.isArray(exchanges) && exchanges.length > 0;
+
+    if (type === 'portfolio') {
+      if (!selected || exchangeArrayExists && !exchange) {
+        return true;
+      }
+
+      if (position === 0) {
+        return true;
+      }
+    }
+    else if (type === 'watchlist') {
+      if (!selected || exchangeArrayExists && !exchange) {
+       return true;
+     }
+    }
+
+    return false;
   }
 
   return false;
 }
 
-// Convert Array to Object
-// export const arrayToObject = array =>
-//   array.reduce((obj, item) => {
-//     obj[item.currency] = item;
-//     return obj;
-//   }, {});
+// Convert Array to Object (Coverts Portfolio into localStorage compatible object)
+export const arrayToObject = (array: IAsset[]) =>
+  array.reduce((obj: any, item: IAsset) => {
+    obj[item.currency] = item;
+    return obj;
+  }, {});

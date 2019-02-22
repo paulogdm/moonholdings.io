@@ -587,7 +587,9 @@ export const additionalAssets = [
 ];
 
 export const coinModel = {
+  availableSupply: '1000',
   currency: '',
+  exchange: 'Aggregate',
   position: 0,
   marketCap: 0,
   name: '',

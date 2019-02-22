@@ -20,7 +20,7 @@ interface IProps {
 export default class Square extends React.PureComponent<IProps> {
   public render() {
     const { coin, edit, index, inSearch } = this.props;
-    const { currency, position, percentage, price, marketCap, value } = coin;
+    const { currency, exchange, position, percentage, price, marketCap, value } = coin;
 
     const SquareStyle = !inSearch ? CoinSquare : SquareInSearch;
     const Shade = !inSearch ? SquareShade : SquareShadeInSearch;
@@ -39,7 +39,7 @@ export default class Square extends React.PureComponent<IProps> {
             </CoinRank>
             { price && this.renderRow('Price:', price) }
             { inSearch && this.renderRow('Marketcap:', marketCap) }
-            { inSearch && this.renderRow('Exchange:', 'Aggregate data') }
+            { exchange && this.renderRow('Exchange:', 'Aggregate data') }
             { position && this.renderRow('Position:', position) }
             { percentage && this.renderRow('Allocation:', percentage) }
             { value && this.renderRow('Value:', value)}

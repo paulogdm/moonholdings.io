@@ -1,10 +1,12 @@
 export interface IAsset {
-  position: number;
+  availableSupply?: string;
+  currency: string;
+  exchange: string;
   marketCap: number;
   name: string;
   percentage: number;
   price: number;
-  currency: string;
+  position: number;
   value: number;
 }
 
@@ -31,4 +33,12 @@ export interface IinitalBoardState {
 export interface IinitialState {
   AssetsReducer: IinitialAssetsState;
   BoardReducer: IinitalBoardState;
+}
+
+export interface IDisableCheck {
+  type: string;
+  position?: number;
+  selected: IAsset | null;
+  exchange: string;
+  exchanges: IMarketAsset[];
 }

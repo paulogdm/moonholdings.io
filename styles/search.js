@@ -48,6 +48,8 @@ export const SearchSection = styled.section`
     color: ${props => props.theme.darkPurple};
     background: ${props => props.theme.offWhite};
     border: 1px solid ${props => props.theme.darkPurple};
+    -webkit-user-select: none;
+    user-select: none;
     outline-width: 0;
 
     &::placeholder { color: ${props => props.theme.darkPurple}; }
@@ -167,3 +169,7 @@ export const SearchSelectAsset = styled.section`
     &:first-child { font-size: 1.5rem; }
   }
 `
+
+export const EnterPositionStyle = styled.section`
+  h2 { margin-bottom: 1rem; }
+`;

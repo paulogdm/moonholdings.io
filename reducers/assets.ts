@@ -1,31 +1,42 @@
 import { Actions } from '../actions/assets'
-import { IinitialAssetsState, IAsset, IMarketAsset } from '../shared/types'
+import { IinitialAssetsState as IInitState, IAsset, IMarketAsset } from '../shared/types'
+import { calculatePercentage } from '../services/coinFactory'
+import { arrayToObject } from '../shared/utils'
 
-const defaultAssetsState:
-  IinitialAssetsState = {
-    assets: [],
-    portfolio: [],
-    exchanges: [],
-    loading: false,
-    fetchingMarkets: false
-  };
+const defaultState: IInitState = {
+  assets: [],
+  portfolio: [],
+  exchanges: [],
+  loading: false,
+  fetchingMarkets: false
+};
 
-interface IAssetsAction {
+interface IAction {
   type: string;
+  coin: IAsset;
   assets: IAsset[];
   exchanges: IMarketAsset[];
   loading: boolean;
   fetchingMarkets: boolean;
 }
 
-export const AssetsReducer = (state = defaultAssetsState, action: IAssetsAction): IinitialAssetsState => {
+export const AssetsReducer = (state = defaultState, action: IAction): IInitState => {
   switch (action.type) {
     case Actions.GET_ALL_ASSETS: {
-      const { assets } = action;
+      const { loading } = action;
+      console.log('Actions.GET_ALL_ASSETS', action);
+      return {
+        ...state,
+        loading
+      };
+    }
+
+    case Actions.SET_ALL_ASSETS: {
+      const { assets, loading } = action;
       return {
         ...state,
         assets,
-        loading: false
+        loading
       };
     }
 
@@ -47,25 +58,26 @@ export const AssetsReducer = (state = defaultAssetsState, action: IAssetsAction)
     }
 
     // Adds coins from localStorage
-    // case Actions.ADD_COINS_PORTFOLIO:
-    //   const { coins } = action;
+    case Actions.ADD_COINS_PORTFOLIO:
+      const { assets } = action;
 
-    //   return {
-    //     ...state,
-    //     portfolio: coins
-    //   };
+      return {
+        ...state,
+        portfolio: assets
+      };
 
-    // case Actions.ADD_COIN_PORTFOLIO:
-    //   const { coin } = action;
-    //   const { portfolio } = state;
-    //   const newPortfolio = calculatePercentage(portfolio, coin);
-    //   const moonPortfolio = arrayToObject(newPortfolio);
-    //   localStorage.setItem('moonPortfolio', JSON.stringify(moonPortfolio));
+    case Actions.ADD_COIN_PORTFOLIO:
+      const { coin } = action;
+      const { portfolio } = state;
+      const newPortfolio = calculatePercentage(portfolio, coin);
+      const moonPortfolio = arrayToObject(newPortfolio);
+      console.log('moonPortfolio', moonPortfolio);
+      localStorage.setItem('moon_portfolio', JSON.stringify(moonPortfolio));
 
-    //   return {
-    //     ...state,
-    //     portfolio: newPortfolio
-    //   };
+      return {
+        ...state,
+        portfolio: newPortfolio
+      };
 
     // case Actions.REMOVE_COIN_PORTFOLIO:
     //   const filteredPortfolio = state.portfolio.filter(c => c !== action.coin);

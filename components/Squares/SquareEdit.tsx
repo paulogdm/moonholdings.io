@@ -4,10 +4,8 @@ import { bind } from 'decko'
 
 // import { addCoin, updateCoin, removeCoin } from '../../actions/coins';
 import { IAsset } from '../../shared/types'
-import { coinHasLightBg, setStyle, numberWithCommas, round, rounder } from '../../shared/utils'
+import { styleModifier, setStyle, numberWithCommas, round, rounder } from '../../shared/utils'
 import { EditSquare, EditSquareData, EditButtonsContainer } from '../../styles'
-
-const styleModifier = (id: string) => (coinHasLightBg(id) ? 'light-bg' : '');
 
 const renderInstructions = (inPortfolio: boolean) => (inPortfolio ? 'Edit' : 'Enter');
 
@@ -42,7 +40,6 @@ class SquareEdit extends React.Component<IProps, IState> {
       price,
       balance: 0,
       value,
-      // portfolio,
       portfolio: [],
       allocation: 0,
       inPortfolio: false
@@ -63,22 +60,12 @@ class SquareEdit extends React.Component<IProps, IState> {
     });
   }
 
-  renderSaveButton() {
-    const isDisabled = this.state.balance <= 0;
-    return (<button onClick={this.handleSave} disabled={isDisabled}>Save</button>);
-  }
-
-  renderRemoveButton() {
-    return (<button onClick={this.handleRemove}>Remove</button>);
-  }
-
-  renderCancelButton() {
-    return (<button onClick={() => this.props.toggle(false)}>Cancel</button>);
-  }
-
   render() {
-    const { coin, value, inPortfolio } = this.state;
+    const { coin, balance, value, inPortfolio } = this.state;
     const { currency, price } = coin;
+    const SaveButton = () => <button onClick={this.handleSave} disabled={balance <= 0}>Save</button>;
+    const RemoveButton = () => <button onClick={this.handleRemove}>Remove</button>;
+    const CancelButton = () => <button onClick={() => this.props.toggle(false)}>Cancel</button>;
 
     return (
       <EditSquare className={styleModifier(currency)} style={setStyle(currency)}>
@@ -97,8 +84,8 @@ class SquareEdit extends React.Component<IProps, IState> {
           <p>Allocation: ${numberWithCommas(value)} </p>
         </EditSquareData>
         <EditButtonsContainer>
-          {this.renderSaveButton()}
-          {inPortfolio ? this.renderRemoveButton() : this.renderCancelButton()}
+          <SaveButton/>
+          {inPortfolio ? <RemoveButton/> : <CancelButton/>}
         </EditButtonsContainer>
       </EditSquare>
     );

@@ -1,7 +1,8 @@
 import * as R from 'ramda'
 import { additionalAssets, supportedAssets } from '../shared/models'
-import { IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
-import { multiply, roundFloat } from '../shared/utils'
+import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes }
+  from '../shared/types'
+import { multiply, roundFloat, round } from '../shared/utils'
 
 const textMatch = (part: string, str: string) => str.search(part) !== -1;
 
@@ -118,4 +119,45 @@ export const formatAssets = (responses: IResponseConfig[]) => {
 export const combineExchangeData = (asset: string, { marketUSD, marketUSDC, marketUSDT }: IGetMarketsRes) => {
   const combined = marketUSD.concat(marketUSDC).concat(marketUSDT);
   return combined.filter((marketAsset: IMarketAsset) => marketAsset.base === asset);
+}
+
+export const getExchangePrice = (exchange: string, exchanges: IMarketAsset[]) => {
+  const assetExchange = exchanges.filter(({ exchange }) => exchange === exchange.toLowerCase())[0];
+  return Number(assetExchange.price_quote);
+}
+
+// Add coin's percentage of portfolio
+export const calculatePercentage = (portfolio: IAsset[], coin: IAsset) => {
+  if (coin) {
+    portfolio.push(coin);
+  }
+
+  const totalValue = portfolio.reduce((acc: number, { value }: IAsset) => acc + value, 0);
+
+  const updatedPortfolio = portfolio.map((c) => {
+    c.percentage = round((c.value / totalValue) * 100);
+    return c;
+  });
+
+  return updatedPortfolio;
+};
+
+export const formatCoinsForPortfolio = (coins: IAsset[], data: IAsset[]) => {
+  return coins.map((coin) => {
+    const updatedCoin = data.filter((asset: IAsset) => coin.currency === asset.currency).pop();
+    const updatedCoinPrice = updatedCoin ? Number(updatedCoin.price) : 1;
+
+    return {
+      availableSupply: coin.availableSupply,
+      currency: coin.currency,
+      exchange: coin.exchange ? coin.exchange : 'Aggregate',
+      marketCap: multiply(Number(coin.availableSupply), updatedCoinPrice),
+      name: coin.name,
+      percentage: coin.percentage,
+      price: updatedCoinPrice,
+      position: coin.position,
+      value: roundFloat(multiply(coin.position, updatedCoinPrice), 2)
+    };
+  });
+
 }

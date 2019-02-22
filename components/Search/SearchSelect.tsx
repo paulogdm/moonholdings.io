@@ -11,12 +11,13 @@ interface IProps {
   exchanges: IMarketAsset[]; 
   exchange: string;
   fetching: boolean;
+  enterPosition(event: React.FormEvent<HTMLInputElement>): void;
   exchangeSelect(event: React.FormEvent<HTMLSelectElement>): void;
 }
 
 class SearchSelect extends React.Component<IProps> {
   render() {
-    const { selected, exchanges, exchange, exchangeSelect, fetching } = this.props;
+    const { selected, exchanges, exchange, fetching } = this.props;
     const exchangesExist = R.not(R.isEmpty(exchanges));
     const Loading = () => <SearchSelectLoader><BlockLoader/></SearchSelectLoader>;
   
@@ -30,7 +31,8 @@ class SearchSelect extends React.Component<IProps> {
                 selected={selected}
                 exchange={exchange}
                 exchanges={exchanges}
-                exchangeSelect={exchangeSelect}
+                enterPosition={this.props.enterPosition}
+                exchangeSelect={this.props.exchangeSelect}
               />
             // If there are no exchanges, display asset with aggregate price data
             : <SearchSelected selected={selected}/> }

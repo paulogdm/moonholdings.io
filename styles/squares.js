@@ -123,7 +123,7 @@ export const CoinStat = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 0 0 10px 0;
+  margin: 0 0 5px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
   h1 { font-size: 1.5rem; line-height: 0; }
@@ -134,6 +134,6 @@ export const CoinStat = styled.div`
 `;
 
 export const CoinRank = styled(CoinStat)`
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   border-bottom: none;
 `;

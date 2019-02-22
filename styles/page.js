@@ -7,4 +7,5 @@ export const StyledPage = styled.div`
 
 export const Inner = styled.div`
   max-width: ${props => props.theme.maxWidth};
+  width: 100%;
 `;
