@@ -41,7 +41,7 @@ export default class Portfolio extends React.PureComponent<IProps> {
         </PortfolioBalance>
         <PortfolioContainer>
           {coins.map((coin, i) =>
-            (<Square key={coin.symbol} coin={coin} edit={edit} index={i} />))}
+            (<Square key={coin.currency} coin={coin} edit={edit} index={i} />))}
         </PortfolioContainer>
       </div>
     );

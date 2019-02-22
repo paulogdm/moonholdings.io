@@ -1,14 +1,49 @@
-import { Actions } from '../../actions/assets'
-import { defaultInitialState } from '../../store'
+import { Actions } from '../actions/assets'
+import { IinitialAssetsState, IAsset, IMarketAsset } from '../shared/types'
 
-export default (state = defaultInitialState, action: any) => {
+const defaultAssetsState:
+  IinitialAssetsState = {
+    assets: [],
+    portfolio: [],
+    exchanges: [],
+    loading: false,
+    fetchingMarkets: false
+  };
+
+interface IAssetsAction {
+  type: string;
+  assets: IAsset[];
+  exchanges: IMarketAsset[];
+  loading: boolean;
+  fetchingMarkets: boolean;
+}
+
+export const AssetsReducer = (state = defaultAssetsState, action: IAssetsAction): IinitialAssetsState => {
   switch (action.type) {
     case Actions.GET_ALL_ASSETS: {
       const { assets } = action;
+      console.log('assets', assets);
       return {
         ...state,
         assets,
         loading: false
+      };
+    }
+
+    case Actions.GET_MARKET_PRICES: {
+      const { fetchingMarkets } = action;
+      return {
+        ...state,
+        fetchingMarkets
+      };
+    }
+
+    case Actions.SET_MARKET_PRICES: {
+      const { exchanges, fetchingMarkets } = action;
+      return {
+        ...state,
+        exchanges,
+        fetchingMarkets
       };
     }
 

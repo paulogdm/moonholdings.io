@@ -1,6 +1,6 @@
 import { IAsset } from '../../shared/types';
 
-const floor = (num: number) => (Math.floor(num * 100) / 100);
+export const floor = (num: number) => (Math.floor(num * 100) / 100);
 
 export const round = (value: number) => Math.round((value) * 100) / 100;
 
