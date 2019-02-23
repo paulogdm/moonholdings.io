@@ -10,6 +10,9 @@ const textMatch = (part: string, str: string) => str.search(part) !== -1;
 const mergeByCurrency = (matchArray: any[], nextArray: any[]) =>
   matchArray.map(m => Object.assign({}, m, nextArray.find(n => n.currency === m.currency)));
 
+// Combines Promises and returns responses together.
+export const fetchAll = (array: any[]) => Promise.all(array);
+
 // Return coins that match text | search by currency symbol or name.
 export const findAsset = (txt: string, assets: any[]) => {
   const checkText = (k: string, a: any) => (textMatch(txt.toLowerCase(), a[k].toLowerCase()) ? a : null);
@@ -118,8 +121,11 @@ export const formatAssets = (responses: IResponseConfig[]) => {
 
 export const combineExchangeData = (asset: string, { marketUSD, marketUSDC, marketUSDT }: IGetMarketsRes) => {
   const combined = marketUSD.concat(marketUSDC).concat(marketUSDT);
-  return combined.filter((marketAsset: IMarketAsset) => marketAsset.base === asset);
-}
+  if (asset !== 'USDT')  {
+    return combined.filter((marketAsset: IMarketAsset) => marketAsset.base === asset);
+  }
+  return [];
+ }
 
 export const getExchangePrice = (exchange: string, exchanges: IMarketAsset[]) => {
   const assetExchange = exchanges.filter(({ exchange }) => exchange === exchange.toLowerCase())[0];
