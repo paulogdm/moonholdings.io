@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { CoinRow } from '../../styles'
-import { numberWithCommas, round } from '../../shared/utils/math'
+import { numberWithCommas, formatPrice } from '../../shared/utils/math'
 
 interface IProps {
   type: string;
@@ -11,7 +11,7 @@ interface IProps {
 export const SquareRow = (props: IProps) => {
   const { type, data } = props;
   const isPrice = type === 'Price:';
-  const priceUSD = Number(data) > 1 ? round(Number(data)) : data;
+  const priceUSD = formatPrice(data);
   const isLargeNumber = type === 'Marketcap:' || type === 'Value:';
   const isExchangeRow = type === 'Exchange:';
   const isPosition = type === 'Position:';

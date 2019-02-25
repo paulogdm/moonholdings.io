@@ -15,5 +15,8 @@ export function roundFloat(x: number, decimal: number) {
 
 export const numberWithCommas = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
+export const formatPrice = (num: string | number) => Number(num) > 1 ? roundFloat(Number(num), 2) : num;
+
+
 export const calculateBalance = (coins: IAsset[]) =>
   numberWithCommas(floor(coins.reduce((val, coin) => (val + +(coin.value)), 0)));

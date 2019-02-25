@@ -8,7 +8,7 @@ import { SearchContainerDiv, SearchSection, SearchButtons, FunctionButton, Commo
   from '../../styles'
 import { setSearchBtnDisabled } from '../../shared/utils'
 import { findAsset, getExchangePrice } from '../../services/coinFactory';
-import { addCoinPortfolio, fetchMarketPrices } from '../../actions/assets'
+import { addCoinPortfolio, addCoinWatchlist, fetchMarketPrices } from '../../actions/assets'
 
 interface IProps {
   assets: IAsset[];
@@ -16,11 +16,13 @@ interface IProps {
   fetching: boolean;
   cancel(): void;
   addCoinPortfolio(coin: IAsset): void;
+  addCoinWatchlist(coin: IAsset): void;
   fetchMarketPrices(asset: string): void;
 }
 
 interface IState {
   exchange: string;
+  exchange_base: string;
   position: number;
   selected: IAsset | null;
   searchList: IAsset[];
@@ -33,6 +35,7 @@ class Search extends React.Component<IProps, IState> {
 
     this.state = {
       exchange: '',
+      exchange_base: '',
       position: 0,
       selected: null,
       searchList: props.assets,
@@ -89,7 +92,12 @@ class Search extends React.Component<IProps, IState> {
           >
             Add to Portfolio
           </FunctionButton>
-          <FunctionButton disabled={disabledWatchlist}>Add to Watchlist</FunctionButton>
+          <FunctionButton
+            disabled={disabledWatchlist}
+            onClick={this.handleAddWatchlist}
+          >
+            Add to Watchlist
+          </FunctionButton>
           <CommonButton onClick={cancel}>Cancel Search</CommonButton>
         </SearchButtons>
       </SearchContainerDiv>
@@ -111,6 +119,8 @@ class Search extends React.Component<IProps, IState> {
     if (selected) {
       const { currency, marketCap, name, price: defaultPrice, } = selected;
       const price = exchange ? getExchangePrice(exchange, exchanges) : Number(defaultPrice);
+      console.log('> handleAddPortfolio exchange', exchange);
+      console.log(' price', price);
 
       this.props.addCoinPortfolio(Object.assign({
         currency,
@@ -127,10 +137,25 @@ class Search extends React.Component<IProps, IState> {
   }
 
   @bind
+  handleAddWatchlist() {
+    const { selected } = this.state;
+    if (selected) {
+      this.props.addCoinWatchlist(selected);
+    }
+  }
+
+  @bind
   handleExchangeSelect(event: React.FormEvent<HTMLSelectElement>) {
     const target = event.target as HTMLSelectElement;
-    const exchange = target.value;
-    this.setState({ exchange });
+    const exchangeValues = target.value.split(',');
+    const exchange = exchangeValues[0];
+    const exchange_base = exchangeValues[1];
+    console.log('exchange', exchange);
+    console.log('exchange_base', exchange_base);
+    this.setState({
+      exchange,
+      exchange_base
+    });
   }
 
   @bind
@@ -171,6 +196,7 @@ class Search extends React.Component<IProps, IState> {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchMarketPrices: (asset: string) => dispatch(fetchMarketPrices(asset)),
   addCoinPortfolio: (coin: IAsset) => dispatch(addCoinPortfolio(coin)),
+  addCoinWatchlist: (coin: IAsset) => dispatch(addCoinWatchlist(coin))
 });
 
 export const SearchJest = Search;

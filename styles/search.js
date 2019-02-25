@@ -139,6 +139,11 @@ export const SearchSelectStyle = styled.select`
   border: 1px solid ${props => props.theme.darkPurple};
   background: ${props => props.theme.brightPurple};
   cursor: pointer;
+
+  option {
+    display: flex;
+    justify-content: space-around;
+  }
 `
 
 export const LoaderDiv = styled.div`
@@ -173,3 +178,11 @@ export const SearchSelectAsset = styled.section`
 export const EnterPositionStyle = styled.section`
   h2 { margin-bottom: 1rem; }
 `;
+
+export const AggregateInput = styled.div`
+  input {
+    width: 1rem;
+    height: 1rem;
+    margin-top: 1rem;
+  }
+`

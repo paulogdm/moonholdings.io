@@ -3,6 +3,8 @@ import { additionalAssets, supportedAssets } from '../shared/models'
 import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes }
   from '../shared/types'
 import { multiply, roundFloat, round } from '../shared/utils'
+import { formatPrice } from '../shared/utils/math'
+import { BASE_CURRENCIES } from '../shared/constants/api'
 
 const textMatch = (part: string, str: string) => str.search(part) !== -1;
 
@@ -120,17 +122,28 @@ export const formatAssets = (responses: IResponseConfig[]) => {
 };
 
 export const combineExchangeData = (asset: string, { marketUSD, marketUSDC, marketUSDT }: IGetMarketsRes) => {
-  const combined = marketUSD.concat(marketUSDC).concat(marketUSDT);
-  if (asset !== 'USDT')  {
-    return combined.filter((marketAsset: IMarketAsset) => marketAsset.base === asset);
-  }
-  return [];
- }
+  const combinedMarkets = marketUSD.concat(marketUSDC).concat(marketUSDT);
+  
+  const filteredMarkets =
+    R.not(R.any(R.equals(asset))(BASE_CURRENCIES))
+      ? combinedMarkets.filter((marketAsset: IMarketAsset) => marketAsset.base === asset)
+      : [];
 
-export const getExchangePrice = (exchange: string, exchanges: IMarketAsset[]) => {
-  const assetExchange = exchanges.filter(({ exchange }) => exchange === exchange.toLowerCase())[0];
+  return filteredMarkets.map((market: IMarketAsset) => {
+    return {
+      ...market,
+      price_quote: formatPrice(market.price_quote)
+    }
+  });
+};
+
+export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAsset[]) => {
+  console.log('selectedExchange', selectedExchange);
+  console.log('exchanges', exchanges);
+  const assetExchange = exchanges.filter(({ exchange }) => exchange === selectedExchange.toLowerCase())[0];
+  console.log('assetExchange', assetExchange);
   return Number(assetExchange.price_quote);
-}
+};
 
 // Add coin's percentage of portfolio
 export const calculatePercentage = (portfolio: IAsset[], coin: IAsset) => {
@@ -146,6 +159,11 @@ export const calculatePercentage = (portfolio: IAsset[], coin: IAsset) => {
   });
 
   return updatedPortfolio;
+};
+
+export const updateWatchlist = (coin: IAsset, watchlist: IAsset[]) => {
+  watchlist.push(coin);
+  return watchlist.map((c) => c);
 };
 
 export const formatCoinsForPortfolio = (coins: IAsset[], data: IAsset[]) => {
