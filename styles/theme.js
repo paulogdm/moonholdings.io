@@ -1,0 +1,15 @@
+export const Theme = {
+  red: '#FF0000',
+  black: '#393939',
+  lightGrey: '#DADADA',
+  midGray: '#A4A4A4',
+  grey: '#575757',
+  offWhite: '#EDEDED',
+  apricot: '#FEBE7E',
+  brightPurple: '#B987C0',
+  lightPurple: '#8F6894',
+  darkPurple: '#57385C',
+  margin: 0,
+  padding: 0,
+  transitionAll: 'all .2s ease-in-out',
+};

@@ -138,10 +138,7 @@ export const combineExchangeData = (asset: string, { marketUSD, marketUSDC, mark
 };
 
 export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAsset[]) => {
-  console.log('selectedExchange', selectedExchange);
-  console.log('exchanges', exchanges);
   const assetExchange = exchanges.filter(({ exchange }) => exchange === selectedExchange.toLowerCase())[0];
-  console.log('assetExchange', assetExchange);
   return Number(assetExchange.price_quote);
 };
 

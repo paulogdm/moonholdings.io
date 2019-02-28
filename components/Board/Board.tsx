@@ -51,7 +51,7 @@ class Board extends React.Component<IProps, IState> {
       const storedPortfolio = JSON.parse(localStorage.getItem('moon_portfolio') || '{}');
 
       if (storedPortfolio) {
-        console.log('storedPortfolio', storedPortfolio);
+        // console.log('storedPortfolio', storedPortfolio);
         const reconstructedPortfolio = Object.values(storedPortfolio);
         this.props.addCoinsPortfolio(reconstructedPortfolio);
       }

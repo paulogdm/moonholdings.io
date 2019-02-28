@@ -4,8 +4,7 @@ import { bind } from 'decko'
 
 import { SearchInput, SelectedAsset, SearchList, SearchSelect } from '../../components'
 import { IAsset, IMarketAsset } from '../../shared/types'
-import { SearchContainerDiv, SearchSection, SearchButtons, FunctionButton, CommonButton }
-  from '../../styles'
+import { SearchContainerDiv, SearchSection, SearchButtons, FunctionButton, CommonButton } from '../../styles'
 import { setSearchBtnDisabled } from '../../shared/utils'
 import { findAsset, getExchangePrice } from '../../services/coinFactory';
 import { addCoinPortfolio, addCoinWatchlist, fetchMarketPrices } from '../../actions/assets'
@@ -23,6 +22,7 @@ interface IProps {
 interface IState {
   exchange: string;
   exchange_base: string;
+  aggregate: boolean;
   position: number;
   selected: IAsset | null;
   searchList: IAsset[];
@@ -36,6 +36,7 @@ class Search extends React.Component<IProps, IState> {
     this.state = {
       exchange: '',
       exchange_base: '',
+      aggregate: false,
       position: 0,
       selected: null,
       searchList: props.assets,
@@ -57,12 +58,12 @@ class Search extends React.Component<IProps, IState> {
 
   render() {
     const { assets, cancel, exchanges, fetching } = this.props;
-    const { exchange, position, searchList, selected } = this.state;
+    const { exchange, position, searchList, selected, aggregate } = this.state;
 
     const portfolioCheck = { type: 'portfolio', position, selected, exchange, exchanges };
     const watchlistCheck = { type: 'watchlist', selected, exchange, exchanges };
-    const disabledPortfolio = setSearchBtnDisabled(portfolioCheck);
-    const disabledWatchlist = setSearchBtnDisabled(watchlistCheck);
+    const disabledPort = setSearchBtnDisabled(portfolioCheck);
+    const disabledWatch = setSearchBtnDisabled(watchlistCheck);
 
     return (
       <SearchContainerDiv>
@@ -77,6 +78,8 @@ class Search extends React.Component<IProps, IState> {
                 exchange={exchange}
                 exchanges={exchanges}
                 fetching={fetching}
+                aggregate={aggregate}
+                checkAggregate={this.handleCheckAggregate}
                 enterPosition={this.handleEnterPosition}
                 exchangeSelect={this.handleExchangeSelect}
               />
@@ -86,16 +89,10 @@ class Search extends React.Component<IProps, IState> {
               /> }
         </SearchSection>
         <SearchButtons>
-          <FunctionButton
-            disabled={disabledPortfolio}
-            onClick={this.handleAddPortfolio}
-          >
+          <FunctionButton disabled={disabledPort} onClick={this.handleAddPortfolio}>
             Add to Portfolio
           </FunctionButton>
-          <FunctionButton
-            disabled={disabledWatchlist}
-            onClick={this.handleAddWatchlist}
-          >
+          <FunctionButton disabled={disabledWatch} onClick={this.handleAddWatchlist}>
             Add to Watchlist
           </FunctionButton>
           <CommonButton onClick={cancel}>Cancel Search</CommonButton>
@@ -118,9 +115,9 @@ class Search extends React.Component<IProps, IState> {
 
     if (selected) {
       const { currency, marketCap, name, price: defaultPrice, } = selected;
-      const price = exchange ? getExchangePrice(exchange, exchanges) : Number(defaultPrice);
-      console.log('> handleAddPortfolio exchange', exchange);
-      console.log(' price', price);
+      const price = exchange
+        ? getExchangePrice(exchange, exchanges)
+        : Number(defaultPrice);
 
       this.props.addCoinPortfolio(Object.assign({
         currency,
@@ -145,17 +142,18 @@ class Search extends React.Component<IProps, IState> {
   }
 
   @bind
-  handleExchangeSelect(event: React.FormEvent<HTMLSelectElement>) {
-    const target = event.target as HTMLSelectElement;
-    const exchangeValues = target.value.split(',');
-    const exchange = exchangeValues[0];
-    const exchange_base = exchangeValues[1];
-    console.log('exchange', exchange);
-    console.log('exchange_base', exchange_base);
+  handleExchangeSelect(value: IMarketAsset) {
+    const { exchange, quote: exchange_base } = value;
     this.setState({
       exchange,
       exchange_base
     });
+  }
+
+  @bind
+  handleCheckAggregate() {
+    const { aggregate } = this.state;
+    this.setState({ aggregate: !aggregate });
   }
 
   @bind
@@ -180,7 +178,6 @@ class Search extends React.Component<IProps, IState> {
     };
 
     const clearSearch = () => this.setState({ searchList: this.state.saved });
-
     const handleUpdate = (num: number) => (num > 1 ? search(searchText) : clearSearch());
 
     return handleUpdate(searchText.length);

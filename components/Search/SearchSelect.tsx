@@ -9,33 +9,38 @@ interface IProps {
   assets: IAsset[];
   selected: IAsset;
   exchanges: IMarketAsset[]; 
+  aggregate: boolean;
   exchange: string;
   fetching: boolean;
   enterPosition(event: React.FormEvent<HTMLInputElement>): void;
-  exchangeSelect(event: React.FormEvent<HTMLSelectElement>): void;
+  checkAggregate(event: React.FormEvent<HTMLInputElement>): void;
+  exchangeSelect(market: IMarketAsset): void;
 }
 
 class SearchSelect extends React.Component<IProps> {
   render() {
-    const { selected, exchanges, exchange, fetching } = this.props;
+    const { selected, exchanges, exchange, aggregate, checkAggregate, fetching } = this.props;
+
     const exchangesExist = R.not(R.isEmpty(exchanges));
     const Loading = () => <SearchSelectLoader><BlockLoader/></SearchSelectLoader>;
-  
+
     return (
       <div>
         { fetching
           ? <Loading />
-          : exchangesExist
+          : exchangesExist && !aggregate
             // Display list of supported exchanges
             ? <SearchExchanges
                 selected={selected}
                 exchange={exchange}
                 exchanges={exchanges}
+                checkAggregate={checkAggregate}
+                aggregate={aggregate}
                 enterPosition={this.props.enterPosition}
                 exchangeSelect={this.props.exchangeSelect}
               />
             // If there are no exchanges, display asset with aggregate price data
-            : <SearchSelected selected={selected}/> }
+            : <SearchSelected selected={selected} aggregate={aggregate} /> }
       </div>
     );
   }

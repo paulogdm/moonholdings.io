@@ -144,6 +144,14 @@ export const SearchSelectStyle = styled.select`
     display: flex;
     justify-content: space-around;
   }
+
+  &:disabled {
+    opacity: 0.4;
+    color: ${props => props.theme.lightGrey};
+    border: 1px solid ${props => props.theme.midGray};
+    background: ${props => props.theme.grey};
+    cursor: not-allowed;
+  }
 `
 
 export const LoaderDiv = styled.div`
@@ -179,10 +187,25 @@ export const EnterPositionStyle = styled.section`
   h2 { margin-bottom: 1rem; }
 `;
 
-export const AggregateInput = styled.div`
+export const AggregateInputDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
   input {
-    width: 1rem;
-    height: 1rem;
-    margin-top: 1rem;
+    margin: 1rem 0.5rem 0 0;
+    -webkit-appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    transition: background 200ms ease-in-out;
+
+    &:checked {
+      background: ${props => props.theme.brightPurple};
+    }
+  }
+
+  p {
+    line-height: 2rem;
   }
 `

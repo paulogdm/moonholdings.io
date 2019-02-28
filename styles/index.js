@@ -1,3 +1,4 @@
+export * from './theme'
 export * from './astronaut'
 export * from './board'
 export * from './squares'

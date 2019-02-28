@@ -1,5 +1,17 @@
 // MOON.HOLDINGS global styles
+html {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+*, *:before, *:after { box-sizing: inherit; }
+
 body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Abel', sans-serif;
   background: -moz-linear-gradient(-45deg,#3e1f43 0,#8f6894 100%);
   background: -webkit-linear-gradient(-45deg,#3e1f43,#8f6894);
   background: linear-gradient(135deg,#3e1f43,#8f6894);
@@ -13,7 +25,8 @@ input[type=number]::-webkit-outer-spin-button {
 
 ul { padding: 0; }
 
-button {
+button,
+input {
   outline-width: 0;
   cursor: pointer;
 }
@@ -40,11 +53,10 @@ button {
 }
 
 .block-spin {
+  margin: 100px auto;
   width: 40px;
   height: 40px;
   background-color: #FEBE7E;
-
-  margin: 100px auto;
   -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
   animation: sk-rotateplane 1.2s infinite ease-in-out;
 }
