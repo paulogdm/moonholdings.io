@@ -32,18 +32,15 @@ export const setSearchBtnDisabled = (disableCheck: IDisableCheck | null) => {
     const exchangeArrayExists = selected && Array.isArray(exchanges) && exchanges.length > 0;
 
     if (type === 'portfolio') {
-      if (!selected || exchangeArrayExists && !exchange) {
-        return true;
-      }
+      if (position && position > 0) return false;
 
-      if (position === 0) {
-        return true;
-      }
+      if (!selected || exchangeArrayExists && !exchange) return true;
+
+      if (position === 0) return true;
     }
+
     else if (type === 'watchlist') {
-      if (!selected || exchangeArrayExists && !exchange) {
-       return true;
-     }
+      if (!selected || exchangeArrayExists && !exchange) return true;
     }
 
     return false;

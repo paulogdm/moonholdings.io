@@ -15,6 +15,18 @@ interface IProps {
   exchangeSelect(exchange: IMarketAsset): void;
 }
 
+interface IPropsExchangeMessage {
+  selected: IAsset;
+}
+
+const SelectExchangeMessage = ({ selected }: IPropsExchangeMessage) => {
+  const SelectedAsset = () => <span>{selected.name}</span>;
+  return (<h2>Select exchange for <SelectedAsset/> prices, then add to Portfolio or Watchlist.</h2>);
+}
+
+const AggregateSelected = () =>
+  <h2>You have selected to use aggregate exchange price data.</h2>;
+
 export class SearchExchanges extends React.Component<IProps> {
   render() {
     const {
@@ -22,18 +34,17 @@ export class SearchExchanges extends React.Component<IProps> {
       checkAggregate, aggregate: checked, selected
     } = this.props;
 
-    const SelectedAsset = () => <span>{selected.name}</span>;
-    const valueEntry = selected && exchange;
+    const userCanAddPosition = selected && exchange;
   
     return (
       <SearchSelectContainer>
-        <h2>Select exchange for <SelectedAsset/> prices, then add to Portfolio or Watchlist.</h2>
+        { checked ? <AggregateSelected/> : <SelectExchangeMessage selected={selected}/> }
         <ExchangeSelect exchanges={exchanges} disabled={checked} onSelect={exchangeSelect}/>
         <AggregateInputDiv>
           <input type="checkbox" defaultChecked={checked} onClick={checkAggregate}/>
           <p>Use Aggregate Exchange Data</p>
         </AggregateInputDiv>
-        { !valueEntry
+        { !userCanAddPosition && !checked
             ? <ExchangeSelectInfo asset={selected}/>
             : <EnterPosition asset={selected} enterPosition={enterPosition} /> } 
       </SearchSelectContainer>

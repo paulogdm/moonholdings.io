@@ -28,7 +28,7 @@ class SearchSelect extends React.Component<IProps> {
       <div>
         { fetching
           ? <Loading />
-          : exchangesExist && !aggregate
+          : exchangesExist
             // Display list of supported exchanges
             ? <SearchExchanges
                 selected={selected}
@@ -40,7 +40,7 @@ class SearchSelect extends React.Component<IProps> {
                 exchangeSelect={this.props.exchangeSelect}
               />
             // If there are no exchanges, display asset with aggregate price data
-            : <SearchSelected selected={selected} aggregate={aggregate} /> }
+            : <SearchSelected selected={selected} /> }
       </div>
     );
   }

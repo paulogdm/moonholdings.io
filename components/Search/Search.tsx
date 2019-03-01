@@ -63,7 +63,7 @@ class Search extends React.Component<IProps, IState> {
     const portfolioCheck = { type: 'portfolio', position, selected, exchange, exchanges };
     const watchlistCheck = { type: 'watchlist', selected, exchange, exchanges };
     const disabledPort = setSearchBtnDisabled(portfolioCheck);
-    const disabledWatch = setSearchBtnDisabled(watchlistCheck);
+    const disabledWatch = aggregate ? false : setSearchBtnDisabled(watchlistCheck);
 
     return (
       <SearchContainerDiv>
@@ -162,7 +162,8 @@ class Search extends React.Component<IProps, IState> {
     this.setState({
       searchList: saved,
       selected: null,
-      exchange: ''
+      exchange: '',
+      aggregate: false
     });
   }
 
