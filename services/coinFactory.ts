@@ -172,6 +172,7 @@ export const formatCoinsForPortfolio = (coins: IAsset[], data: IAsset[]) => {
       availableSupply: coin.availableSupply,
       currency: coin.currency,
       exchange: coin.exchange ? coin.exchange : 'Aggregate',
+      exchange_base: coin.exchange_base,
       marketCap: multiply(Number(coin.availableSupply), updatedCoinPrice),
       name: coin.name,
       percentage: coin.percentage,

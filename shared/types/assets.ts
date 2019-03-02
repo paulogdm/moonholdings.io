@@ -2,7 +2,7 @@ export interface IAsset {
   availableSupply?: string;
   currency: string;
   exchange: string;
-  exchange_base?: string;
+  exchange_base: string;
   marketCap: number;
   name: string;
   percentage: number;

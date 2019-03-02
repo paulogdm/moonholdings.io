@@ -36,7 +36,7 @@ export const getPrices = async () => {
     const prices = await nomics.get('prices');
     return prices;
   } catch (err) {
-    console.error(err);
+    return err;
   }
 }
 

@@ -91,9 +91,12 @@ export const fetchMarketPrices = (asset: string) => (dispatch: DispatchMarketPri
 // Fetch the coins form localStorage.
 export const addCoinsPortfolio = (coins: IAsset[]) => (dispatch: DispatchAddCoins) => {
   return getPrices().then((res) => {
-    if (res) {
+    if (res && res.status === 200) {
       const portfolioAssets = formatCoinsForPortfolio(coins, res.data);
       dispatch(actionAddCoinsPortfolio(portfolioAssets));
+    }
+    else {
+      console.error(`addCoinsPortfolio > getPrices request error: ${res}`);
     }
   });
 }

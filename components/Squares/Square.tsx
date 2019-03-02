@@ -4,7 +4,7 @@ import { SquareRow } from '../../components'
 import { IAsset } from '../../shared/types'
 import { SquareShade, SquareInSearch, SquareShadeInSearch, CoinSquare, CoinRank }
   from '../../styles'
-import { setStyle, styleModifier } from '../../shared/utils/modifiers'
+import { setStyle, styleModifier, capitalizeFirstLetter as capFirst } from '../../shared/utils'
 
 interface IProps {
   coin: IAsset;
@@ -17,9 +17,10 @@ export default class Square extends React.PureComponent<IProps> {
   public render() {
     const { coin, edit, index, inSearch } = this.props;
     const { currency, exchange, position, percentage, price, marketCap, value } = coin;
-    // Update shade style based on in Board or in Search
+    // Update shade style based on <Search/> or <Board/> contex.
     const SquareStyle = !inSearch ? CoinSquare : SquareInSearch;
     const Shade = !inSearch ? SquareShade : SquareShadeInSearch;
+    const exchangeName = exchange !== '' ? capFirst(exchange) : 'Aggregate';
 
     return (
       <div
@@ -35,7 +36,7 @@ export default class Square extends React.PureComponent<IProps> {
             </CoinRank>
             { price && <SquareRow type={'Price:'} data={price}/> }
             { inSearch && <SquareRow type={'Marketcap:'} data={marketCap}/> }
-            { exchange && <SquareRow type={'Exchange:'} data={exchange}/> }
+            { exchangeName && <SquareRow type={'Exchange:'} data={exchangeName}/> }
             { position && <SquareRow type={'Position:'} data={position}/> }
             { percentage && <SquareRow type={'Allocation:'} data={percentage}/> }
             { value && <SquareRow type={'Value:'} data={value}/> }

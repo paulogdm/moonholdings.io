@@ -111,7 +111,7 @@ class Search extends React.Component<IProps, IState> {
   @bind
   handleAddPortfolio() {
     const { exchanges, cancel: closeSearchModal } = this.props;
-    const { exchange, position, selected } = this.state;
+    const { exchange, exchange_base, position, selected } = this.state;
 
     if (selected) {
       const { currency, marketCap, name, price: defaultPrice, } = selected;
@@ -122,6 +122,7 @@ class Search extends React.Component<IProps, IState> {
       this.props.addCoinPortfolio(Object.assign({
         currency,
         exchange,
+        exchange_base,
         name,
         marketCap,
         position,
@@ -144,10 +145,7 @@ class Search extends React.Component<IProps, IState> {
   @bind
   handleExchangeSelect(value: IMarketAsset) {
     const { exchange, quote: exchange_base } = value;
-    this.setState({
-      exchange,
-      exchange_base
-    });
+    this.setState({ exchange, exchange_base });
   }
 
   @bind
@@ -158,11 +156,11 @@ class Search extends React.Component<IProps, IState> {
 
   @bind
   handleClearSelected() {
-    const { saved } = this.state;
     this.setState({
-      searchList: saved,
+      searchList: this.state.saved,
       selected: null,
       exchange: '',
+      exchange_base: '',
       aggregate: false
     });
   }
