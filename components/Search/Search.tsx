@@ -136,9 +136,16 @@ class Search extends React.Component<IProps, IState> {
 
   @bind
   handleAddWatchlist() {
-    const { selected } = this.state;
+    const { cancel: closeSearchModal } = this.props;
+    const { exchange, exchange_base, selected } = this.state;
+
     if (selected) {
-      this.props.addCoinWatchlist(selected);
+      this.props.addCoinWatchlist({
+        ...selected,
+        exchange,
+        exchange_base
+      });
+      closeSearchModal();
     }
   }
 
