@@ -1,72 +1,76 @@
 import { Actions } from '../actions/assets'
-import { IinitialAssetsState, IAsset, IMarketAsset } from '../shared/types'
+import { calculatePercentage, jsonFormatFromObject, updateWatchlist } from '../services/coinFactory'
+import { IinitialAssetsState as IInitState, IAsset, IMarketAsset } from '../shared/types'
+import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../shared/constants/copy'
 
-const defaultAssetsState:
-  IinitialAssetsState = {
-    assets: [],
-    portfolio: [],
-    exchanges: [],
-    loading: false,
-    fetchingMarkets: false
-  };
+export const defaultAssetsState: IInitState = {
+  assets: [],
+  portfolio: [],
+  watchlist: [],
+  exchanges: [],
+  loading: true,
+  fetchingMarkets: false
+};
 
-interface IAssetsAction {
+interface IAction {
   type: string;
+  coin: IAsset;
   assets: IAsset[];
+  watchlist: IAsset[];
   exchanges: IMarketAsset[];
   loading: boolean;
   fetchingMarkets: boolean;
 }
 
-export const AssetsReducer = (state = defaultAssetsState, action: IAssetsAction): IinitialAssetsState => {
+let updatedPortfolio = [];
+let updatedWatchlist = [];
+
+export const AssetsReducer = (state = defaultAssetsState, action: IAction): IInitState => {
   switch (action.type) {
     case Actions.GET_ALL_ASSETS: {
-      const { assets } = action;
-      console.log('assets', assets);
-      return {
-        ...state,
-        assets,
-        loading: false
-      };
+      const { loading } = action;
+      return { ...state, loading };
+    }
+
+    case Actions.SET_ALL_ASSETS: {
+      const { assets, loading } = action;
+      return { ...state, assets, loading };
     }
 
     case Actions.GET_MARKET_PRICES: {
       const { fetchingMarkets } = action;
-      return {
-        ...state,
-        fetchingMarkets
-      };
+      return { ...state, fetchingMarkets };
     }
 
     case Actions.SET_MARKET_PRICES: {
       const { exchanges, fetchingMarkets } = action;
-      return {
-        ...state,
-        exchanges,
-        fetchingMarkets
-      };
+      return { ...state, exchanges, fetchingMarkets };
     }
 
-    // Adds coins from localStorage
-    // case Actions.ADD_COINS_PORTFOLIO:
-    //   const { coins } = action;
+    case Actions.ADD_COINS_PORTFOLIO:
+      const { assets } = action;
+      return { ...state, portfolio: assets };
 
-    //   return {
-    //     ...state,
-    //     portfolio: coins
-    //   };
+    case Actions.ADD_COIN_PORTFOLIO:
+      const { coin } = action;
+      const { portfolio } = state;
+      updatedPortfolio = calculatePercentage(portfolio, coin);
+      localStorage.setItem(MOON_PORTFOLIO, jsonFormatFromObject(updatedPortfolio));
+      return { ...state, portfolio: updatedPortfolio };
 
-    // case Actions.ADD_COIN_PORTFOLIO:
-    //   const { coin } = action;
-    //   const { portfolio } = state;
-    //   const newPortfolio = calculatePercentage(portfolio, coin);
-    //   const moonPortfolio = arrayToObject(newPortfolio);
-    //   localStorage.setItem('moonPortfolio', JSON.stringify(moonPortfolio));
+    case Actions.ADD_COIN_WATCHLIST:
+      const { watchlist } = state;
+      updatedWatchlist = updateWatchlist(action.coin, watchlist);
+      localStorage.setItem(MOON_WATCHLIST, jsonFormatFromObject(updatedWatchlist));
+      return { ...state, watchlist: updatedWatchlist };
 
-    //   return {
-    //     ...state,
-    //     portfolio: newPortfolio
-    //   };
+    case Actions.ADD_COINS_WATCHLIST:
+      // const { watchlist: savedWatchlist } = state;
+      // updatedWatchlist = updateWatchlist(action.coin, savedWatchlist);
+      // localStorage.setItem(MOON_WATCHLIST, jsonFormatFromObject(updatedWatchlist));
+      // return { ...state, watchlist: updatedWatchlist };
+      const { watchlist: savedWatchlist  } = action;
+      return { ...state, watchlist: savedWatchlist };
 
     // case Actions.REMOVE_COIN_PORTFOLIO:
     //   const filteredPortfolio = state.portfolio.filter(c => c !== action.coin);

@@ -180,10 +180,6 @@ export const supportedAssets = [
     name: 'Verge'
   },
   {
-    currency: 'NPXS',
-    name: 'Pundi X'
-  },
-  {
     currency: 'WAVES',
     name: 'Waves'
   },
@@ -404,6 +400,10 @@ export const supportedAssets = [
     name: 'Theta Token'
   },
   {
+    currency: 'NPXS',
+    name: 'Pundi X'
+  },
+  {
     currency: 'NXT',
     name: 'Nxt'
   },
@@ -573,6 +573,8 @@ export const additionalAssets = [
   {
     availableSupply: '1',
     currency: 'USD',
+    exchange: 'Aggregate',
+    exchange_base: 'USD',
     marketCap: 1,
     name: 'US Dollar',
     price: '1',
@@ -580,6 +582,8 @@ export const additionalAssets = [
   {
     availableSupply: '1',
     currency: 'USDC',
+    exchange: 'Aggregate',
+    exchange_base: 'USD',
     marketCap: 1,
     name: 'USD Coin',
     price: '1',
@@ -587,7 +591,10 @@ export const additionalAssets = [
 ];
 
 export const coinModel = {
+  availableSupply: '1000',
   currency: '',
+  exchange: 'Aggregate',
+  exchange_base: '',
   position: 0,
   marketCap: 0,
   name: '',

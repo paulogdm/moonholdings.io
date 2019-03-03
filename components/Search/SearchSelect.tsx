@@ -1,58 +1,48 @@
 import React from 'react'
-import { bind } from 'decko'
 import * as R from 'ramda'
 
-// components
-import { BlockLoader, Square } from '..'
+import { BlockLoader, SearchSelected, SearchExchanges } from '../../components'
 import { IAsset, IMarketAsset } from '../../shared/types'
-import {
-  SearchSelectContainer, SearchSelectStyle, SearchSelectLoader,
-  SearchSelectAsset, SquareContainer
-} from '../../styles'
+import { SearchSelectLoader } from '../../styles'
 
 interface IProps {
   assets: IAsset[];
   selected: IAsset;
   exchanges: IMarketAsset[]; 
+  aggregate: boolean;
   exchange: string;
   fetching: boolean;
-  exchangeSelect(event: React.FormEvent<HTMLSelectElement>): void;
+  enterPosition(event: React.FormEvent<HTMLInputElement>): void;
+  checkAggregate(event: React.FormEvent<HTMLInputElement>): void;
+  exchangeSelect(market: IMarketAsset): void;
 }
 
 class SearchSelect extends React.Component<IProps> {
   render() {
-    const { selected, exchanges, exchange, fetching } = this.props;
+    const { selected, exchanges, exchange, aggregate, checkAggregate, fetching } = this.props;
+
     const exchangesExist = R.not(R.isEmpty(exchanges));
-  
+    const Loading = () => <SearchSelectLoader><BlockLoader/></SearchSelectLoader>;
+
     return (
       <div>
         { fetching
-          ? <SearchSelectLoader><BlockLoader/></SearchSelectLoader>
-          : exchangesExist ? this.renderSearchSelect(exchange, exchanges) : this.renderSelection(selected) }
+          ? <Loading />
+          : exchangesExist
+            // Display list of supported exchanges
+            ? <SearchExchanges
+                selected={selected}
+                exchange={exchange}
+                exchanges={exchanges}
+                checkAggregate={checkAggregate}
+                aggregate={aggregate}
+                enterPosition={this.props.enterPosition}
+                exchangeSelect={this.props.exchangeSelect}
+              />
+            // If there are no exchanges, display asset with aggregate price data
+            : <SearchSelected selected={selected} /> }
       </div>
     );
-  }
-
-  @bind
-  private renderSearchSelect(exchange: string, exchanges: IMarketAsset[]) {
-    return (<SearchSelectContainer>
-      <h2>Select your exchange</h2>
-      <SearchSelectStyle value={exchange} onChange={this.props.exchangeSelect}>
-        {exchanges.map((exchange, i) => (<option key={i}>{exchange.exchange}</option>))}
-      </SearchSelectStyle>
-    </SearchSelectContainer>)
-  }
-
-  @bind
-  private renderSelection(selected: IAsset) {
-    return (
-      <SearchSelectAsset>
-        <h2>No USD, USDC or USDT based exchanges found, using aggregate exchange data.</h2>
-        <SquareContainer>
-          <Square coin={selected} index={0} inSearch={true} edit={function(){}} />
-        </SquareContainer>
-      </SearchSelectAsset>
-    )
   }
 }
 
