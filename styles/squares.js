@@ -11,7 +11,7 @@ export const SquareShade = styled.section`
   border-right: 1px solid rgba(256, 256, 256, .125);
   border-bottom: 1px solid rgba(0, 0, 0, .125);
   border-left: 1px solid rgba(0, 0, 0, .125);
-`;
+`
 
 export const CoinSquare = styled.section`
   display: inline-block;
@@ -39,22 +39,22 @@ export const CoinSquare = styled.section`
 
   em { font-style: normal; opacity: 0.7 }
   p { font-weight: 200; }
-`;
+`
 
 export const SquareInSearch = styled(CoinSquare)`
   max-width: 200px;
   min-width: 200px;
   max-height: 207px;
   min-height: 207px;
-`;
+`
 
-export const SquareShadeInSearch = styled(SquareShade)`width: 221px; height: 210px;`;
+export const SquareShadeInSearch = styled(SquareShade)`width: 221px; height: 210px;`
 
-export const ListTitle = styled.div`margin-bottom: 0.8rem; width: 100%; height: 1rem;`;
+export const ListTitle = styled.div`margin-bottom: 0.8rem; width: 100%; height: 1rem;`
 
-export const PortfolioTitle = styled(ListTitle)`color: ${props => props.theme.offWhite};`;
+export const PortfolioTitle = styled(ListTitle)`color: ${props => props.theme.offWhite};`
 
-export const WatchlistTitle = styled(ListTitle)`color: ${props => props.theme.brightPurple};`;
+export const WatchlistTitle = styled(ListTitle)`color: ${props => props.theme.brightPurple};`
 
 export const WatchlistSquare = styled(CoinSquare)`
   max-width: 120px;
@@ -62,9 +62,9 @@ export const WatchlistSquare = styled(CoinSquare)`
   max-height: 127px;
   min-height: 127px;
   p { font-size: 0.8rem; }
-`;
+`
 
-export const WatchlistShade = styled(SquareShade)`width: 142px; height: 130px;`;
+export const WatchlistShade = styled(SquareShade)`width: 142px; height: 130px;`
 
 export const EditSquareWrapper = styled.section`
   display: flex;
@@ -72,7 +72,7 @@ export const EditSquareWrapper = styled.section`
   align-items: center;
   position: absolute;
   left: 25%;
-`;
+`
 
 export const EditSquare = styled(CoinSquare)`
   z-index: 12;
@@ -110,12 +110,12 @@ export const EditSquare = styled(CoinSquare)`
     border: 2px solid rgba(87, 56, 92, 0);
     opacity: 1;
   }
-`;
+`
 
 export const EditSquareData = styled.section`
   height: 100%;
   p { margin: 1rem 0 !important; line-height: 1rem; }
-`;
+`
 
 export const EditButtonsContainer = styled.div`
   display: flex;
@@ -130,7 +130,7 @@ export const EditButtonsContainer = styled.div`
     font-size: 1.5rem;
     cursor: pointer;
   }
-`;
+`
 
 export const CoinRow = styled.div`
   display: flex;
@@ -141,6 +141,6 @@ export const CoinRow = styled.div`
   h1 { font-size: 1.5rem; line-height: 0; }
   h4 { line-height: 0.15rem; }
   p { margin: 0; }
-`;
+`
 
-export const CoinRank = styled(CoinRow)`margin-bottom: 0.5rem; border-bottom: none;`;
+export const CoinRank = styled(CoinRow)`margin-bottom: 0.5rem; border-bottom: none;`

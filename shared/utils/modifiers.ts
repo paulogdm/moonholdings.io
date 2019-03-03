@@ -2,8 +2,9 @@ import styles from '../../coinStyles.json'
 import { IAsset, ICoinStyle, IDisableCheck } from '../types'
 import { defaultSquareStyle } from '../models'
 
-export const capitalizeFirstLetter = (word: string) =>
-  word.charAt(0).toUpperCase() + word.slice(1);
+export const capitalizeFirstLetter = (word: string) => {
+  if (word) return word.charAt(0).toUpperCase() + word.slice(1);
+}
 
 // check if k is a key of obj
 function isKeyof<T>(k: keyof any, obj: T): k is keyof T {

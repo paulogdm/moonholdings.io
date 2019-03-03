@@ -16,7 +16,7 @@ export const SearchContainerDiv = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, .125);
   border-left: 1px solid rgba(0, 0, 0, .125);
   background: ${props => props.theme.lightPurple};
-`;
+`
 
 export const SelectedAssetStyle = styled.div`
   padding-left: 1rem;
@@ -117,7 +117,7 @@ export const SearchButtons = styled.section`
 
     &:last-child { margin-bottom: 0; }
   }
-`;
+`
 
 export const SearchSelectContainer = styled.section`
   h2 {
@@ -127,7 +127,7 @@ export const SearchSelectContainer = styled.section`
 
     span { color: ${props => props.theme.apricot}; }
   }
-`;
+`
 
 export const SearchSelectStyle = styled.select`
   margin-top: 0.5rem;
@@ -158,7 +158,7 @@ export const LoaderDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-`;
+`
 
 export const SearchListLoader = styled(LoaderDiv)`width: 330px; height: 300px;`
 
@@ -179,7 +179,7 @@ export const SearchSelectAsset = styled.section`
 
 export const EnterPositionStyle = styled.section`
   h2 { margin-bottom: 1rem; }
-`;
+`
 
 export const AggregateInputDiv = styled.div`
   display: flex;

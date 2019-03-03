@@ -15,6 +15,7 @@ interface IProps {
 export class ExchangeSelect extends React.Component<IProps> {
   render() {
     const { exchanges, disabled } = this.props;
+    console.log('exchanges', exchanges);
 
     return (
       <SearchSelectStyle

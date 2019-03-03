@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { CoinRow } from '../../styles'
-import { numberWithCommas, formatPrice } from '../../shared/utils/math'
+import { nFormatter, numberWithCommas, formatPrice } from '../../shared/utils/math'
 
 interface IProps {
   type: string;
@@ -16,13 +16,18 @@ export const SquareRow = (props: IProps) => {
   const isExchangeRow = type === 'Exchange:';
   const isPosition = type === 'Position:';
   const isAllocation = type === 'Allocation:';
-  const largeNumber = (num: number) => <p>${numberWithCommas(num)}</p>;
+
+  const displayTitle = (isLargeNumber: boolean, num: string | number) => {
+    if (isLargeNumber) {
+      return '$' + numberWithCommas(Math.round(Number(num)));
+    }
+  }
 
   return (
-    <CoinRow>
+    <CoinRow title={displayTitle(isLargeNumber, data)}>
       <p><em>{type}</em></p>
       {isPrice && <p>${priceUSD}</p>}
-      {isLargeNumber && largeNumber(Number(data))}
+      {isLargeNumber && `$${nFormatter(Number(data), 1)}`}
       {isExchangeRow && <p>{data}</p>}
       {isPosition && <p>{data}</p>}
       {isAllocation && <p>{data}%</p>}
