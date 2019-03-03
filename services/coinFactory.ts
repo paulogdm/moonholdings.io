@@ -2,9 +2,10 @@ import * as R from 'ramda'
 import { additionalAssets, supportedAssets } from '../shared/models'
 import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes }
   from '../shared/types'
-import { multiply, roundFloat, round } from '../shared/utils'
+import { arrayToObject, multiply, roundFloat, round } from '../shared/utils'
 import { formatPrice } from '../shared/utils/math'
 import { BASE_CURRENCIES } from '../shared/constants/api'
+import { MOON_PORTFOLIO } from '../shared/constants/copy'
 
 const textMatch = (part: string, str: string) => str.search(part) !== -1;
 
@@ -142,16 +143,20 @@ export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAss
   return Number(assetExchange.price_quote);
 };
 
-// Add coin's percentage of portfolio
+// Add coin's percentage of portfolio.
 export const calculatePercentage = (portfolio: IAsset[], coin: IAsset) => {
   if (coin) {
     portfolio.push(coin);
   }
 
-  const totalValue = portfolio.reduce((acc: number, { value }: IAsset) => acc + value, 0);
+  const totalValue = portfolio.reduce((acc: number, { value }: IAsset) => {
+    const valueAmount = value ? value : 0;
+    return acc + valueAmount;
+  }, 0);
 
   const updatedPortfolio = portfolio.map((c) => {
-    c.percentage = round((c.value / totalValue) * 100);
+    const coinValue = c.value ? c.value : 0;
+    c.percentage = round((coinValue / totalValue) * 100);
     return c;
   });
 
@@ -163,23 +168,39 @@ export const updateWatchlist = (coin: IAsset, watchlist: IAsset[]) => {
   return watchlist.map((c) => c);
 };
 
-export const formatCoinsForPortfolio = (coins: IAsset[], data: IAsset[]) => {
+export const formatCoinsList = (type: string, coins: IAsset[], data: IAsset[]) => {
   return coins.map((coin) => {
-    const updatedCoin = data.filter((asset: IAsset) => coin.currency === asset.currency).pop();
-    const updatedCoinPrice = updatedCoin ? Number(updatedCoin.price) : 1;
+    const availableSupply = coin.availableSupply ? coin.availableSupply : '0';
+    const coinAsset = data.filter((asset: IAsset) => coin.currency === asset.currency).pop();
+    const currency = coin.currency;
+    const exchange = coin.exchange ? coin.exchange : 'Aggregate';
+    const exchange_base = coin.exchange_base ? coin.exchange_base : '';
+    const price = coinAsset ? Number(coinAsset.price) : 1;
+    const percentage = coin.percentage ? coin.percentage : 0;
+    const position = coin.position ? coin.position : 0;
+    const marketCap = multiply(Number(coin.availableSupply), price);
+    const name = coin.name;
+    const value = roundFloat(multiply(position, price), 2);
 
-    return {
-      availableSupply: coin.availableSupply,
-      currency: coin.currency,
-      exchange: coin.exchange ? coin.exchange : 'Aggregate',
-      exchange_base: coin.exchange_base,
-      marketCap: multiply(Number(coin.availableSupply), updatedCoinPrice),
-      name: coin.name,
-      percentage: coin.percentage,
-      price: updatedCoinPrice,
-      position: coin.position,
-      value: roundFloat(multiply(coin.position, updatedCoinPrice), 2)
+    const coinBaseObject = {
+      availableSupply,
+      currency,
+      exchange,
+      marketCap,
+      name,
+      price,
     };
-  });
 
+    // If Portfolio else format asset for Watchlist.
+    return type === MOON_PORTFOLIO ?  {
+      ...coinBaseObject,
+      exchange_base,
+      percentage,
+      position,
+      value,
+    } : coinBaseObject;
+  });
 }
+
+// Formats assets from local storage into IAsset array.
+export const jsonFormatFromObject = (list: IAsset[]) => JSON.stringify(arrayToObject(list));

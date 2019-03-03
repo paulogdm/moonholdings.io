@@ -6,11 +6,12 @@ import {
   Welcome, Astronaut, NomicsLink, PlusButton, Portfolio,
   SquareEditWrapper, Search, BlockLoader, Overlay
 }  from '../../components'
+import { addCoinsPortfolio, addCoinsWatchlist, fetchAllAssets } from '../../actions/assets'
+import { setOverlayState } from '../../actions/board'
 import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
+import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../../shared/constants/copy'
 import { StyledBoard } from '../../styles'
-import { addCoinsPortfolio, fetchAllAssets } from '../../actions/assets'
-import { setOverlayState } from '../../actions/board'
 
 interface IState {
   coin: IAsset;
@@ -26,6 +27,7 @@ interface IProps {
   overlay: boolean;
   fetchingMarkets: boolean;
   addCoinsPortfolio(assets: IAsset[] | {}[]): void;
+  addCoinsWatchlist(assets: IAsset[] | {}[]): void;
   fetchAllAssets(): void;
   setOverlayState(overlay: boolean): void;
 }
@@ -48,13 +50,21 @@ class Board extends React.Component<IProps, IState> {
     this.props.fetchAllAssets();
 
     if (portfolio.length === 0) {
-      const storedPortfolio = JSON.parse(localStorage.getItem('moon_portfolio') || '{}');
+      const savedPortfolio = JSON.parse(localStorage.getItem(MOON_PORTFOLIO) || '{}');
+      const savedWatchlist = JSON.parse(localStorage.getItem(MOON_WATCHLIST) || '{}');
 
-      if (storedPortfolio) {
-        // console.log('storedPortfolio', storedPortfolio);
-        const reconstructedPortfolio = Object.values(storedPortfolio);
+      if (savedPortfolio) {
+        const reconstructedPortfolio = Object.values(savedPortfolio);
         this.props.addCoinsPortfolio(reconstructedPortfolio);
       }
+
+      if (savedWatchlist) {
+        const reconstructedWatchlist = Object.values(savedWatchlist);
+        this.props.addCoinsWatchlist(reconstructedWatchlist);
+      }
+
+      console.log('savedPortfolio', savedPortfolio);
+      console.log('savedWatchlist', savedWatchlist);
     }
   }
 
@@ -118,6 +128,7 @@ class Board extends React.Component<IProps, IState> {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchAllAssets: () => dispatch(fetchAllAssets()),
   addCoinsPortfolio: (assets: IAsset[]) => dispatch(addCoinsPortfolio(assets)),
+  addCoinsWatchlist: (assets: IAsset[]) => dispatch(addCoinsWatchlist(assets)),
   setOverlayState: (overlay: boolean) => dispatch(setOverlayState(overlay))
 });
 

@@ -1,8 +1,10 @@
 import { getPrices, getAvailableSupply, getMarkets } from '../services/api'
-import { fetchAll, combineExchangeData, formatAssets, formatCoinsForPortfolio }
-  from '../services/coinFactory'
-import { IAsset, DispatchAllAssets, DispatchMarketPrices, DispatchAddCoin, DispatchAddCoins, DispatchAddCoinWatch }
-  from '../shared/types'
+import { fetchAll, combineExchangeData, formatAssets, formatCoinsList } from '../services/coinFactory'
+import {
+  IAsset, DispatchAllAssets, DispatchMarketPrices, DispatchAddCoin, DispatchAddCoins,
+  IWatchlistAsset, DispatchAddCoinWatch, DispatchAddCoinsWatch
+} from '../shared/types'
+import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../shared/constants/copy'
 
 // ACTION TYPES
 export const Actions = {
@@ -15,6 +17,7 @@ export const Actions = {
   UPDATE_COIN_PORTFOLIO: 'UPDATE_COIN_PORTFOLIO',
   REMOVE_COIN_PORTFOLIO: 'REMOVE_COIN_PORTFOLIO',
   ADD_COIN_WATCHLIST: 'ADD_COIN_WATCHLIST',
+  ADD_COINS_WATCHLIST: 'ADD_COINS_WATCHLIST',
   REMOVE_COIN_WATCHLIST: 'REMOVE_COIN_WATCHLIST',
 };
 
@@ -61,9 +64,14 @@ const actionAddCoinsPortfolio = (coins: IAsset[]) => ({
 //   coin
 // });
 
-const actionAddCoinWatchlist = (coin: IAsset) => ({
+const actionAddCoinWatchlist = (coin: IWatchlistAsset) => ({
   type: Actions.ADD_COIN_WATCHLIST,
   coin
+});
+
+const actionAddCoinsWatchlist = (watchlist: IWatchlistAsset[]) => ({
+  type: Actions.ADD_COINS_WATCHLIST,
+  watchlist
 });
 
 // ACTIONS
@@ -88,15 +96,28 @@ export const fetchMarketPrices = (asset: string) => (dispatch: DispatchMarketPri
   });
 }
 
-// Fetch the coins form localStorage.
+// Rebuild Portfolio form localStorage.
 export const addCoinsPortfolio = (coins: IAsset[]) => (dispatch: DispatchAddCoins) => {
   return getPrices().then((res) => {
     if (res && res.status === 200) {
-      const portfolioAssets = formatCoinsForPortfolio(coins, res.data);
+      const portfolioAssets = formatCoinsList(MOON_PORTFOLIO, coins, res.data);
       dispatch(actionAddCoinsPortfolio(portfolioAssets));
     }
     else {
       console.error(`addCoinsPortfolio > getPrices request error: ${res}`);
+    }
+  });
+}
+
+// Rebuild Watchlist form localStorage.
+export const addCoinsWatchlist = (coins: IAsset[]) => (dispatch: DispatchAddCoinsWatch) => {
+  return getPrices().then((res) => {
+    if (res && res.status === 200) {
+      const watchlistAssets = formatCoinsList(MOON_WATCHLIST, coins, res.data);
+      dispatch(actionAddCoinsWatchlist(watchlistAssets));
+    }
+    else {
+      console.error(`addCoinsWatchlist > getPrices request error: ${res}`);
     }
   });
 }
@@ -106,7 +127,7 @@ export const addCoinPortfolio = (coin: IAsset) => (dispatch: DispatchAddCoin) =>
   dispatch(actionAddCoinPortfolio(coin));
 };
 
-export const addCoinWatchlist = (coin: IAsset) => (dispatch: DispatchAddCoinWatch) => {
+export const addCoinWatchlist = (coin: IWatchlistAsset) => (dispatch: DispatchAddCoinWatch) => {
   dispatch(actionAddCoinWatchlist(coin));
 };
 

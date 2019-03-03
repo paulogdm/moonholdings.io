@@ -2,14 +2,23 @@ export interface IAsset {
   availableSupply?: string;
   currency: string;
   exchange: string;
-  exchange_base: string;
+  exchange_base?: string;
   marketCap: number;
   name: string;
-  percentage: number;
+  percentage?: number;
   price: number;
-  position: number;
-  value: number;
+  position?: number;
+  value?: number;
   inWatchlist?: boolean;
+}
+
+export interface IWatchlistAsset {
+  availableSupply: string;
+  currency: string;
+  exchange: string;
+  marketCap: number;
+  name: string;
+  price: number;
 }
 
 export interface IMarketAsset {

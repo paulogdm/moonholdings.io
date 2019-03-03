@@ -1,4 +1,4 @@
-import { IAsset, IMarketAsset } from '../../shared/types'
+import { IAsset, IMarketAsset, IWatchlistAsset } from '../../shared/types'
 
 export interface IActions {
   GET_ALL_ASSETS: string;
@@ -10,6 +10,7 @@ export interface IActions {
   UPDATE_COIN_PORTFOLIO: string;
   REMOVE_COIN_PORTFOLIO: string;
   ADD_COIN_WATCHLIST: string;
+  ADD_COINS_WATCHLIST: string;
 }
 
 export interface IAllAssets {
@@ -36,7 +37,12 @@ export interface ICoinPortfolio {
 
 export interface ICoinWatchlist {
   type: IActions['ADD_COIN_WATCHLIST'];
-  coin: IAsset;
+  coin: IWatchlistAsset;
+}
+
+export interface ICoinsWatchlist {
+  type: IActions['ADD_COINS_WATCHLIST'];
+  watchlist: IWatchlistAsset[];
 }
 
 export type DispatchAllAssets = (arg: IAllAssets) => (IAllAssets);
@@ -48,3 +54,5 @@ export type DispatchAddCoin = (arg: ICoinPortfolio) => (ICoinPortfolio);
 export type DispatchAddCoins = (arg: ICoinsPortfolio) => (ICoinsPortfolio);
 
 export type DispatchAddCoinWatch = (arg: ICoinWatchlist) => (ICoinWatchlist);
+
+export type DispatchAddCoinsWatch = (arg: ICoinsWatchlist) => (ICoinsWatchlist);

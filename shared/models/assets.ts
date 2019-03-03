@@ -573,6 +573,8 @@ export const additionalAssets = [
   {
     availableSupply: '1',
     currency: 'USD',
+    exchange: 'Aggregate',
+    exchange_base: 'USD',
     marketCap: 1,
     name: 'US Dollar',
     price: '1',
@@ -580,6 +582,8 @@ export const additionalAssets = [
   {
     availableSupply: '1',
     currency: 'USDC',
+    exchange: 'Aggregate',
+    exchange_base: 'USD',
     marketCap: 1,
     name: 'USD Coin',
     price: '1',
@@ -590,6 +594,7 @@ export const coinModel = {
   availableSupply: '1000',
   currency: '',
   exchange: 'Aggregate',
+  exchange_base: '',
   position: 0,
   marketCap: 0,
   name: '',
