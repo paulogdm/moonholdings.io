@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { moonHoldings } from '../../shared/models'
+import { MOON_HOLDINGS } from '../../shared/constants/copy'
 import { AstronautContainer, Heading } from '../../styles'
 
 interface LogoCheck {
@@ -9,7 +9,7 @@ interface LogoCheck {
 
 export default (showLogo: LogoCheck) =>  (
   <AstronautContainer>
-    { showLogo.showLogo === true ? <Heading>{moonHoldings}</Heading> : null }
+    { showLogo.showLogo === true ? <Heading>{MOON_HOLDINGS}</Heading> : null }
     <img src="static/astronaut.png" alt="astronaut" />
   </AstronautContainer>
 );

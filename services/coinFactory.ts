@@ -1,14 +1,19 @@
-/* eslint-disable no-param-reassign */
 import * as R from 'ramda'
 import { additionalAssets, supportedAssets } from '../shared/models'
-import { IAssetResponse, IResponseConfig } from '../shared/types'
-import { multiply, roundFloat } from '../shared/utils'
+import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
+import { arrayToObject, multiply, roundFloat, round } from '../shared/utils'
+import { formatPrice } from '../shared/utils/math'
+import { BASE_CURRENCIES } from '../shared/constants/api'
+import { MOON_PORTFOLIO } from '../shared/constants/copy'
 
 const textMatch = (part: string, str: string) => str.search(part) !== -1;
 
 //@ TODO create Interfaces for array types:
 const mergeByCurrency = (matchArray: any[], nextArray: any[]) =>
   matchArray.map(m => Object.assign({}, m, nextArray.find(n => n.currency === m.currency)));
+
+// Combines Promises and returns responses together.
+export const fetchAll = (array: any[]) => Promise.all(array);
 
 // Return coins that match text | search by currency symbol or name.
 export const findAsset = (txt: string, assets: any[]) => {
@@ -112,8 +117,89 @@ export const formatAssets = (responses: IResponseConfig[]) => {
   });
 
   const sortedAssets = assetsWithMarketCap.sort((a, b) => b.marketCap - a.marketCap);
-
   additionalAssets.map((asset: any) => sortedAssets.push(asset));
-
   return sortedAssets;
 };
+
+export const combineExchangeData = (asset: string, { marketUSD, marketUSDC, marketUSDT }: IGetMarketsRes) => {
+  const combinedMarkets = marketUSD.concat(marketUSDC).concat(marketUSDT);
+  
+  const filteredMarkets =
+    R.not(R.any(R.equals(asset))(BASE_CURRENCIES))
+      ? combinedMarkets.filter((marketAsset: IMarketAsset) => marketAsset.base === asset)
+      : [];
+
+  return filteredMarkets.map((market: IMarketAsset) => {
+    return {
+      ...market,
+      price_quote: formatPrice(market.price_quote)
+    }
+  });
+};
+
+export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAsset[]) => {
+  const assetExchange = exchanges.filter(({ exchange }) => exchange === selectedExchange.toLowerCase())[0];
+  return Number(assetExchange.price_quote);
+};
+
+// Add coin's percentage of portfolio.
+export const calculatePercentage = (portfolio: IAsset[], coin: IAsset) => {
+  if (coin) {
+    portfolio.push(coin);
+  }
+
+  const totalValue = portfolio.reduce((acc: number, { value }: IAsset) => {
+    const valueAmount = value ? value : 0;
+    return acc + valueAmount;
+  }, 0);
+
+  const updatedPortfolio = portfolio.map((c) => {
+    const coinValue = c.value ? c.value : 0;
+    c.percentage = round((coinValue / totalValue) * 100);
+    return c;
+  });
+
+  return updatedPortfolio;
+};
+
+export const updateWatchlist = (coin: IAsset, watchlist: IAsset[]) => {
+  watchlist.push(coin);
+  return watchlist.map((c) => c);
+};
+
+export const formatCoinsList = (type: string, coins: IAsset[], data: IAsset[]) => {
+  return coins.map((coin) => {
+    const availableSupply = coin.availableSupply ? coin.availableSupply : '0';
+    const coinAsset = data.filter((asset: IAsset) => coin.currency === asset.currency).pop();
+    const currency = coin.currency;
+    const exchange = coin.exchange ? coin.exchange : 'Aggregate';
+    const exchange_base = coin.exchange_base ? coin.exchange_base : '';
+    const price = coinAsset ? Number(coinAsset.price) : 1;
+    const percentage = coin.percentage ? coin.percentage : 0;
+    const position = coin.position ? coin.position : 0;
+    const marketCap = multiply(Number(coin.availableSupply), price);
+    const name = coin.name;
+    const value = roundFloat(multiply(position, price), 2);
+
+    const coinBaseObject = {
+      availableSupply,
+      currency,
+      exchange,
+      marketCap,
+      name,
+      price,
+    };
+
+    // If Portfolio else format asset for Watchlist.
+    return type === MOON_PORTFOLIO ?  {
+      ...coinBaseObject,
+      exchange_base,
+      percentage,
+      position,
+      value,
+    } : coinBaseObject;
+  });
+}
+
+// Formats assets from local storage into IAsset array.
+export const jsonFormatFromObject = (list: IAsset[]) => JSON.stringify(arrayToObject(list));

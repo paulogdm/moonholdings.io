@@ -6,7 +6,7 @@ export const SearchContainerDiv = styled.div`
   flex-direction: column;
   justify-content: space-between;
   position: absolute;
-  bottom: 180px;
+  top: 10px;
   left: 30px;
   padding: 1.5rem;
   width: 400px;
@@ -16,7 +16,7 @@ export const SearchContainerDiv = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, .125);
   border-left: 1px solid rgba(0, 0, 0, .125);
   background: ${props => props.theme.lightPurple};
-`;
+`
 
 export const SelectedAssetStyle = styled.div`
   padding-left: 1rem;
@@ -36,16 +36,6 @@ export const SelectedAssetStyle = styled.div`
     margin: 0.7rem 1rem 0 0;
     height: 1.5rem;
     font-size: 0.8rem;
-    color: ${props => props.theme.grey};
-    border: 1px solid ${props => props.theme.offWhite};
-    background: ${props => props.theme.lightGrey};
-    border: none;
-
-    &:hover {  
-      color: #fff;
-      border: 1px solid ${props => props.theme.midGray};
-      background: ${props => props.theme.grey};
-    }
   }
 `
 
@@ -58,6 +48,8 @@ export const SearchSection = styled.section`
     color: ${props => props.theme.darkPurple};
     background: ${props => props.theme.offWhite};
     border: 1px solid ${props => props.theme.darkPurple};
+    -webkit-user-select: none;
+    user-select: none;
     outline-width: 0;
 
     &::placeholder { color: ${props => props.theme.darkPurple}; }
@@ -122,40 +114,20 @@ export const SearchButtons = styled.section`
     margin-bottom: 1rem;
     height: 4rem;
     font-size: 1.2rem;
-    color: ${props => props.theme.apricot};
-    border: 1px solid ${props => props.theme.brightPurple};
-    background: ${props => props.theme.darkPurple};
-    transition: ${props => props.theme.transitionAll};
-    outline-width: 0;
 
-    &:hover {
-      color: ${props => props.theme.darkPurple};
-      border: 1px solid ${props => props.theme.offWhite};
-      background: ${props => props.theme.apricot};
-    }
-
-    &:last-child {
-      margin-bottom: 0;
-      color: ${props => props.theme.grey};
-      border: 1px solid ${props => props.theme.offWhite};
-      background: ${props => props.theme.lightGrey};
-
-      &:hover {  
-        color: #fff;
-        border: 1px solid ${props => props.theme.midGray};
-        background: ${props => props.theme.grey};
-      }
-    }
+    &:last-child { margin-bottom: 0; }
   }
-`;
+`
 
 export const SearchSelectContainer = styled.section`
   h2 {
     margin: 1rem 0 0 0;
     font-size: 1rem;
     color: ${props => props.theme.offWhite};
+
+    span { color: ${props => props.theme.apricot}; }
   }
-`;
+`
 
 export const SearchSelectStyle = styled.select`
   margin-top: 0.5rem;
@@ -167,26 +139,33 @@ export const SearchSelectStyle = styled.select`
   border: 1px solid ${props => props.theme.darkPurple};
   background: ${props => props.theme.brightPurple};
   cursor: pointer;
+
+  option {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    color: ${props => props.theme.lightGrey};
+    border: 1px solid ${props => props.theme.midGray};
+    background: ${props => props.theme.grey};
+    cursor: not-allowed;
+  }
 `
 
 export const LoaderDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-`;
-
-export const SearchListLoader = styled(LoaderDiv)`
-  width: 330px;
-  height: 300px;
 `
 
-export const SearchSelectLoader = styled(LoaderDiv)`
-  width: 350px;
-  height: 300px;
-`
-export const SquareContainer = styled.div`
-  width: 245px;
-`
+export const SearchListLoader = styled(LoaderDiv)`width: 330px; height: 300px;`
+
+export const SearchSelectLoader = styled(LoaderDiv)`width: 350px; height: 300px;`
+
+export const SquareContainer = styled.div`width: 245px;`
+
 export const SearchSelectAsset = styled.section`
   h2 { margin: 1.5rem 0; font-size: 1rem; }
 
@@ -194,7 +173,29 @@ export const SearchSelectAsset = styled.section`
     margin-left: 0;
     list-style: none;
     font-size: 1.2rem;
-
     &:first-child { font-size: 1.5rem; }
   }
+`
+
+export const EnterPositionStyle = styled.section`
+  h2 { margin-bottom: 1rem; }
+`
+
+export const AggregateInputDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  input {
+    margin: 1rem 0.5rem 0 0;
+    -webkit-appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    transition: background 200ms ease-in-out;
+
+    &:checked { background: ${props => props.theme.brightPurple}; }
+  }
+
+  p { line-height: 2rem; }
 `

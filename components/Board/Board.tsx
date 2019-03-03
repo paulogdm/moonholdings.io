@@ -3,17 +3,16 @@ import { connect } from 'react-redux'
 import { bind } from 'decko'
 
 import {
-  Welcome, Astronaut, NomicsLink, PlusButton,
-  Portfolio, SquareEdit, Search, Overlay
-} from '../' // components
+  Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Square, Search, BlockLoader, Overlay
+}  from '../../components'
+import { addCoinsPortfolio, addCoinsWatchlist, fetchAllAssets } from '../../actions/assets'
+import { setOverlayState } from '../../actions/board'
 import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
-import { StyledBoard, EditSquareWrapper } from '../../styles'
-import { fetchAllAssets } from '../../actions/assets'
-import { setOverlayState } from '../../actions/board'
+import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../../shared/constants/copy'
+import { StyledBoard, PortfolioContainer } from '../../styles'
 
 interface IState {
-  portfolio: IAsset[];
   coin: IAsset;
   edit: boolean;
   search: boolean;
@@ -21,113 +20,23 @@ interface IState {
 
 interface IProps {
   assets: IAsset[];
+  portfolio: IAsset[];
+  watchlist: IAsset[];
   exchanges: IMarketAsset[];
   loading: boolean;
   overlay: boolean;
   fetchingMarkets: boolean;
+  addCoinsPortfolio(assets: IAsset[] | {}[]): void;
+  addCoinsWatchlist(assets: IAsset[] | {}[]): void;
   fetchAllAssets(): void;
   setOverlayState(overlay: boolean): void;
 }
-
-//@TODO to remove...
-const tempPortfolio = [
-  {
-    position: 2.46781018,
-    currency: 'BTC',
-    marketCap: 63636922279.28325,
-    name: 'Bitcoin',
-    percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
-  },
-  {
-    position: 2.46781018,
-    currency: 'DCR',
-    marketCap: 63636922279.28325,
-    name: 'Decred',
-    percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
-  },
-  {
-    position: 2.46781018,
-    currency: 'ETH',
-    marketCap: 63636922279.28325,
-    name: 'Ethereum',
-    percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
-  },
-  {
-    position: 2.46781018,
-    currency: 'BNB',
-    marketCap: 63636922279.28325,
-    name: 'Binance',
-    percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
-  },
-  {
-    position: 2.46781018,
-    currency: 'LTC',
-    marketCap: 63636922279.28325,
-    name: 'Litecoin',
-    percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
-  },
-  {
-    position: 2.46781018,
-    currency: 'LSK',
-    marketCap: 63636922279.28325,
-    name: 'Lisk',
-    percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
-  },{
-    position: 2.46781018,
-    currency: 'ZRX',
-    marketCap: 63636922279.28325,
-    name: '0xProject',
-    percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
-  },
-  {
-    position: 2.46781018,
-    currency: 'MKR',
-    marketCap: 63636922279.28325,
-    name: 'Maker',
-    percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
-  },
-  {
-    position: 2.46781018,
-    currency: 'USDT',
-    marketCap: 63636922279.28325,
-    name: 'Tether',
-    percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
-  },
-  {
-    position: 2.46781018,
-    currency: 'NANO',
-    marketCap: 63636922279.28325,
-    name: 'Nano',
-    percentage: 66.4,
-    price: 3637.33607,
-    value: 8976.25,
-  }
-]
 
 class Board extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
     this.state = {
-      portfolio: tempPortfolio,
       coin: coinModel,
       edit: false,
       search: false
@@ -136,45 +45,56 @@ class Board extends React.Component<IProps, IState> {
 
   componentDidMount() {
     const { localStorage } = window;
-    const { portfolio } = this.state;
+    const { portfolio } = this.props;
 
     this.props.fetchAllAssets();
 
     if (portfolio.length === 0) {
-      const storedPortfolio = JSON.parse(localStorage.getItem('moonPortfolio') || '{}');
+      const savedPortfolio = JSON.parse(localStorage.getItem(MOON_PORTFOLIO) || '{}');
+      const savedWatchlist = JSON.parse(localStorage.getItem(MOON_WATCHLIST) || '{}');
 
-      if (storedPortfolio) {
-        const reconstructedPortfolio = Object.values(storedPortfolio);
-        this.props.fetchAllAssets();
-        // this.props.addCoins(reconstructedPortfolio);
+      if (savedPortfolio) {
+        const reconstructedPortfolio = Object.values(savedPortfolio);
+        this.props.addCoinsPortfolio(reconstructedPortfolio);
+      }
+
+      if (savedWatchlist) {
+        console.log('savedWatchlist', savedWatchlist);
+        const reconstructedWatchlist = Object.values(savedWatchlist);
+        this.props.addCoinsWatchlist(reconstructedWatchlist);
       }
     }
   }
 
   render() {
-    const { assets, overlay, exchanges, fetchingMarkets } = this.props;
-    const { coin, edit, portfolio, search } = this.state;
+    const { assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist } = this.props;
+    const { coin, edit, search } = this.state;
     const hasPortfolio = portfolio.length > 0;
 
     return (
-      <div>
-        { edit && this.renderSquareEdit(coin) }
+      <PortfolioContainer>
+        { edit &&
+          <SquareEditWrapper
+            coin={coin}
+            portfolio={portfolio}
+            toggle={this.toggleSquareEdit}
+          /> }
         { search &&
           <Search
             assets={assets}
             exchanges={exchanges}
             cancel={this.handleOverlayClick}
             fetching={fetchingMarkets}
-          />}
-        { overlay && <Overlay handleClick={this.handleOverlayClick} /> }
+          /> }
+        { overlay && <Overlay handleClick={this.handleOverlayClick}/> }
         <StyledBoard>
-          { !hasPortfolio && <Welcome /> }
-          <Portfolio coins={portfolio} edit={this.toggleSquareEdit} />
-          <PlusButton toggleSearch={this.handleOnSearch} />
-          <NomicsLink />
-          <Astronaut showLogo={hasPortfolio} />
+          { loading ? <BlockLoader /> : !hasPortfolio ? <Welcome/>
+            : <Portfolio portfolio={portfolio} watchlist={watchlist} edit={this.toggleSquareEdit}/> }
+          <PlusButton toggleSearch={this.handleOnSearch}/>
+          <NomicsLink/>
+          <Astronaut showLogo={hasPortfolio}/>
         </StyledBoard>
-      </div>
+      </PortfolioContainer>
     );
   }
 
@@ -190,16 +110,7 @@ class Board extends React.Component<IProps, IState> {
       this.setState({ coin, edit: toggle }) :
       this.setState({ edit: toggle });
  
-    this.props.setOverlayState(true);
-  }
-
-  @bind
-  private renderSquareEdit(coin: IAsset) {
-    return (
-      <EditSquareWrapper>
-        <SquareEdit coin={coin} toggle={this.toggleSquareEdit} />
-      </EditSquareWrapper>
-    );
+    this.props.setOverlayState(toggle);
   }
 
   @bind
@@ -213,12 +124,15 @@ class Board extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = (dispatch: any) => ({
   fetchAllAssets: () => dispatch(fetchAllAssets()),
+  addCoinsPortfolio: (assets: IAsset[]) => dispatch(addCoinsPortfolio(assets)),
+  addCoinsWatchlist: (assets: IAsset[]) => dispatch(addCoinsWatchlist(assets)),
   setOverlayState: (overlay: boolean) => dispatch(setOverlayState(overlay))
 });
 
 const mapStateToProps = (state: IinitialState) => ({
   assets: state.AssetsReducer.assets,
   portfolio: state.AssetsReducer.portfolio,
+  watchlist: state.AssetsReducer.watchlist,
   exchanges: state.AssetsReducer.exchanges,
   loading: state.AssetsReducer.loading,
   fetchingMarkets: state.AssetsReducer.fetchingMarkets,

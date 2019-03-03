@@ -2,17 +2,15 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bind } from 'decko'
 
+import { SquareRow } from '../../components'
 // import { addCoin, updateCoin, removeCoin } from '../../actions/coins';
 import { IAsset } from '../../shared/types'
-import { coinHasLightBg, setStyle, numberWithCommas, round, rounder } from '../../shared/utils'
+import { styleModifier, setStyle, numberWithCommas, round, rounder } from '../../shared/utils'
 import { EditSquare, EditSquareData, EditButtonsContainer } from '../../styles'
-
-const styleModifier = (id: string) => (coinHasLightBg(id) ? 'light-bg' : '');
-
-const renderInstructions = (inPortfolio: boolean) => (inPortfolio ? 'Edit' : 'Enter');
 
 interface IProps {
   coin: IAsset;
+  portfolio: IAsset[];
   toggle(toggle: boolean, coin?: IAsset): void;
 }
 
@@ -21,8 +19,6 @@ interface IState {
   price: number;
   balance: number;
   value: number;
-  allocation: number;
-  portfolio: IAsset[];
   inPortfolio: boolean;
 }
 
@@ -30,9 +26,6 @@ class SquareEdit extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    // @TODO wire up redux portfolio into state.
-    // const { coin, moon } = this.props;
-    // const { portfolio } = moon;
     const { coin } = this.props;
     const { price } = coin;
     const value = coin.position !== undefined ? round(coin.position * price) : 0;
@@ -42,17 +35,15 @@ class SquareEdit extends React.Component<IProps, IState> {
       price,
       balance: 0,
       value,
-      // portfolio,
-      portfolio: [],
-      allocation: 0,
       inPortfolio: false
     };
   }
 
   componentWillMount() {
-    const { coin, balance: stateBalance } = this.state;
-    const { portfolio } = this.state;
-    const inPortfolio = portfolio.filter(c => c.currency === coin.currency);
+    const { coin, portfolio } = this.props;
+    const { balance: stateBalance } = this.state;
+
+    const inPortfolio = portfolio && portfolio.filter(c => c.currency === coin.currency);
     const portCoin = inPortfolio[0] ? inPortfolio[0] : coin;
     const balance = portCoin.position ? portCoin.position : stateBalance;
 
@@ -63,26 +54,20 @@ class SquareEdit extends React.Component<IProps, IState> {
     });
   }
 
-  renderSaveButton() {
-    const isDisabled = this.state.balance <= 0;
-    return (<button onClick={this.handleSave} disabled={isDisabled}>Save</button>);
-  }
-
-  renderRemoveButton() {
-    return (<button onClick={this.handleRemove}>Remove</button>);
-  }
-
-  renderCancelButton() {
-    return (<button onClick={() => this.props.toggle(false)}>Cancel</button>);
-  }
-
   render() {
-    const { coin, value, inPortfolio } = this.state;
-    const { currency, price } = coin;
+    const { coin, balance, value, inPortfolio } = this.state;
+    const { currency, exchange, percentage, position, price } = coin;
+
+    const SaveButton = () => <button onClick={this.handleSave} disabled={balance <= 0}>Save</button>;
+    const RemoveButton = () => <button onClick={this.handleRemove}>Remove</button>;
+    const CancelButton = () => <button onClick={() => this.props.toggle(false)}>Cancel</button>;
 
     return (
       <EditSquare className={styleModifier(currency)} style={setStyle(currency)}>
-        <h2 style={setStyle(currency)}>{renderInstructions(inPortfolio)} your position below</h2>
+        <header>
+          <h2>{currency}</h2>
+          <h3 style={setStyle(currency)}>Edit your position below</h3>
+        </header>
         <input
           type="number"
           placeholder="0"
@@ -91,14 +76,16 @@ class SquareEdit extends React.Component<IProps, IState> {
           onChange={this.handleChange}
         />
         <EditSquareData>
-          <h3>{currency}</h3>
-          <p>Price: ${round(price)} </p>
-          <p>Value: ${numberWithCommas(value)} </p>
-          <p>Allocation: ${numberWithCommas(value)} </p>
+          <SquareRow type={'Price:'} data={price}/>
+          <SquareRow type={'Exchange:'} data={exchange}/>
+          <SquareRow type={'Position:'} data={position}/>
+          <SquareRow type={'Allocation:'} data={percentage}/>
+          <SquareRow type={'Value:'} data={value}/>
         </EditSquareData>
         <EditButtonsContainer>
-          {this.renderSaveButton()}
-          {inPortfolio ? this.renderRemoveButton() : this.renderCancelButton()}
+          <SaveButton/>
+          {inPortfolio && <RemoveButton/>}
+          <CancelButton/>
         </EditButtonsContainer>
       </EditSquare>
     );
@@ -138,22 +125,21 @@ class SquareEdit extends React.Component<IProps, IState> {
     const updatedCoin = Object.assign(coin);
     updatedCoin.balance = balance;
     updatedCoin.value = value;
-    console.log('updateCoin');
+    console.log('updateCoin', coin, value);
     // this.props.updateCoin(updatedCoin);
   }
 
   @bind
   private handleSave() {
     const { coin, balance, inPortfolio } = this.state;
-    console.log('handleSave');
+    console.log('handleSave', coin);
     // inPortfolio ? this.updateCoin(coin, balance) : this.addCoin(coin, balance);
     // this.props.toggle(false);
   }
 
-  @bind
   @bind handleRemove() {
     const { coin } = this.state;
-    console.log('handleRemove');
+    console.log('handleRemove', coin);
     // this.props.removeCoin(coin);
     // this.props.toggle(false);
   }
@@ -165,10 +151,10 @@ const mapDispatchToProps = (dispatch: any) => ({
   // removeCoin: (...args) => dispatch(removeCoin(...args))
 });
 
-const mapStateToProps = (state: { portfolio: IAsset[] }) => ({
-  portfolio: state.portfolio
-});
+// const mapStateToProps = (state: IInitState) => ({
+//   portfolio: AssetsReducer.portfolio
+// });
 
 export const SquareEditJest = SquareEdit;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SquareEdit);
+export default connect(null, mapDispatchToProps)(SquareEdit);

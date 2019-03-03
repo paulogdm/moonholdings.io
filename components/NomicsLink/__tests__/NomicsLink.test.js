@@ -1,10 +1,9 @@
 import React from 'react'
-import Head from 'next/head'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 
 import NomicsLink, { Link } from '../NomicsLink'
-import { nomicsLink } from '../../../shared/models'
+import { NOMICS_LINK } from '../../../shared/constants/copy'
 
 describe('<NomicsLink /> component', () => {
   describe('rendering', () => {
@@ -14,14 +13,14 @@ describe('<NomicsLink /> component', () => {
       expect(tree).toMatchSnapshot();
       expect(wrapper).toHaveLength(1);
       expect(wrapper.contains(
-        <Link>Powered by <a href={nomicsLink} target="blank">Nomics APIs.</a></Link>
+        <Link>Powered by <a href={NOMICS_LINK} target="blank">Nomics APIs.</a></Link>
       )).toEqual(true);
     });
   });
 
   describe('The Nomics API link', () => {
     it('should be correct', () => {
-      expect(nomicsLink).toEqual("https://nomics.com/");
+      expect(NOMICS_LINK).toEqual("https://nomics.com/");
     });
   });
 });

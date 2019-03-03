@@ -13,6 +13,6 @@ export default class PlusButton extends React.PureComponent<IProps> {
         <span>+</span>
         <h1>Add Asset</h1>
       </PlusButtonStyle>
-      )
+    );
   }
 }

@@ -1,3 +1,5 @@
+import { IMarketAsset } from './'
+
 export interface IAssetResponse {
   currency: boolean;
   price?: string;
@@ -16,3 +18,13 @@ export interface IResponseConfig {
   status: number;
   statusText: string;
 };
+
+export interface IGetMarketsRes {
+  marketUSD: IMarketAsset[];
+  marketUSDC: IMarketAsset[];
+  marketUSDT: IMarketAsset[];
+}
+
+export interface IMarketRes {
+  [key: string]: IMarketAsset[];
+}

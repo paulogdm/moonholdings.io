@@ -1,7 +1,6 @@
 import React from 'react'
 
-// components
-import { BlockLoader } from '..'
+import { BlockLoader } from '../../components'
 import { IAsset } from '../../shared/types'
 import { SearchListStyle, SearchListLoader } from '../../styles'
 import { numberWithCommas } from '../../shared/utils/math'
