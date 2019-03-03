@@ -47,13 +47,7 @@ class Search extends React.Component<IProps, IState> {
   componentDidUpdate() {
     const { assets } = this.props;
     const { saved } = this.state;
-
-    if (saved.length === 0) {
-      this.setState({
-        searchList: assets,
-        saved: assets
-      });
-    }
+    if (saved.length === 0) this.setState({ searchList: assets, saved: assets });
   }
 
   render() {

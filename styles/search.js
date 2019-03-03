@@ -6,7 +6,7 @@ export const SearchContainerDiv = styled.div`
   flex-direction: column;
   justify-content: space-between;
   position: absolute;
-  bottom: 180px;
+  top: 10px;
   left: 30px;
   padding: 1.5rem;
   width: 400px;
@@ -160,15 +160,10 @@ export const LoaderDiv = styled.div`
   justify-content: space-around;
 `;
 
-export const SearchListLoader = styled(LoaderDiv)`
-  width: 330px;
-  height: 300px;
-`
+export const SearchListLoader = styled(LoaderDiv)`width: 330px; height: 300px;`
 
-export const SearchSelectLoader = styled(LoaderDiv)`
-  width: 350px;
-  height: 300px;
-`
+export const SearchSelectLoader = styled(LoaderDiv)`width: 350px; height: 300px;`
+
 export const SquareContainer = styled.div`width: 245px;`
 
 export const SearchSelectAsset = styled.section`
@@ -178,7 +173,6 @@ export const SearchSelectAsset = styled.section`
     margin-left: 0;
     list-style: none;
     font-size: 1.2rem;
-
     &:first-child { font-size: 1.5rem; }
   }
 `
@@ -200,12 +194,8 @@ export const AggregateInputDiv = styled.div`
     border-radius: 5px;
     transition: background 200ms ease-in-out;
 
-    &:checked {
-      background: ${props => props.theme.brightPurple};
-    }
+    &:checked { background: ${props => props.theme.brightPurple}; }
   }
 
-  p {
-    line-height: 2rem;
-  }
+  p { line-height: 2rem; }
 `

@@ -125,14 +125,14 @@ class SquareEdit extends React.Component<IProps, IState> {
     const updatedCoin = Object.assign(coin);
     updatedCoin.balance = balance;
     updatedCoin.value = value;
-    console.log('updateCoin');
+    console.log('updateCoin', coin, value);
     // this.props.updateCoin(updatedCoin);
   }
 
   @bind
   private handleSave() {
     const { coin, balance, inPortfolio } = this.state;
-    console.log('handleSave');
+    console.log('handleSave', coin);
     // inPortfolio ? this.updateCoin(coin, balance) : this.addCoin(coin, balance);
     // this.props.toggle(false);
   }
