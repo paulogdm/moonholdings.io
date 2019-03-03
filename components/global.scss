@@ -4,6 +4,7 @@ html {
   height: 100%;
   box-sizing: border-box;
   font-size: 16px;
+  background: '#8f6894';
 }
 
 *, *:before, *:after { box-sizing: inherit; }
@@ -11,10 +12,12 @@ html {
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
   font-family: 'Abel', sans-serif;
-  background: -moz-linear-gradient(-45deg,#3e1f43 0,#8f6894 100%);
-  background: -webkit-linear-gradient(-45deg,#3e1f43,#8f6894);
-  background: linear-gradient(135deg,#3e1f43,#8f6894);
+  background-repeat: no-repeat;
+  background: -moz-linear-gradient(#3e1f43,#8f6894 100%);
+  background: -webkit-linear-gradient(#3e1f43,#8f6894);
+  background: linear-gradient(#3e1f43,#8f6894);
 }
 
 input[type=number]::-webkit-inner-spin-button, 
@@ -25,6 +28,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 ul { padding: 0; }
 
+a,
 button,
 input {
   outline-width: 0;

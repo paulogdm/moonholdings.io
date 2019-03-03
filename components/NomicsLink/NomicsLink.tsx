@@ -4,19 +4,16 @@ import styled from 'styled-components'
 import { NOMICS_LINK } from '../../shared/constants/copy'
 
 export const Link = styled.p`
-  position: absolute;
+  position: fixed;
   z-index: 10;
   bottom: 0.4rem;
   right: 300px;
   width: 100%;
   font-size: 1rem;
   text-align: right;
-  cursor: pointer;
 
   a {
     color: ${(props) => props.theme.apricot};
-    cursor: pointer;
-
     &:hover { color: ${(props) => props.theme.offWhite}; }
   }
 `;

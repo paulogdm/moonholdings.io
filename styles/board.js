@@ -3,6 +3,7 @@ import { FadeIn } from './animations'
 
 export const StyledBoard = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin: 0;

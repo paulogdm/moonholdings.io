@@ -3,15 +3,14 @@ import { connect } from 'react-redux'
 import { bind } from 'decko'
 
 import {
-  Welcome, Astronaut, NomicsLink, PlusButton, Portfolio,
-  SquareEditWrapper, Search, BlockLoader, Overlay
+  Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Square, Search, BlockLoader, Overlay
 }  from '../../components'
 import { addCoinsPortfolio, addCoinsWatchlist, fetchAllAssets } from '../../actions/assets'
 import { setOverlayState } from '../../actions/board'
 import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../../shared/constants/copy'
-import { StyledBoard } from '../../styles'
+import { StyledBoard, PortfolioContainer } from '../../styles'
 
 interface IState {
   coin: IAsset;
@@ -22,6 +21,7 @@ interface IState {
 interface IProps {
   assets: IAsset[];
   portfolio: IAsset[];
+  watchlist: IAsset[];
   exchanges: IMarketAsset[];
   loading: boolean;
   overlay: boolean;
@@ -59,22 +59,20 @@ class Board extends React.Component<IProps, IState> {
       }
 
       if (savedWatchlist) {
+        console.log('savedWatchlist', savedWatchlist);
         const reconstructedWatchlist = Object.values(savedWatchlist);
         this.props.addCoinsWatchlist(reconstructedWatchlist);
       }
-
-      console.log('savedPortfolio', savedPortfolio);
-      console.log('savedWatchlist', savedWatchlist);
     }
   }
 
   render() {
-    const { assets, portfolio, loading, overlay, exchanges, fetchingMarkets } = this.props;
+    const { assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist } = this.props;
     const { coin, edit, search } = this.state;
     const hasPortfolio = portfolio.length > 0;
 
     return (
-      <div>
+      <PortfolioContainer>
         { edit &&
           <SquareEditWrapper
             coin={coin}
@@ -88,16 +86,15 @@ class Board extends React.Component<IProps, IState> {
             cancel={this.handleOverlayClick}
             fetching={fetchingMarkets}
           /> }
-        { overlay && <Overlay handleClick={this.handleOverlayClick} /> }
+        { overlay && <Overlay handleClick={this.handleOverlayClick}/> }
         <StyledBoard>
-          { loading ? <BlockLoader /> : !hasPortfolio ? <Welcome />
-            : <Portfolio coins={portfolio} edit={this.toggleSquareEdit} />
-          }
-          <PlusButton toggleSearch={this.handleOnSearch} />
-          <NomicsLink />
-          <Astronaut showLogo={hasPortfolio} />
+          { loading ? <BlockLoader /> : !hasPortfolio ? <Welcome/>
+            : <Portfolio portfolio={portfolio} watchlist={watchlist} edit={this.toggleSquareEdit}/> }
+          <PlusButton toggleSearch={this.handleOnSearch}/>
+          <NomicsLink/>
+          <Astronaut showLogo={hasPortfolio}/>
         </StyledBoard>
-      </div>
+      </PortfolioContainer>
     );
   }
 
@@ -135,6 +132,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 const mapStateToProps = (state: IinitialState) => ({
   assets: state.AssetsReducer.assets,
   portfolio: state.AssetsReducer.portfolio,
+  watchlist: state.AssetsReducer.watchlist,
   exchanges: state.AssetsReducer.exchanges,
   loading: state.AssetsReducer.loading,
   fetchingMarkets: state.AssetsReducer.fetchingMarkets,

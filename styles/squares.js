@@ -48,24 +48,37 @@ export const SquareInSearch = styled(CoinSquare)`
   min-height: 207px;
 `;
 
-export const SquareShadeInSearch = styled(SquareShade)`
-  width: 221px;
-  height: 210px;
-`
+export const SquareShadeInSearch = styled(SquareShade)`width: 221px; height: 210px;`;
+
+export const ListTitle = styled.div`margin-bottom: 0.8rem; width: 100%; height: 1rem;`;
+
+export const PortfolioTitle = styled(ListTitle)`color: ${props => props.theme.offWhite};`;
+
+export const WatchlistTitle = styled(ListTitle)`color: ${props => props.theme.brightPurple};`;
+
+export const WatchlistSquare = styled(CoinSquare)`
+  max-width: 120px;
+  min-width: 120px;
+  max-height: 127px;
+  min-height: 127px;
+  p { font-size: 0.8rem; }
+`;
+
+export const WatchlistShade = styled(SquareShade)`width: 142px; height: 130px;`;
 
 export const EditSquareWrapper = styled.section`
   display: flex;
-  position: absolute;
-  width: 100%;
   justify-content: center;
   align-items: center;
-`
+  position: absolute;
+  left: 25%;
+`;
 
 export const EditSquare = styled(CoinSquare)`
   z-index: 12;
   display: block;
   left: 0;
-  margin-top: 200px;
+  margin-top: 5rem;
   padding: 2rem;
   max-width: 500px;
   min-width: 500px;
@@ -78,7 +91,6 @@ export const EditSquare = styled(CoinSquare)`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
     h2 { margin: 0; font-size: 4rem; }
     h3 { margin: 2rem 0; }
   }
@@ -98,7 +110,7 @@ export const EditSquare = styled(CoinSquare)`
     border: 2px solid rgba(87, 56, 92, 0);
     opacity: 1;
   }
-`
+`;
 
 export const EditSquareData = styled.section`
   height: 100%;
@@ -126,13 +138,9 @@ export const CoinRow = styled.div`
   justify-content: space-between;
   margin: 0 0 4px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-
   h1 { font-size: 1.5rem; line-height: 0; }
   h4 { line-height: 0.15rem; }
   p { margin: 0; }
 `;
 
-export const CoinRank = styled(CoinRow)`
-  margin-bottom: 0.5rem;
-  border-bottom: none;
-`;
+export const CoinRank = styled(CoinRow)`margin-bottom: 0.5rem; border-bottom: none;`;

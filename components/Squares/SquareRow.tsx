@@ -11,7 +11,7 @@ interface IProps {
 export const SquareRow = (props: IProps) => {
   const { type, data } = props;
   const isPrice = type === 'Price:';
-  const priceUSD = formatPrice(data);
+  const priceUSD = data && formatPrice(data);
   const isLargeNumber = type === 'Marketcap:' || type === 'Value:';
   const isExchangeRow = type === 'Exchange:';
   const isPosition = type === 'Position:';

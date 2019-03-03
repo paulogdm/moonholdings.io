@@ -1,7 +1,6 @@
 import * as R from 'ramda'
 import { additionalAssets, supportedAssets } from '../shared/models'
-import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes }
-  from '../shared/types'
+import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
 import { arrayToObject, multiply, roundFloat, round } from '../shared/utils'
 import { formatPrice } from '../shared/utils/math'
 import { BASE_CURRENCIES } from '../shared/constants/api'

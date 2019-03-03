@@ -17,8 +17,20 @@ export const PortfolioContainer = styled.div`
   flex-flow: row wrap;
   flex-direction: row;
   align-content: stretch;
+  margin-bottom: 2rem;
   position: relative;
-  top: 10rem;
+  top: 5rem;
   padding: 30px;
-  margin-bottom: 160px;
+`
+
+export const WatchlistContainer = styled.div`
+  z-index: 1;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  flex-flow: row wrap;
+  flex-direction: row;
+  align-content: stretch;
+  position: relative;
+  padding: 30px;
 `
