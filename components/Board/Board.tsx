@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bind } from 'decko'
 
 import {
-  Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Square, Search, BlockLoader, Overlay
+  Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Search, BlockLoader, Overlay
 }  from '../../components'
 import { addCoinsPortfolio, addCoinsWatchlist, fetchAllAssets } from '../../actions/assets'
 import { setOverlayState } from '../../actions/board'

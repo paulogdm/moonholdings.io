@@ -7,7 +7,7 @@ export const WelcomeContainer = styled.div`
   flex: 1 1 auto;
   position: fixed;
   top: 25%;
-`;
+`
 
 export const WelcomeMessage = styled.div`
   height: 200px;
@@ -18,4 +18,4 @@ export const WelcomeMessage = styled.div`
   h2 { font-size: 2.1rem; text-align: center; }
   h4 { margin: 0; text-align: right; font-size: 1.5rem; }
   span { color: ${props => props.theme.apricot}; }
-`;
+`

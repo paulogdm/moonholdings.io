@@ -5,7 +5,7 @@ export interface IAssetResponse {
   price?: string;
   availableSupply?: string;
   maxSupply?: string;
-};
+}
 
 export interface IResponseConfig {
   config: {
@@ -17,9 +17,10 @@ export interface IResponseConfig {
   upload: XMLHttpRequestUpload;
   status: number;
   statusText: string;
-};
+}
 
 export interface IGetMarketsRes {
+  marketBTC: IMarketAsset[];
   marketUSD: IMarketAsset[];
   marketUSDC: IMarketAsset[];
   marketUSDT: IMarketAsset[];

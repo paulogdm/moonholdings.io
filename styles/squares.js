@@ -25,7 +25,6 @@ export const CoinSquare = styled.section`
   max-height: 190px;
   min-height: 190px;
   font-size: em(14);
-  background: $lightGray;
   border: 2px solid rgba(87, 56, 92, 0);
   box-shadow: 1px 1px 0 rgba(47, 38, 90, 0.2),
               2px 2px 2px rgba(47, 38, 90, 0.1);
@@ -57,10 +56,12 @@ export const PortfolioTitle = styled(ListTitle)`color: ${props => props.theme.of
 export const WatchlistTitle = styled(ListTitle)`color: ${props => props.theme.brightPurple};`
 
 export const WatchlistSquare = styled(CoinSquare)`
+  margin-right: 1px;
   max-width: 120px;
   min-width: 120px;
   max-height: 127px;
   min-height: 127px;
+  background: ${props => props.theme.brightPurple};
   p { font-size: 0.8rem; }
 `
 
@@ -128,7 +129,6 @@ export const EditButtonsContainer = styled.div`
     width: 50%;
     height: 4rem;
     font-size: 1.5rem;
-    cursor: pointer;
   }
 `
 
