@@ -9,7 +9,7 @@ export const StyledBoard = styled.div`
   margin: 0;
   padding: 0;
   width: 100%;
-`;
+`
 
 export const OverlayStyle = styled.div`
   position: fixed;
@@ -21,4 +21,4 @@ export const OverlayStyle = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, .6);
   cursor: pointer;
-`;
+`

@@ -1,4 +1,5 @@
 import React from 'react'
+import * as R from 'ramda'
 
 import { SquareRow } from '../../components'
 import { IAsset } from '../../shared/types'
@@ -18,27 +19,32 @@ export default class Square extends React.PureComponent<IProps> {
   public render() {
     const { coin, edit, index, inSearch, watchlist } = this.props;
     const { currency, exchange, position, percentage, price, marketCap, value } = coin;
-    // Update shade style based on <Search/> or <Board/> contex.
+
     const SquareStyle =
       inSearch ? SquareInSearch :
       watchlist ? WatchlistSquare : CoinSquare;
     const Shade =
       inSearch ? SquareShadeInSearch :
       watchlist ? WatchlistShade : SquareShade;
-    const exchangeName = exchange !== '' ? capFirst(exchange) : 'Aggregate';
+
+    const exchangeName = !R.isEmpty(exchange) ? capFirst(exchange) : 'Aggregate';
     const displayRank = !watchlist && !inSearch;
+    const rank = index + 1;
+    const colorBlack = { 'color': '#000' };
+    const CurrencySymbol = () => <span><h1>{currency}</h1></span>;
+    const CurrencyRank = () => <span><h4>#{rank}</h4></span>;
 
     return (
       <div
         className={watchlist ? '' : styleModifier(coin.currency)}
-        style={watchlist ? {} : setStyle(coin.currency) }
+        style={watchlist ? colorBlack : setStyle(coin.currency)}
         onClick={() => edit(true, coin)}
       >
         <SquareStyle className="coin-square">
           <Shade>
             <CoinRank>
-              <span><h1>{currency}</h1></span>
-              { displayRank && <span><h4>#{index + 1}</h4></span> }
+              <CurrencySymbol/>
+              { displayRank && <CurrencyRank/> }
             </CoinRank>
             { price && <SquareRow type={'Price:'} data={price}/> }
             { inSearch && <SquareRow type={'Marketcap:'} data={marketCap}/> }

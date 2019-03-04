@@ -567,7 +567,7 @@ export const supportedAssets = [
     currency: 'TKN',
     name: 'TokenCard'
   },
-];
+]
 
 export const additionalAssets = [
   {
@@ -588,7 +588,7 @@ export const additionalAssets = [
     name: 'USD Coin',
     price: '1',
   }
-];
+]
 
 export const coinModel = {
   availableSupply: '1000',
@@ -601,4 +601,4 @@ export const coinModel = {
   percentage: 0,
   price: 0,
   value: 0
-};
+}
