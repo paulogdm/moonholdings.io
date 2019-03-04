@@ -16,6 +16,9 @@ export const SquareRow = (props: IProps) => {
   const isExchangeRow = type === 'Exchange:';
   const isPosition = type === 'Position:';
   const isAllocation = type === 'Allocation:';
+  const showMarketcap = type === 'Marketcap:';
+  const showValue = type === 'Value:';
+  const RowKey = () => <p><em>{type}</em></p>;
 
   const displayTitle = (isLargeNumber: boolean, num: string | number) => {
     if (isLargeNumber) {
@@ -25,9 +28,10 @@ export const SquareRow = (props: IProps) => {
 
   return (
     <CoinRow title={displayTitle(isLargeNumber, data)}>
-      <p><em>{type}</em></p>
+      <RowKey/>
       {isPrice && <p>${priceUSD}</p>}
-      {isLargeNumber && `$${nFormatter(Number(data), 1)}`}
+      {showMarketcap && `$${nFormatter(Number(data), 1)}`}
+      {showValue && `$${numberWithCommas(Number(data))}`}
       {isExchangeRow && <p>{data}</p>}
       {isPosition && <p>{data}</p>}
       {isAllocation && <p>{data}%</p>}

@@ -13,7 +13,7 @@ export interface IAsset {
 }
 
 export interface IWatchlistAsset {
-  availableSupply: string;
+  availableSupply?: string;
   currency: string;
   exchange: string;
   marketCap: number;

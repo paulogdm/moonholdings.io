@@ -1,8 +1,6 @@
 import axios from 'axios'
-import * as R from 'ramda'
 
-import { NOMICS_API_BASE_URL, NOMICS_KEY, EXCHANGE_MARKET_PRICES, BASE_CURRENCIES }
-  from '../shared/constants/api'
+import { NOMICS_API_BASE_URL, NOMICS_KEY, EXCHANGE_MARKET_PRICES, BASE_CURRENCIES } from '../shared/constants/api'
 import { IGetMarketsRes, IMarketRes } from '../shared/types'
 
 interface IParams {
@@ -80,6 +78,8 @@ export const getMarkets = async (): Promise<IGetMarketsRes | undefined> => {
     }
 
     return {
+      marketBTC: markets['marketBTC'],
+      marketETH: markets['marketETH'],
       marketUSD: markets['marketUSD'],
       marketUSDC: markets['marketUSDC'],
       marketUSDT: markets['marketUSDT'],
