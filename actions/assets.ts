@@ -86,7 +86,7 @@ export const fetchAllAssets = () => (dispatch: DispatchAllAssets) => {
 export const fetchMarketPrices = (asset: string) => (dispatch: DispatchMarketPrices) => {
   dispatch(actionGetMarketPrices);
   return getMarkets().then((res) => {
-    if (res && res.marketUSD && res.marketUSDC && res.marketUSDT) {
+    if (res) {
       const exchangesForAsset = combineExchangeData(asset, res);
       return dispatch(actionSetMarketPrices(exchangesForAsset));
     }

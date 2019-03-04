@@ -77,10 +77,9 @@ export const getMarkets = async (): Promise<IGetMarketsRes | undefined> => {
       markets[key] = await fetchMarket(currency);
     }
 
-    console.log('markets', markets);
-
     return {
       marketBTC: markets['marketBTC'],
+      marketETH: markets['marketETH'],
       marketUSD: markets['marketUSD'],
       marketUSDC: markets['marketUSDC'],
       marketUSDT: markets['marketUSDT'],
