@@ -25,7 +25,7 @@ export class ExchangeSelect extends React.Component<IProps> {
       >
         <ExchangesCount exchanges={exchanges}/>
         {exchanges.map(ex => (
-          <option key={`${ex.exchange}-${ex.quote}`} value={ex.exchange}>
+          <option key={`${ex.exchange}-${ex.base}-${ex.quote}`} value={ex.exchange}>
             {capFirst(ex.exchange)} ({ex.quote}) ${ex.price_quote}
           </option>
         ))}

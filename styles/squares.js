@@ -136,6 +136,7 @@ export const CoinRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  /* letter-spacing: 0.05rem; */
   margin: 0 0 4px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   h1 { font-size: 1.5rem; line-height: 0; }

@@ -1,9 +1,11 @@
 import * as R from 'ramda'
+
+import { filterByExchangeBase, filterByUSDbase } from './exchangeFilters'
 import { additionalAssets, supportedAssets } from '../shared/models'
 import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
 import { arrayToObject, multiply, roundFloat, round } from '../shared/utils'
 import { formatPrice } from '../shared/utils/math'
-import { BASE_CURRENCIES } from '../shared/constants/api'
+import { USD_CURRENCIES } from '../shared/constants/api'
 import { MOON_PORTFOLIO } from '../shared/constants/copy'
 
 const textMatch = (part: string, str: string) => str.search(part) !== -1;
@@ -111,8 +113,8 @@ export const formatAssets = (responses: IResponseConfig[]) => {
     const roundedCap = roundFloat(multipliedCap, 2);
     const marketCap = roundedCap ? Number(roundedCap) : 0;
     return {
-      marketCap,
-      ...asset
+      ...asset,
+      marketCap
     };
   });
 
@@ -121,21 +123,40 @@ export const formatAssets = (responses: IResponseConfig[]) => {
   return sortedAssets;
 };
 
-export const combineExchangeData = (asset: string, { marketUSD, marketUSDC, marketUSDT }: IGetMarketsRes) => {
-  const combinedMarkets = marketUSD.concat(marketUSDC).concat(marketUSDT);
-  
-  const filteredMarkets =
-    R.not(R.any(R.equals(asset))(BASE_CURRENCIES))
-      ? combinedMarkets.filter((marketAsset: IMarketAsset) => marketAsset.base === asset)
-      : [];
+// Filter by BTC, ETH, USD, USDT or USDC prices
+// If asset has BTC/ETH pairing, obtain exchange BTC/ETH price to calculate assets USD/USDT value
+export const combineExchangeData =
+  (asset: string, { marketBTC, marketETH, marketUSD, marketUSDT, marketUSDC }: IGetMarketsRes) => {
+    const btcBasedExchanges = marketBTC.filter((market: IMarketAsset) => market.base === asset);
+    const ethBasedExchanges = marketETH.filter((market: IMarketAsset) => market.base === asset);
+    const btcUSDTprices = marketUSDT.filter((market: IMarketAsset) => market.base === 'BTC');
+    const btcUSDprices = marketUSD.filter((market: IMarketAsset) => market.base === 'BTC');
+    const ethUSDTprices = marketUSDT.filter((market: IMarketAsset) => market.base === 'ETH');
+    const ethUSDprices = marketUSD.filter((market: IMarketAsset) => market.base === 'ETH');
 
-  return filteredMarkets.map((market: IMarketAsset) => {
-    return {
-      ...market,
-      price_quote: formatPrice(market.price_quote)
-    }
-  });
-};
+    const btcPricedMarkets = filterByExchangeBase(btcBasedExchanges, btcUSDTprices, btcUSDprices);
+    const ethPricedMarkets = filterByExchangeBase(ethBasedExchanges, ethUSDTprices, ethUSDprices);
+    
+    const btcMarkets = R.not(R.isEmpty(btcPricedMarkets)) ? btcPricedMarkets.filter((market) => R.not(R.isNil(market))) : [];
+    const ethMarkets = R.not(R.isEmpty(ethPricedMarkets)) ? ethPricedMarkets.filter((market) => R.not(R.isNil(market))) : [];
+
+    const combinedMarkets = asset !== 'BTC' && asset !== 'ETH' ?
+      btcMarkets.concat(ethMarkets).concat(marketUSD).concat(marketUSDC).concat(marketUSDT) :
+      marketUSD.concat(marketUSDC).concat(marketUSDT);
+  
+    const filteredMarkets = R.not(R.isEmpty(combinedMarkets)) ? filterByUSDbase(asset, combinedMarkets) : [];
+ 
+    if (R.isEmpty(filteredMarkets)) return [];
+
+    return filteredMarkets.map((market: IMarketAsset) => {
+      if (market) {
+        return {
+          ...market,
+          price_quote: formatPrice(market.price_quote)
+        }
+      }
+    });
+  };
 
 export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAsset[]) => {
   const assetExchange = exchanges.filter(({ exchange }) => exchange === selectedExchange.toLowerCase())[0];

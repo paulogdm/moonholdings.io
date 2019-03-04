@@ -16,7 +16,7 @@ interface IProps {
   cancel(): void;
   addCoinPortfolio(coin: IAsset): void;
   addCoinWatchlist(coin: IAsset): void;
-  fetchMarketPrices(asset: string): void;
+  fetchMarketPrices(asset: string | undefined): void;
 }
 
 interface IState {
