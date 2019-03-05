@@ -3,15 +3,16 @@ import { connect } from 'react-redux'
 import { bind } from 'decko'
 
 import { SquareRow } from '../../components'
-// import { addCoin, updateCoin, removeCoin } from '../../actions/coins';
+import { updateCoinPortfolio } from '../../actions/assets';
 import { IAsset } from '../../shared/types'
-import { styleModifier, setStyle, numberWithCommas, round, rounder } from '../../shared/utils'
+import { styleModifier, setStyle, round, rounder } from '../../shared/utils'
 import { EditSquare, EditSquareData, EditButtonsContainer } from '../../styles'
 
 interface IProps {
   coin: IAsset;
   portfolio: IAsset[];
   toggle(toggle: boolean, coin?: IAsset): void;
+  updateCoinPortfolio(asset: IAsset): void;
 }
 
 interface IState {
@@ -109,32 +110,28 @@ class SquareEdit extends React.Component<IProps, IState> {
     });
   }
 
-  @bind
-  private addCoin(coin: IAsset, balance: number) {
-    const { value } = this.state;
-    console.log('addCoin');
-    // this.props.addCoin(Object.assign({
-    //   balance,
-    //   value
-    // }, coin));
-  }
-
-  @bind
-  private updateCoin(coin: IAsset, balance: number) {
-    const { value } = this.state;
-    const updatedCoin = Object.assign(coin);
-    updatedCoin.balance = balance;
-    updatedCoin.value = value;
-    console.log('updateCoin', coin, value);
-    // this.props.updateCoin(updatedCoin);
-  }
+  // @bind
+  // private updateCoin(coin: IAsset, balance: number) {
+  //   const { value } = this.state;
+  //   const updatedCoin = Object.assign(coin);
+  //   updatedCoin.balance = balance;
+  //   updatedCoin.value = value;
+  //   console.log('updateCoin', coin, value);
+  //   this.props.updateCoinPortfolio(updatedCoin);
+  // }
 
   @bind
   private handleSave() {
-    const { coin, balance, inPortfolio } = this.state;
-    console.log('handleSave', coin);
-    // inPortfolio ? this.updateCoin(coin, balance) : this.addCoin(coin, balance);
-    // this.props.toggle(false);
+    const { coin, balance: position } = this.state;
+    const coinValue = coin.value ? coin.value : 0;
+    const updatedCoin = {
+      ...coin,
+      position,
+      value: coinValue * position
+    };
+
+    this.props.updateCoinPortfolio(updatedCoin);
+    this.props.toggle(false);
   }
 
   @bind handleRemove() {
@@ -146,8 +143,7 @@ class SquareEdit extends React.Component<IProps, IState> {
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  // addCoin: (...args) => dispatch(addCoin(...args)),
-  // updateCoin: (...args) => dispatch(updateCoin(...args)),
+  updateCoinPortfolio: (coin: IAsset) => dispatch(updateCoinPortfolio(coin)),
   // removeCoin: (...args) => dispatch(removeCoin(...args))
 });
 

@@ -1,11 +1,10 @@
 import * as R from 'ramda'
 
-import { filterByExchangeBase, filterByUSDbase } from './exchangeFilters'
+import { filterCryptoBase, filterByUSDbase, notBTCorETH } from './exchangeFilters'
 import { additionalAssets, supportedAssets } from '../shared/models'
 import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
 import { arrayToObject, multiply, roundFloat, round } from '../shared/utils'
 import { formatPrice } from '../shared/utils/math'
-import { USD_CURRENCIES } from '../shared/constants/api'
 import { MOON_PORTFOLIO } from '../shared/constants/copy'
 
 const textMatch = (part: string, str: string) => str.search(part) !== -1;
@@ -134,28 +133,24 @@ export const combineExchangeData =
     const ethUSDTprices = marketUSDT.filter((market: IMarketAsset) => market.base === 'ETH');
     const ethUSDprices = marketUSD.filter((market: IMarketAsset) => market.base === 'ETH');
 
-    const btcPricedMarkets = filterByExchangeBase(btcBasedExchanges, btcUSDTprices, btcUSDprices);
-    const ethPricedMarkets = filterByExchangeBase(ethBasedExchanges, ethUSDTprices, ethUSDprices);
+    const btcPricedMarkets = notBTCorETH(asset) ? filterCryptoBase(btcBasedExchanges, btcUSDTprices, btcUSDprices) : [];
+    const ethPricedMarkets = notBTCorETH(asset) ? filterCryptoBase(ethBasedExchanges, ethUSDTprices, ethUSDprices) : [];
     
-    const btcMarkets = R.not(R.isEmpty(btcPricedMarkets)) ? btcPricedMarkets.filter((market) => R.not(R.isNil(market))) : [];
-    const ethMarkets = R.not(R.isEmpty(ethPricedMarkets)) ? ethPricedMarkets.filter((market) => R.not(R.isNil(market))) : [];
+    const btcMarkets = R.not(R.isEmpty(btcPricedMarkets)) ? btcPricedMarkets.filter((market: IMarketAsset) => R.not(R.isNil(market))) : [];
+    const ethMarkets = R.not(R.isEmpty(ethPricedMarkets)) ? ethPricedMarkets.filter((market: IMarketAsset) => R.not(R.isNil(market))) : [];
 
-    const combinedMarkets = asset !== 'BTC' && asset !== 'ETH' ?
+    const combinedMarkets = notBTCorETH(asset) ?
       btcMarkets.concat(ethMarkets).concat(marketUSD).concat(marketUSDC).concat(marketUSDT) :
       marketUSD.concat(marketUSDC).concat(marketUSDT);
   
-    const filteredMarkets = R.not(R.isEmpty(combinedMarkets)) ? filterByUSDbase(asset, combinedMarkets) : [];
+    const filteredMarkets = filterByUSDbase(asset, combinedMarkets);
  
     if (R.isEmpty(filteredMarkets)) return [];
 
-    return filteredMarkets.map((market: IMarketAsset) => {
-      if (market) {
-        return {
-          ...market,
-          price_quote: formatPrice(market.price_quote)
-        }
-      }
-    });
+    return filteredMarkets.map((market: IMarketAsset) => ({
+      ...market,
+      price_quote: formatPrice(market.price_quote)
+    }));
   };
 
 export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAsset[]) => {
@@ -164,23 +159,55 @@ export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAss
 };
 
 // Add coin's percentage of portfolio.
-export const calculatePercentage = (portfolio: IAsset[], coin: IAsset) => {
+export const calculatePercentage = (portfolio: IAsset[], coin?: IAsset) => {
   if (coin) {
     portfolio.push(coin);
   }
 
-  const totalValue = portfolio.reduce((acc: number, { value }: IAsset) => {
-    const valueAmount = value ? value : 0;
+  const totalValue = portfolio.reduce((acc: number, { position, value }: IAsset) => {
+    const valueAmount = value && position ? value * position : 0;
     return acc + valueAmount;
   }, 0);
 
-  const updatedPortfolio = portfolio.map((c) => {
-    const coinValue = c.value ? c.value : 0;
-    c.percentage = round((coinValue / totalValue) * 100);
-    return c;
+  const newPortfolio = portfolio.map((coin) => {
+    const position = coin.position ? coin.position : 0;
+    const value = coin.value ? coin.value * position : 0;
+    const percentage = round((value / totalValue) * 100);
+    console.log(' value', value);
+    console.log(' percentage', percentage);
+    return {
+      ...coin,
+      percentage,
+      value
+    };
   });
 
-  return updatedPortfolio;
+  console.log('newPortfolio', newPortfolio);
+  return newPortfolio;
+};
+
+export const recalculatePercentage = (portfolio: IAsset[]) => {
+  const totalValue = portfolio.reduce((acc: number, { position, value }: IAsset) => {
+    const valueAmount = value && position ? value * position : 0;
+    return acc + valueAmount;
+  }, 0);
+
+  console.log('totalValue', totalValue);
+
+  const newPortfolio = portfolio.map((coin) => {
+    const value = coin.value ? coin.value : 0;
+
+    const percentage = round((value / totalValue) * 100);
+    console.log(' value', value);
+    console.log(' percentage', percentage);
+    return {
+      ...coin,
+      percentage
+    };
+  });
+
+  console.log('newPortfolio', newPortfolio);
+  return newPortfolio;
 };
 
 export const updateWatchlist = (coin: IAsset, watchlist: IAsset[]) => {

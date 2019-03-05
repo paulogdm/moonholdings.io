@@ -1,7 +1,7 @@
 import { getPrices, getAvailableSupply, getMarkets } from '../services/api'
 import { fetchAll, combineExchangeData, formatAssets, formatCoinsList } from '../services/coinFactory'
 import {
-  IAsset, DispatchAllAssets, DispatchMarketPrices, DispatchAddCoin, DispatchAddCoins,
+  IAsset, DispatchAllAssets, DispatchMarketPrices, DispatchAddCoin, DispatchAddCoins, DispatchUpdateCoin,
   IWatchlistAsset, DispatchAddCoinWatch, DispatchAddCoinsWatch
 } from '../shared/types'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../shared/constants/copy'
@@ -54,10 +54,10 @@ const actionAddCoinsPortfolio = (coins: IAsset[]) => ({
   assets: coins
 });
 
-// const updateCoinInPortfolio = coin => ({
-//   type: Actions.UPDATE_COIN_PORTFOLIO,
-//   coin
-// });
+const updateCoinInPortfolio = (coin: IAsset) => ({
+  type: Actions.UPDATE_COIN_PORTFOLIO,
+  coin
+});
 
 // const removeCoinInPortfolio = coin => ({
 //   type: Actions.REMOVE_COIN_PORTFOLIO,
@@ -131,12 +131,12 @@ export const addCoinWatchlist = (coin: IWatchlistAsset) => (dispatch: DispatchAd
   dispatch(actionAddCoinWatchlist(coin));
 };
 
+// Update a coin in your portfolio.
+export const updateCoinPortfolio = (coin: IAsset) => (dispatch: DispatchUpdateCoin) => {
+  dispatch(updateCoinInPortfolio(coin));
+};
+
 // Remove coin from your portfolio.
 // export const removeCoin = coin => (dispatch) => {
 //   dispatch(removeCoinInPortfolio(coin));
-// };
-
-// Update a coin in your portfolio.
-// export const updateCoin = coin => (dispatch) => {
-//   dispatch(updateCoinInPortfolio(coin));
 // };

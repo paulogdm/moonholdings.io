@@ -1,5 +1,7 @@
+import * as R from 'ramda'
+
 import { Actions } from '../actions/assets'
-import { calculatePercentage, jsonFormatFromObject, updateWatchlist } from '../services/coinFactory'
+import { calculatePercentage, recalculatePercentage, jsonFormatFromObject, updateWatchlist } from '../services/coinFactory'
 import { IinitialAssetsState as IInitState, IAsset, IMarketAsset } from '../shared/types'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../shared/constants/copy'
 
@@ -22,7 +24,7 @@ interface IAction {
   fetchingMarkets: boolean;
 }
 
-let updatedPortfolio = [];
+// let updatedPortfolio = [];
 let updatedWatchlist = [];
 
 export const AssetsReducer = (state = defaultAssetsState, action: IAction): IInitState => {
@@ -54,9 +56,9 @@ export const AssetsReducer = (state = defaultAssetsState, action: IAction): IIni
     case Actions.ADD_COIN_PORTFOLIO:
       const { coin } = action;
       const { portfolio } = state;
-      updatedPortfolio = calculatePercentage(portfolio, coin);
-      localStorage.setItem(MOON_PORTFOLIO, jsonFormatFromObject(updatedPortfolio));
-      return { ...state, portfolio: updatedPortfolio };
+      const portfolioAddedCoin = calculatePercentage(portfolio, coin);
+      localStorage.setItem(MOON_PORTFOLIO, jsonFormatFromObject(portfolioAddedCoin));
+      return { ...state, portfolio: portfolioAddedCoin };
 
     case Actions.ADD_COIN_WATCHLIST:
       const { watchlist } = state;
@@ -65,12 +67,40 @@ export const AssetsReducer = (state = defaultAssetsState, action: IAction): IIni
       return { ...state, watchlist: updatedWatchlist };
 
     case Actions.ADD_COINS_WATCHLIST:
-      // const { watchlist: savedWatchlist } = state;
-      // updatedWatchlist = updateWatchlist(action.coin, savedWatchlist);
-      // localStorage.setItem(MOON_WATCHLIST, jsonFormatFromObject(updatedWatchlist));
-      // return { ...state, watchlist: updatedWatchlist };
       const { watchlist: savedWatchlist  } = action;
       return { ...state, watchlist: savedWatchlist };
+
+    case Actions.UPDATE_COIN_PORTFOLIO:
+      const updatedCoin = action.coin;
+      const { portfolio: portfolioToUpdate } = state;
+      // const found = state.portfolio.find(coin => coin.currency === updatedCoin.currency);
+      // console.log('updatedCoin', updatedCoin);
+      console.log('portfolioToUpdate', portfolioToUpdate);
+
+      const remappedPortfolio = portfolioToUpdate.map((coin) => {
+        if (updatedCoin && updatedCoin.currency === coin.currency) {
+          return {
+            ...coin,
+            position: updatedCoin.position,
+            value: updatedCoin.value
+          };
+        }
+
+        return coin;
+      });
+
+      console.log(' remappedPortfolio', remappedPortfolio);
+
+      // const portfolioUpdated = calculatePercentage(state.portfolio, updatedCoin);
+      // console.log(' portfolioUpdated', portfolioUpdated);
+
+      // localStorage.setItem(MOON_PORTFOLIO, JSON.stringify(portfolioUpdatedCoin));
+
+      return {
+        ...state,
+        // portfolio: updatedPortfolio
+        portfolio: recalculatePercentage(remappedPortfolio)
+      };
 
     // case Actions.REMOVE_COIN_PORTFOLIO:
     //   const filteredPortfolio = state.portfolio.filter(c => c !== action.coin);
@@ -87,26 +117,6 @@ export const AssetsReducer = (state = defaultAssetsState, action: IAction): IIni
     //   return {
     //     ...state,
     //     portfolio: lighterPortfolio
-    //   };
-
-    // case Actions.UPDATE_COIN_PORTFOLIO:
-    //   const found = state.portfolio.find(c => c.currency === action.coin.currency);
-
-    //   const mappedPortfolio = state.portfolio.map((c) => {
-    //     if (c.currency === found.currency) {
-    //       return Object.assign({}, found);
-    //     }
-
-    //     return c;
-    //   });
-
-    //   const updatedPortfolio = calculatePercentage(mappedPortfolio);
-
-    //   localStorage.setItem('moonPortfolio', JSON.stringify(updatedPortfolio));
-
-    //   return {
-    //     ...state,
-    //     portfolio: calculatePercentage(updatedPortfolio)
     //   };
 
     default:

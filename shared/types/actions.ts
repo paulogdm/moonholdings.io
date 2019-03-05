@@ -35,6 +35,11 @@ export interface ICoinPortfolio {
   coin: IAsset;
 }
 
+export interface IUpdateCoinPortfolio {
+  type: IActions['UPDATE_COIN_PORTFOLIO'];
+  coin: IAsset;
+}
+
 export interface ICoinWatchlist {
   type: IActions['ADD_COIN_WATCHLIST'];
   coin: IWatchlistAsset;
@@ -52,6 +57,8 @@ export type DispatchMarketPrices = (arg: ISetMarket) => (ISetMarket);
 export type DispatchAddCoin = (arg: ICoinPortfolio) => (ICoinPortfolio);
 
 export type DispatchAddCoins = (arg: ICoinsPortfolio) => (ICoinsPortfolio);
+
+export type DispatchUpdateCoin = (arg: IUpdateCoinPortfolio) => (IUpdateCoinPortfolio);
 
 export type DispatchAddCoinWatch = (arg: ICoinWatchlist) => (ICoinWatchlist);
 
