@@ -35,6 +35,11 @@ export interface ICoinPortfolio {
   coin: IAsset;
 }
 
+export interface IRemoteCoinPortfolio {
+  type: IActions['REMOVE_COIN_PORTFOLIO'];
+  coin: IAsset;
+}
+
 export interface IUpdateCoinPortfolio {
   type: IActions['UPDATE_COIN_PORTFOLIO'];
   coin: IAsset;
@@ -59,6 +64,8 @@ export type DispatchAddCoin = (arg: ICoinPortfolio) => (ICoinPortfolio);
 export type DispatchAddCoins = (arg: ICoinsPortfolio) => (ICoinsPortfolio);
 
 export type DispatchUpdateCoin = (arg: IUpdateCoinPortfolio) => (IUpdateCoinPortfolio);
+
+export type DispatchRemoveCoin = (arg: IRemoteCoinPortfolio) => (IRemoteCoinPortfolio);
 
 export type DispatchAddCoinWatch = (arg: ICoinWatchlist) => (ICoinWatchlist);
 

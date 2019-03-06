@@ -1,9 +1,7 @@
-import * as R from 'ramda'
-
 import { Actions } from '../actions/assets'
 import { calculatePercentage, jsonFormatFromObject, remapUpdatedPortfolio, updateWatchlist }
   from '../services/coinFactory'
-import { IinitialAssetsState as IInitState, IAsset, IMarketAsset } from '../shared/types'
+import { IinitialAssetsState as IInitState, IAsset, IActionReducer } from '../shared/types'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../shared/constants/copy'
 
 export const defaultAssetsState: IInitState = {
@@ -15,20 +13,7 @@ export const defaultAssetsState: IInitState = {
   fetchingMarkets: false
 };
 
-interface IAction {
-  type: string;
-  coin: IAsset;
-  assets: IAsset[];
-  watchlist: IAsset[];
-  exchanges: IMarketAsset[];
-  loading: boolean;
-  fetchingMarkets: boolean;
-}
-
-// let updatedPortfolio = [];
-let updatedWatchlist = [];
-
-export const AssetsReducer = (state = defaultAssetsState, action: IAction): IInitState => {
+export const AssetsReducer = (state = defaultAssetsState, action: IActionReducer): IInitState => {
   switch (action.type) {
     case Actions.GET_ALL_ASSETS: {
       const { loading } = action;
@@ -63,7 +48,7 @@ export const AssetsReducer = (state = defaultAssetsState, action: IAction): IIni
 
     case Actions.ADD_COIN_WATCHLIST:
       const { watchlist } = state;
-      updatedWatchlist = updateWatchlist(action.coin, watchlist);
+      const updatedWatchlist = updateWatchlist(action.coin, watchlist);
       localStorage.setItem(MOON_WATCHLIST, jsonFormatFromObject(updatedWatchlist));
       return { ...state, watchlist: updatedWatchlist };
 
@@ -76,30 +61,25 @@ export const AssetsReducer = (state = defaultAssetsState, action: IAction): IIni
       const { portfolio: portfolioToUpdate } = state;
       const remappedPortfolio = remapUpdatedPortfolio(portfolioToUpdate, updatedCoin);
       const finalPortfolio = calculatePercentage(Actions.UPDATE_COIN_PORTFOLIO, remappedPortfolio);
-
       localStorage.setItem(MOON_PORTFOLIO, JSON.stringify(finalPortfolio));
+      return { ...state, portfolio: finalPortfolio };
+
+    case Actions.REMOVE_COIN_PORTFOLIO:
+      const filteredPortfolio = state.portfolio.filter(c => c !== action.coin);
+      let smallerPortfolio: IAsset[] = [];
+
+      if (filteredPortfolio.length > 0) {
+        smallerPortfolio = calculatePercentage(Actions.REMOVE_COIN_PORTFOLIO, filteredPortfolio);
+        localStorage.setItem(MOON_PORTFOLIO, JSON.stringify(smallerPortfolio));
+      } else {
+        smallerPortfolio = [];
+        localStorage.clear();
+      }
 
       return {
         ...state,
-        portfolio: finalPortfolio
+        portfolio: smallerPortfolio
       };
-
-    // case Actions.REMOVE_COIN_PORTFOLIO:
-    //   const filteredPortfolio = state.portfolio.filter(c => c !== action.coin);
-    //   let lighterPortfolio;
-
-    //   if (filteredPortfolio.length > 0) {
-    //     lighterPortfolio = calculatePercentage(filteredPortfolio);
-    //     localStorage.setItem('moonPortfolio', JSON.stringify(lighterPortfolio));
-    //   } else {
-    //     lighterPortfolio = [];
-    //     localStorage.clear();
-    //   }
-
-    //   return {
-    //     ...state,
-    //     portfolio: lighterPortfolio
-    //   };
 
     default:
       return state;

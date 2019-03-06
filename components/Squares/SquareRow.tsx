@@ -24,7 +24,7 @@ export const SquareRow = (props: IProps) => {
     if (isLargeNumber) {
       return '$' + numberWithCommas(Math.round(Number(num)));
     }
-  }
+  };
 
   return (
     <CoinRow title={displayTitle(isLargeNumber, data)}>

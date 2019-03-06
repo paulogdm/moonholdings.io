@@ -1,4 +1,5 @@
 export * from './actions'
 export * from './assets'
-export * from './styles'
+export * from './redux'
 export * from './responses'
+export * from './styles'

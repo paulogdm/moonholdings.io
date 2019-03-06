@@ -2,7 +2,7 @@ import { getPrices, getAvailableSupply, getMarkets } from '../services/api'
 import { fetchAll, combineExchangeData, formatAssets, formatCoinsList } from '../services/coinFactory'
 import {
   IAsset, DispatchAllAssets, DispatchMarketPrices, DispatchAddCoin, DispatchAddCoins, DispatchUpdateCoin,
-  IWatchlistAsset, DispatchAddCoinWatch, DispatchAddCoinsWatch
+  IWatchlistAsset, DispatchAddCoinWatch, DispatchAddCoinsWatch, DispatchRemoveCoin
 } from '../shared/types'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../shared/constants/copy'
 
@@ -22,59 +22,36 @@ export const Actions = {
 };
 
 // ACTION CREATORS
-const actionGetAllAssets = () => ({
-  type: Actions.GET_ALL_ASSETS,
-  loading: true
-});
+const actionGetAllAssets = () =>
+  ({ type: Actions.GET_ALL_ASSETS, loading: true });
 
-const actionSetAllAssets = (data: any) => ({
-  type: Actions.SET_ALL_ASSETS,
-  assets: data,
-  loading: false
-});
+const actionSetAllAssets = (data: any) =>
+  ({ type: Actions.SET_ALL_ASSETS, assets: data, loading: false });
 
-const actionGetMarketPrices = ({
-  type: Actions.GET_MARKET_PRICES,
-  fetchingMarkets: true
-});
+const actionGetMarketPrices =
+  ({ type: Actions.GET_MARKET_PRICES, fetchingMarkets: true });
 
-const actionSetMarketPrices = (data: any) => ({
-  type: Actions.SET_MARKET_PRICES,
-  exchanges: data,
-  fetchingMarkets: false
-});
+const actionSetMarketPrices = (data: any) =>
+  ({ type: Actions.SET_MARKET_PRICES, exchanges: data, fetchingMarkets: false });
 
-const actionAddCoinPortfolio = (coin: IAsset) => ({
-  type: Actions.ADD_COIN_PORTFOLIO,
-  coin
-});
+const actionAddCoinPortfolio = (coin: IAsset) =>
+  ({ type: Actions.ADD_COIN_PORTFOLIO, coin });
 
-const actionAddCoinsPortfolio = (coins: IAsset[]) => ({
-  type: Actions.ADD_COINS_PORTFOLIO,
-  assets: coins
-});
+const actionAddCoinsPortfolio = (coins: IAsset[]) =>
+  ({ type: Actions.ADD_COINS_PORTFOLIO, assets: coins });
 
-const updateCoinInPortfolio = (coin: IAsset) => ({
-  type: Actions.UPDATE_COIN_PORTFOLIO,
-  coin
-});
+const updateCoinInPortfolio = (coin: IAsset) =>
+  ({ type: Actions.UPDATE_COIN_PORTFOLIO, coin });
 
-// const removeCoinInPortfolio = coin => ({
-//   type: Actions.REMOVE_COIN_PORTFOLIO,
-//   coin
-// });
+const removeCoinInPortfolio = (coin: IAsset) =>
+  ({ type: Actions.REMOVE_COIN_PORTFOLIO, coin });
 
-const actionAddCoinWatchlist = (coin: IWatchlistAsset) => ({
-  type: Actions.ADD_COIN_WATCHLIST,
-  coin
-});
+const actionAddCoinWatchlist = (coin: IWatchlistAsset) =>
+  ({ type: Actions.ADD_COIN_WATCHLIST, coin });
 
-const actionAddCoinsWatchlist = (watchlist: IWatchlistAsset[]) => ({
-  type: Actions.ADD_COINS_WATCHLIST,
-  watchlist
-});
+const actionAddCoinsWatchlist = (watchlist: IWatchlistAsset[]) =>
+  ({ type: Actions.ADD_COINS_WATCHLIST, watchlist });
 
-// ACTIONS
 // Fetch assets from Nomics API V1.
 export const fetchAllAssets = () => (dispatch: DispatchAllAssets) => {
   dispatch(actionGetAllAssets());
@@ -137,6 +114,6 @@ export const updateCoinPortfolio = (coin: IAsset) => (dispatch: DispatchUpdateCo
 };
 
 // Remove coin from your portfolio.
-// export const removeCoin = coin => (dispatch) => {
-//   dispatch(removeCoinInPortfolio(coin));
-// };
+export const removeCoinPortfolio = (coin: IAsset) => (dispatch: DispatchRemoveCoin) => {
+  dispatch(removeCoinInPortfolio(coin));
+};
