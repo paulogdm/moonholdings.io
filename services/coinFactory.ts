@@ -2,23 +2,26 @@ import * as R from 'ramda'
 
 import { filterCryptoBase, filterByUSDbase, notBTCorETH } from './exchangeFilters'
 import { additionalAssets, supportedAssets } from '../shared/models'
-import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
+import {
+  IAsset, IAssetResponse, ISearchAsset, IResponseConfig, IMarketAsset, IGetMarketsRes,
+} from '../shared/types'
 import { arrayToObject, multiply, roundFloat, round } from '../shared/utils'
 import { formatPrice } from '../shared/utils/math'
 import { MOON_PORTFOLIO } from '../shared/constants/copy'
 
 const textMatch = (part: string, str: string) => str.search(part) !== -1;
 
-//@ TODO create Interfaces for array types:
-const mergeByCurrency = (matchArray: any[], nextArray: any[]) =>
+const mergeByCurrency = (matchArray: IAssetResponse[], nextArray: IAssetResponse[]) =>
   matchArray.map(m => Object.assign({}, m, nextArray.find(n => n.currency === m.currency)));
 
 // Combines Promises and returns responses together.
-export const fetchAll = (array: any[]) => Promise.all(array);
+// @TODO Fix any type.
+export const fetchAll = (array: any) => Promise.all(array);
 
 // Return coins that match text | search by currency symbol or name.
-export const findAsset = (txt: string, assets: any[]) => {
-  const checkText = (k: string, a: any) => (textMatch(txt.toLowerCase(), a[k].toLowerCase()) ? a : null);
+export const findAsset = (txt: string, assets: ISearchAsset[]) => {
+  const checkText = (k: string, a: ISearchAsset) =>
+    (textMatch(txt.toLowerCase(), a[k].toString().toLowerCase()) ? a : null);
   const curriedCheckText = R.curry(checkText);
   const byName = R.map(curriedCheckText('name'), assets);
   const bySymbol = R.map(curriedCheckText('currency'), assets);
@@ -41,8 +44,8 @@ const pluckValuableAssets = (assets: IAssetResponse[]) => {
   return cleanedAssets;
 }
 
-//@ TODO create Interfaces for portfolio types:
-export const sortByValue = (portfolio: any) => portfolio.sort((a: any, b: any) => b.value - a.value);
+export const sortByValue = (portfolio: IAsset[]) => portfolio.sort((a: IAsset, b: IAsset) => 
+  b.value && a.value ? b.value - a.value : 0);
 
 const keysToClean = [
   'close',
@@ -66,9 +69,9 @@ const keysToClean = [
 ];
 
 // Clean assets by removing unneeded keys.
-export const cleanAssets = (assets: any) =>
+export const cleanAssets = (assets: IAssetResponse[]) =>
   // Return our mapped assets array.
-  assets.map((asset: any) =>
+  assets.map((asset: IAssetResponse) =>
     // Iterate through each key in the object and create a new object (reduce).
     Object.keys(asset).reduce((newObj, key) => (
       // Check to see if this key is inside keysToClean.
@@ -87,14 +90,15 @@ export const cleanAssets = (assets: any) =>
 export const formatAssets = (responses: IResponseConfig[]) => {
   let prices: any;
   let availableSupplies: any;
-
+  console.log('responses', responses);
   responses.forEach((response: IResponseConfig) => {
     const { config } = response;
     const { url } = config;
     if (url.includes('prices')) {
       prices = response.data;
     } else if (url.includes('dashboard')) {
-      availableSupplies = cleanAssets(response.data);
+      const { data } = response;
+      if (data) availableSupplies = cleanAssets(data);
     }
     return {
       prices,
@@ -158,55 +162,51 @@ export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAss
   return Number(assetExchange.price_quote);
 };
 
+// Update Portfolio with new updated Asset.
+export const remapUpdatedPortfolio = (portfolio: IAsset[], updatedCoin: IAsset) => portfolio.map((coin: IAsset) => {
+  if (updatedCoin && updatedCoin.currency === coin.currency) {
+    return {
+      ...coin,
+      position: updatedCoin.position,
+      value: updatedCoin.value
+    };
+  }
+  return coin;
+});
+
 // Add coin's percentage of portfolio.
-export const calculatePercentage = (portfolio: IAsset[], coin?: IAsset) => {
+export const calculatePercentage = (type: string, portfolio: IAsset[], coin?: IAsset) => {
   if (coin) {
     portfolio.push(coin);
   }
 
-  const totalValue = portfolio.reduce((acc: number, { position, value }: IAsset) => {
-    const valueAmount = value && position ? value * position : 0;
+  const totalValue = portfolio.reduce((acc: number, { price, position }: IAsset) => {
+    const valueAmount = position && price ? position * price : 0;
     return acc + valueAmount;
   }, 0);
 
+
   const newPortfolio = portfolio.map((coin) => {
-    const position = coin.position ? coin.position : 0;
-    const value = coin.value ? coin.value * position : 0;
-    const percentage = round((value / totalValue) * 100);
-    console.log(' value', value);
-    console.log(' percentage', percentage);
+    let coinValue = 0;
+
+    if (type === 'ADD_COIN_PORTFOLIO') {
+      const { value } = coin;
+      if (value) coinValue = value ? value : 0;
+    }
+    else if (type === 'UPDATE_COIN_PORTFOLIO') {
+      const { position, price } = coin;
+      if (position && price) coinValue = position * price;
+    }
+
+    const percentage = round((coinValue / totalValue) * 100);
+
     return {
       ...coin,
       percentage,
-      value
+      value: coinValue > 1 ? roundFloat(coinValue, 2) : coinValue
     };
   });
 
-  console.log('newPortfolio', newPortfolio);
-  return newPortfolio;
-};
-
-export const recalculatePercentage = (portfolio: IAsset[]) => {
-  const totalValue = portfolio.reduce((acc: number, { position, value }: IAsset) => {
-    const valueAmount = value && position ? value * position : 0;
-    return acc + valueAmount;
-  }, 0);
-
-  console.log('totalValue', totalValue);
-
-  const newPortfolio = portfolio.map((coin) => {
-    const value = coin.value ? coin.value : 0;
-
-    const percentage = round((value / totalValue) * 100);
-    console.log(' value', value);
-    console.log(' percentage', percentage);
-    return {
-      ...coin,
-      percentage
-    };
-  });
-
-  console.log('newPortfolio', newPortfolio);
   return newPortfolio;
 };
 

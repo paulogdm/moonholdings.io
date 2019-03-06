@@ -1,7 +1,8 @@
 import * as R from 'ramda'
 
 import { Actions } from '../actions/assets'
-import { calculatePercentage, recalculatePercentage, jsonFormatFromObject, updateWatchlist } from '../services/coinFactory'
+import { calculatePercentage, jsonFormatFromObject, remapUpdatedPortfolio, updateWatchlist }
+  from '../services/coinFactory'
 import { IinitialAssetsState as IInitState, IAsset, IMarketAsset } from '../shared/types'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../shared/constants/copy'
 
@@ -56,7 +57,7 @@ export const AssetsReducer = (state = defaultAssetsState, action: IAction): IIni
     case Actions.ADD_COIN_PORTFOLIO:
       const { coin } = action;
       const { portfolio } = state;
-      const portfolioAddedCoin = calculatePercentage(portfolio, coin);
+      const portfolioAddedCoin = calculatePercentage(Actions.ADD_COIN_PORTFOLIO, portfolio, coin);
       localStorage.setItem(MOON_PORTFOLIO, jsonFormatFromObject(portfolioAddedCoin));
       return { ...state, portfolio: portfolioAddedCoin };
 
@@ -73,33 +74,14 @@ export const AssetsReducer = (state = defaultAssetsState, action: IAction): IIni
     case Actions.UPDATE_COIN_PORTFOLIO:
       const updatedCoin = action.coin;
       const { portfolio: portfolioToUpdate } = state;
-      // const found = state.portfolio.find(coin => coin.currency === updatedCoin.currency);
-      // console.log('updatedCoin', updatedCoin);
-      console.log('portfolioToUpdate', portfolioToUpdate);
+      const remappedPortfolio = remapUpdatedPortfolio(portfolioToUpdate, updatedCoin);
+      const finalPortfolio = calculatePercentage(Actions.UPDATE_COIN_PORTFOLIO, remappedPortfolio);
 
-      const remappedPortfolio = portfolioToUpdate.map((coin) => {
-        if (updatedCoin && updatedCoin.currency === coin.currency) {
-          return {
-            ...coin,
-            position: updatedCoin.position,
-            value: updatedCoin.value
-          };
-        }
-
-        return coin;
-      });
-
-      console.log(' remappedPortfolio', remappedPortfolio);
-
-      // const portfolioUpdated = calculatePercentage(state.portfolio, updatedCoin);
-      // console.log(' portfolioUpdated', portfolioUpdated);
-
-      // localStorage.setItem(MOON_PORTFOLIO, JSON.stringify(portfolioUpdatedCoin));
+      localStorage.setItem(MOON_PORTFOLIO, JSON.stringify(finalPortfolio));
 
       return {
         ...state,
-        // portfolio: updatedPortfolio
-        portfolio: recalculatePercentage(remappedPortfolio)
+        portfolio: finalPortfolio
       };
 
     // case Actions.REMOVE_COIN_PORTFOLIO:

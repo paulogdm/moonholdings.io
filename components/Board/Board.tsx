@@ -10,6 +10,7 @@ import { setOverlayState } from '../../actions/board'
 import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../../shared/constants/copy'
+import { sortByValue } from '../../services/coinFactory'
 import { StyledBoard, PortfolioContainer } from '../../styles'
 
 interface IState {
@@ -70,6 +71,7 @@ class Board extends React.Component<IProps, IState> {
   render() {
     const { assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist } = this.props;
     const { coin, edit, search } = this.state;
+    const sortedPortfolio = sortByValue(portfolio);
     const hasPortfolio = portfolio.length > 0;
 
     return (
@@ -77,7 +79,7 @@ class Board extends React.Component<IProps, IState> {
         { edit &&
           <SquareEditWrapper
             coin={coin}
-            portfolio={portfolio}
+            portfolio={sortedPortfolio}
             toggle={this.toggleSquareEdit}
           /> }
         { search &&
@@ -90,7 +92,7 @@ class Board extends React.Component<IProps, IState> {
         { overlay && <Overlay handleClick={this.handleOverlayClick}/> }
         <StyledBoard>
           { loading ? <BlockLoader /> : !hasPortfolio ? <Welcome/>
-            : <Portfolio portfolio={portfolio} watchlist={watchlist} edit={this.toggleSquareEdit}/> }
+            : <Portfolio portfolio={sortedPortfolio} watchlist={watchlist} edit={this.toggleSquareEdit}/> }
           <PlusButton toggleSearch={this.handleOnSearch}/>
           <NomicsLink/>
           <Astronaut showLogo={hasPortfolio}/>

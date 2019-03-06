@@ -1,4 +1,5 @@
 export interface IAsset {
+  [key: string]: string | number | undefined | boolean;
   availableSupply?: string;
   currency: string;
   exchange: string;
@@ -19,6 +20,15 @@ export interface IWatchlistAsset {
   marketCap: number;
   name: string;
   price: number;
+}
+
+export interface ISearchAsset {
+  [key: string]: string | number;
+  availableSupply: string;
+  currency: string;
+  name: string;
+  price: string;
+  marketCap: number;
 }
 
 export interface IMarketAsset {
