@@ -10,6 +10,7 @@ import { EditSquare, EditSquareData, EditButtonsContainer } from '../../styles'
 
 interface IProps {
   coin: IAsset;
+  editWatchCoin: boolean;
   portfolio: IAsset[];
   toggle(toggle: boolean, coin?: IAsset): void;
   updateCoinPortfolio(asset: IAsset): void;
@@ -57,32 +58,41 @@ class SquareEdit extends React.Component<IProps, IState> {
   }
 
   render() {
+    const { editWatchCoin } = this.props;
     const { coin, balance, value, inPortfolio } = this.state;
-    const { currency, exchange, percentage, position, price } = coin;
-
+    const { currency, exchange, marketCap, percentage, position, price } = coin;
+    
+    const EDIT_POSITION = 'Edit your position below';
     const SaveButton = () => <button onClick={this.handleSave} disabled={balance <= 0}>Save</button>;
     const RemoveButton = () => <button onClick={this.handleRemove}>Remove</button>;
     const CancelButton = () => <button onClick={() => this.props.toggle(false)}>Cancel</button>;
+    
+    console.log('editWatchCoin', editWatchCoin);
+    console.log('coin', coin);
 
     return (
       <EditSquare className={styleModifier(currency)} style={setStyle(currency)}>
         <header>
           <h2>{currency}</h2>
-          <h3 style={setStyle(currency)}>Edit your position below</h3>
+          <h3 style={setStyle(currency)}>{ editWatchCoin ? coin.name : EDIT_POSITION }</h3>
         </header>
-        <input
-          type="number"
-          placeholder="0"
-          value={this.state.balance}
-          onFocus={this.handleFocus}
-          onChange={this.handleChange}
-        />
+        {
+          editWatchCoin ? null :
+          <input
+            type="number"
+            placeholder="0"
+            value={this.state.balance}
+            onFocus={this.handleFocus}
+            onChange={this.handleChange}
+          />
+        }
         <EditSquareData>
           <SquareRow type={'Price:'} data={price}/>
           <SquareRow type={'Exchange:'} data={exchange}/>
-          <SquareRow type={'Position:'} data={position ? position : 0}/>
-          <SquareRow type={'Allocation:'} data={percentage ? percentage : 0}/>
-          <SquareRow type={'Value:'} data={value}/>
+          { editWatchCoin ? null : <SquareRow type={'Position:'} data={position ? position : 0}/> }
+          { editWatchCoin ? null : <SquareRow type={'Allocation:'} data={percentage ? percentage : 0}/> }
+          { editWatchCoin ? null : <SquareRow type={'Value:'} data={value}/> }
+          { editWatchCoin && <SquareRow type={'Marketcap:'} data={marketCap} isWatchlist /> }
         </EditSquareData>
         <EditButtonsContainer>
           <SaveButton/>

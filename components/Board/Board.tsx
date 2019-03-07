@@ -14,6 +14,7 @@ import { StyledBoard, PortfolioContainer } from '../../styles'
 
 interface IState {
   coin: IAsset;
+  editWatchCoin: boolean;
   edit: boolean;
   search: boolean;
 }
@@ -38,6 +39,7 @@ class Board extends React.Component<IProps, IState> {
 
     this.state = {
       coin: coinModel,
+      editWatchCoin: false,
       edit: false,
       search: false
     };
@@ -69,7 +71,7 @@ class Board extends React.Component<IProps, IState> {
 
   render() {
     const { assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist } = this.props;
-    const { coin, edit, search } = this.state;
+    const { coin, edit, editWatchCoin, search } = this.state;
     const sortedPortfolio = sortByValue(portfolio);
     const hasPortfolio = portfolio.length > 0;
 
@@ -78,6 +80,7 @@ class Board extends React.Component<IProps, IState> {
         { edit &&
           <SquareEditWrapper
             coin={coin}
+            editWatchCoin={editWatchCoin}
             portfolio={sortedPortfolio}
             toggle={this.toggleSquareEdit}
           /> }
@@ -107,16 +110,17 @@ class Board extends React.Component<IProps, IState> {
   }
 
   @bind
-  private toggleSquareEdit(toggle: boolean, coin?: IAsset) {
-    coin ?
-      this.setState({ coin, edit: toggle }) :
-      this.setState({ edit: toggle });
+  private toggleSquareEdit(toggle: boolean, coin: IAsset, editWatchCoin?: boolean) {
+    !editWatchCoin ? 
+      this.setState({ coin, edit: toggle, editWatchCoin: false }) :
+      this.setState({ coin, edit: toggle, editWatchCoin });
  
     this.props.setOverlayState(toggle);
   }
 
   @bind
   private handleOverlayClick() {
+    console.log('handleOverlayClick...');
     const { edit, search } = this.state;
     if (edit) this.toggleSquareEdit(false, coinModel);
     if (search) this.setState({ search: false });

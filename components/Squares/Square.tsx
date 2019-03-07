@@ -14,7 +14,7 @@ interface IProps {
   index: number;
   inSearch?: boolean;
   watchlist?: boolean;
-  edit(toggle: boolean, coin: IAsset): void;
+  edit(toggle: boolean, coin: IAsset, editWatchlist: boolean): void;
 }
 
 export default class Square extends React.PureComponent<IProps> {
@@ -34,6 +34,7 @@ export default class Square extends React.PureComponent<IProps> {
     const rank = index + 1;
     const colorBlack = { 'color': '#000' };
     const allocation = percentage ? percentage : 0;
+    const editWatchlist = !!watchlist;
     const CurrencySymbol = () => <span><h1>{currency}</h1></span>;
     const CurrencyRank = () => <span><h4>#{rank}</h4></span>;
 
@@ -41,7 +42,7 @@ export default class Square extends React.PureComponent<IProps> {
       <div
         className={watchlist ? '' : styleModifier(coin.currency)}
         style={watchlist ? colorBlack : setStyle(coin.currency)}
-        onClick={() => edit(true, coin)}
+        onClick={() => edit(true, coin, editWatchlist)}
       >
         <SquareStyle className="coin-square">
           <Shade>
