@@ -76,10 +76,7 @@ export const AssetsReducer = (state = defaultAssetsState, action: IActionReducer
         localStorage.clear();
       }
 
-      return {
-        ...state,
-        portfolio: smallerPortfolio
-      };
+      return { ...state, portfolio: smallerPortfolio };
 
     default:
       return state;

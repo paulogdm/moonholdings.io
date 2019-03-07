@@ -2,9 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bind } from 'decko'
 
-import {
-  Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Search, BlockLoader, Overlay
-}  from '../../components'
+import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Search, BlockLoader, Overlay }
+  from '../../components'
 import { addCoinsPortfolio, addCoinsWatchlist, fetchAllAssets } from '../../actions/assets'
 import { setOverlayState } from '../../actions/board'
 import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'

@@ -2,9 +2,7 @@ import * as R from 'ramda'
 
 import { filterCryptoBase, filterByUSDbase, notBTCorETH } from './exchangeFilters'
 import { additionalAssets, supportedAssets } from '../shared/models'
-import {
-  IAsset, IAssetResponse, ISearchAsset, IResponseConfig, IMarketAsset, IGetMarketsRes,
-} from '../shared/types'
+import { IAsset, IAssetResponse, ISearchAsset, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
 import { arrayToObject, multiply, roundFloat, round } from '../shared/utils'
 import { formatPrice } from '../shared/utils/math'
 import { MOON_PORTFOLIO } from '../shared/constants/copy'
@@ -16,9 +14,8 @@ const mergeByCurrency = (matchArray: IAssetResponse[], nextArray: IAssetResponse
   matchArray.map(m => Object.assign({}, m, nextArray.find(n => n.currency === m.currency)));
 
 // Combines Promises and returns responses together.
-// @TODO Fix any type.
-// export const fetchAll = <T extends {}>(array: T[]) => Promise.all(array);
-export const fetchAll = (array: any[]) => Promise.all(array);
+export const fetchAll = <T extends {}>(array: (T | Promise<T>)[]) => Promise.all(array);
+
 
 // Return coins that match text | search by currency symbol or name.
 export const findAsset = (txt: string, assets: ISearchAsset[]) => {
