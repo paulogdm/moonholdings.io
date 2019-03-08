@@ -6,15 +6,16 @@ import { EditSquareWrapper } from '../../styles'
 
 interface IProps {
   coin: IAsset;
+  editWatchCoin: boolean;
   portfolio: IAsset[];
   toggle(toggle: boolean, coin?: IAsset): void;
 }
 
 export const SquareEditWrapper = (props: IProps) => {
-  const { coin, portfolio, toggle } = props;
+  const { coin, portfolio, editWatchCoin, toggle } = props;
   return (
     <EditSquareWrapper>
-      <SquareEdit coin={coin} portfolio={portfolio} toggle={toggle} />
+      <SquareEdit coin={coin} portfolio={portfolio} editWatchCoin={editWatchCoin} toggle={toggle} />
     </EditSquareWrapper>
   );
 }

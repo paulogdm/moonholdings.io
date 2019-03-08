@@ -72,7 +72,7 @@ export const EditSquareWrapper = styled.section`
   justify-content: center;
   align-items: center;
   position: absolute;
-  left: 25%;
+  width: 100%;
 `
 
 export const EditSquare = styled(CoinSquare)`
@@ -107,10 +107,7 @@ export const EditSquare = styled(CoinSquare)`
     outline-width: 0;
   }
 
-  &:hover {
-    border: 2px solid rgba(87, 56, 92, 0);
-    opacity: 1;
-  }
+  &:hover { border: 2px solid rgba(87, 56, 92, 0); opacity: 1; }
 `
 
 export const EditSquareData = styled.section`
@@ -132,15 +129,19 @@ export const EditButtonsContainer = styled.div`
   }
 `
 
+export const EditSquareWatch = styled(EditSquare)`
+  background: ${props => props.theme.brightPurple};
+`
+
 export const CoinRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* letter-spacing: 0.05rem; */
   margin: 0 0 4px 0;
+  line-height: 1.35rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   h1 { font-size: 1.5rem; line-height: 0; }
-  h4 { line-height: 0.15rem; }
+  h4 { font-size: 1rem; line-height: 0.15rem; }
   p { margin: 0; }
 `
 

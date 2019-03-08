@@ -3,15 +3,20 @@ import { connect } from 'react-redux'
 import { bind } from 'decko'
 
 import { SquareRow } from '../../components'
-// import { addCoin, updateCoin, removeCoin } from '../../actions/coins';
+import { updateCoinPortfolio, removeCoinPortfolio, removeCoinWatchlist } from '../../actions/assets';
 import { IAsset } from '../../shared/types'
-import { styleModifier, setStyle, numberWithCommas, round, rounder } from '../../shared/utils'
-import { EditSquare, EditSquareData, EditButtonsContainer } from '../../styles'
+import { colorBlack } from '../../shared/models/squares'
+import { styleModifier, setStyle, round, rounder } from '../../shared/utils'
+import { EditSquare, EditSquareData, EditButtonsContainer, EditSquareWatch } from '../../styles'
 
 interface IProps {
   coin: IAsset;
+  editWatchCoin: boolean;
   portfolio: IAsset[];
   toggle(toggle: boolean, coin?: IAsset): void;
+  updateCoinPortfolio(asset: IAsset): void;
+  removeCoinPortfolio(asset: IAsset): void;
+  removeCoinWatchlist(asset: IAsset): void;
 }
 
 interface IState {
@@ -55,39 +60,52 @@ class SquareEdit extends React.Component<IProps, IState> {
   }
 
   render() {
+    const { editWatchCoin: isWatch } = this.props;
     const { coin, balance, value, inPortfolio } = this.state;
-    const { currency, exchange, percentage, position, price } = coin;
-
+    const { currency, exchange, marketCap, percentage, position, price } = coin;
+    
+    const EDIT_POSITION = 'Edit your position below';
     const SaveButton = () => <button onClick={this.handleSave} disabled={balance <= 0}>Save</button>;
     const RemoveButton = () => <button onClick={this.handleRemove}>Remove</button>;
     const CancelButton = () => <button onClick={() => this.props.toggle(false)}>Cancel</button>;
+    
+    const EditSquareWrapper = isWatch ? EditSquareWatch : EditSquare;
+    const editSquareStyle = (currency: string, watch: boolean) => !watch ? setStyle(currency) : colorBlack;
+    const editSquareClass = (currency: string, watch: boolean) => !watch ? styleModifier(currency) : '';
+    const editSquareTitle = (currency: string, watch: boolean) => !watch ?
+      <h3 style={setStyle(currency)}>{ EDIT_POSITION }</h3> :
+      <h3>{ coin.name }</h3>
 
     return (
-      <EditSquare className={styleModifier(currency)} style={setStyle(currency)}>
+      <EditSquareWrapper className={editSquareClass(currency, isWatch)} style={editSquareStyle(currency, isWatch)}>
         <header>
           <h2>{currency}</h2>
-          <h3 style={setStyle(currency)}>Edit your position below</h3>
+          { editSquareTitle(currency, isWatch) }
         </header>
-        <input
-          type="number"
-          placeholder="0"
-          value={this.state.balance}
-          onFocus={this.handleFocus}
-          onChange={this.handleChange}
-        />
+        {
+          isWatch ? null :
+          <input
+            type="number"
+            placeholder="0"
+            value={this.state.balance}
+            onFocus={this.handleFocus}
+            onChange={this.handleChange}
+          />
+        }
         <EditSquareData>
           <SquareRow type={'Price:'} data={price}/>
           <SquareRow type={'Exchange:'} data={exchange}/>
-          <SquareRow type={'Position:'} data={position}/>
-          <SquareRow type={'Allocation:'} data={percentage}/>
-          <SquareRow type={'Value:'} data={value}/>
+          { isWatch ? null : <SquareRow type={'Position:'} data={position ? position : 0}/> }
+          { isWatch ? null : <SquareRow type={'Allocation:'} data={percentage ? percentage : 0}/> }
+          { isWatch ? null : <SquareRow type={'Value:'} data={value}/> }
+          { isWatch && <SquareRow type={'Marketcap:'} data={marketCap} isWatchlist/> }
         </EditSquareData>
         <EditButtonsContainer>
-          <SaveButton/>
-          {inPortfolio && <RemoveButton/>}
+          { isWatch ? <RemoveButton/> : <SaveButton/> }
+          { inPortfolio && <RemoveButton/> }
           <CancelButton/>
         </EditButtonsContainer>
-      </EditSquare>
+      </EditSquareWrapper>
     );
   }
 
@@ -102,58 +120,32 @@ class SquareEdit extends React.Component<IProps, IState> {
     const target = event.target as HTMLInputElement;
     const balance = Number(target.value);
     const value = rounder(balance, this.state.price);
-
-    this.setState({
-      balance,
-      value
-    });
-  }
-
-  @bind
-  private addCoin(coin: IAsset, balance: number) {
-    const { value } = this.state;
-    console.log('addCoin');
-    // this.props.addCoin(Object.assign({
-    //   balance,
-    //   value
-    // }, coin));
-  }
-
-  @bind
-  private updateCoin(coin: IAsset, balance: number) {
-    const { value } = this.state;
-    const updatedCoin = Object.assign(coin);
-    updatedCoin.balance = balance;
-    updatedCoin.value = value;
-    console.log('updateCoin', coin, value);
-    // this.props.updateCoin(updatedCoin);
+    this.setState({ balance, value });
   }
 
   @bind
   private handleSave() {
-    const { coin, balance, inPortfolio } = this.state;
-    console.log('handleSave', coin);
-    // inPortfolio ? this.updateCoin(coin, balance) : this.addCoin(coin, balance);
-    // this.props.toggle(false);
+    const { coin, balance: position } = this.state;
+    const coinValue = coin.value ? coin.value : 0;
+    const updatedCoin = { ...coin, position, value: coinValue * position };
+    this.props.updateCoinPortfolio(updatedCoin);
+    this.props.toggle(false);
   }
 
-  @bind handleRemove() {
+  @bind
+  private handleRemove() {
+    const { editWatchCoin: isWatch } = this.props;
     const { coin } = this.state;
-    console.log('handleRemove', coin);
-    // this.props.removeCoin(coin);
-    // this.props.toggle(false);
+    !isWatch ? this.props.removeCoinPortfolio(coin) : this.props.removeCoinWatchlist(coin);
+    this.props.toggle(false);
   }
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  // addCoin: (...args) => dispatch(addCoin(...args)),
-  // updateCoin: (...args) => dispatch(updateCoin(...args)),
-  // removeCoin: (...args) => dispatch(removeCoin(...args))
+  updateCoinPortfolio: (coin: IAsset) => dispatch(updateCoinPortfolio(coin)),
+  removeCoinPortfolio: (coin: IAsset) => dispatch(removeCoinPortfolio(coin)),
+  removeCoinWatchlist: (coin: IAsset) => dispatch(removeCoinWatchlist(coin))
 });
-
-// const mapStateToProps = (state: IInitState) => ({
-//   portfolio: AssetsReducer.portfolio
-// });
 
 export const SquareEditJest = SquareEdit;
 

@@ -1,25 +1,26 @@
 import * as R from 'ramda'
 
-import { filterByExchangeBase, filterByUSDbase } from './exchangeFilters'
+import { filterCryptoBase, filterByUSDbase, notBTCorETH } from './exchangeFilters'
 import { additionalAssets, supportedAssets } from '../shared/models'
-import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
+import { IAsset, IAssetResponse, ISearchAsset, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
 import { arrayToObject, multiply, roundFloat, round } from '../shared/utils'
 import { formatPrice } from '../shared/utils/math'
-import { USD_CURRENCIES } from '../shared/constants/api'
 import { MOON_PORTFOLIO } from '../shared/constants/copy'
+import { KEYS_TO_CLEAN } from '../shared/constants/api'
 
 const textMatch = (part: string, str: string) => str.search(part) !== -1;
 
-//@ TODO create Interfaces for array types:
-const mergeByCurrency = (matchArray: any[], nextArray: any[]) =>
+const mergeByCurrency = (matchArray: IAssetResponse[], nextArray: IAssetResponse[]) =>
   matchArray.map(m => Object.assign({}, m, nextArray.find(n => n.currency === m.currency)));
 
 // Combines Promises and returns responses together.
-export const fetchAll = (array: any[]) => Promise.all(array);
+export const fetchAll = <T extends {}>(array: (T | Promise<T>)[]) => Promise.all(array);
+
 
 // Return coins that match text | search by currency symbol or name.
-export const findAsset = (txt: string, assets: any[]) => {
-  const checkText = (k: string, a: any) => (textMatch(txt.toLowerCase(), a[k].toLowerCase()) ? a : null);
+export const findAsset = (txt: string, assets: ISearchAsset[]) => {
+  const checkText = (k: string, a: ISearchAsset) =>
+    (textMatch(txt.toLowerCase(), a[k].toString().toLowerCase()) ? a : null);
   const curriedCheckText = R.curry(checkText);
   const byName = R.map(curriedCheckText('name'), assets);
   const bySymbol = R.map(curriedCheckText('currency'), assets);
@@ -40,40 +41,19 @@ const pluckValuableAssets = (assets: IAssetResponse[]) => {
     if (asset.price) return asset;
   });
   return cleanedAssets;
-}
+};
 
-//@ TODO create Interfaces for portfolio types:
-export const sortByValue = (portfolio: any) => portfolio.sort((a: any, b: any) => b.value - a.value);
-
-const keysToClean = [
-  'close',
-  'dayOpen',
-  'dayOpenVolume',
-  'dayVolume',
-  'high',
-  'highExchange',
-  'highQuoteCurrency',
-  'highTimestamp',
-  'maxSupply',
-  'monthOpen',
-  'monthOpenVolume',
-  'monthVolume',
-  'weekOpen',
-  'weekOpenVolume',
-  'weekVolume',
-  'yearOpen',
-  'yearOpenVolume',
-  'yearVolume'
-];
+export const sortByValue = (portfolio: IAsset[]) => portfolio.sort((a: IAsset, b: IAsset) => 
+  b.value && a.value ? b.value - a.value : 0);
 
 // Clean assets by removing unneeded keys.
-export const cleanAssets = (assets: any) =>
+export const cleanAssets = (assets: IAssetResponse[]) =>
   // Return our mapped assets array.
-  assets.map((asset: any) =>
+  assets.map((asset: IAssetResponse) =>
     // Iterate through each key in the object and create a new object (reduce).
     Object.keys(asset).reduce((newObj, key) => (
-      // Check to see if this key is inside keysToClean.
-      keysToClean.indexOf(key) < 0
+      // Check to see if this key is inside KEYS_TO_CLEAN.
+      KEYS_TO_CLEAN.indexOf(key) < 0
       // If not, add it to the new object.
         ? ({ ...newObj, [key]: asset[key] })
         // Otherwise, ignore the key and move on
@@ -92,15 +72,15 @@ export const formatAssets = (responses: IResponseConfig[]) => {
   responses.forEach((response: IResponseConfig) => {
     const { config } = response;
     const { url } = config;
+
     if (url.includes('prices')) {
       prices = response.data;
     } else if (url.includes('dashboard')) {
-      availableSupplies = cleanAssets(response.data);
+      const { data } = response;
+      if (data) availableSupplies = cleanAssets(data);
     }
-    return {
-      prices,
-      availableSupplies
-    };
+
+    return { prices, availableSupplies };
   });
 
   const assetsPrices = filterAssets(prices);
@@ -112,10 +92,7 @@ export const formatAssets = (responses: IResponseConfig[]) => {
     const multipliedCap = multiply(Number(asset.price), Number(asset.availableSupply));
     const roundedCap = roundFloat(multipliedCap, 2);
     const marketCap = roundedCap ? Number(roundedCap) : 0;
-    return {
-      ...asset,
-      marketCap
-    };
+    return { ...asset, marketCap };
   });
 
   const sortedAssets = assetsWithMarketCap.sort((a, b) => b.marketCap - a.marketCap);
@@ -134,28 +111,28 @@ export const combineExchangeData =
     const ethUSDTprices = marketUSDT.filter((market: IMarketAsset) => market.base === 'ETH');
     const ethUSDprices = marketUSD.filter((market: IMarketAsset) => market.base === 'ETH');
 
-    const btcPricedMarkets = filterByExchangeBase(btcBasedExchanges, btcUSDTprices, btcUSDprices);
-    const ethPricedMarkets = filterByExchangeBase(ethBasedExchanges, ethUSDTprices, ethUSDprices);
+    const btcPricedMarkets = notBTCorETH(asset) ?
+      filterCryptoBase(btcBasedExchanges, btcUSDTprices, btcUSDprices) : [];
+    const ethPricedMarkets = notBTCorETH(asset) ?
+      filterCryptoBase(ethBasedExchanges, ethUSDTprices, ethUSDprices) : [];
     
-    const btcMarkets = R.not(R.isEmpty(btcPricedMarkets)) ? btcPricedMarkets.filter((market) => R.not(R.isNil(market))) : [];
-    const ethMarkets = R.not(R.isEmpty(ethPricedMarkets)) ? ethPricedMarkets.filter((market) => R.not(R.isNil(market))) : [];
+    const btcMarkets = R.not(R.isEmpty(btcPricedMarkets)) ?
+      btcPricedMarkets.filter((market: IMarketAsset) => R.not(R.isNil(market))) : [];
+    const ethMarkets = R.not(R.isEmpty(ethPricedMarkets)) ?
+      ethPricedMarkets.filter((market: IMarketAsset) => R.not(R.isNil(market))) : [];
 
-    const combinedMarkets = asset !== 'BTC' && asset !== 'ETH' ?
+    const combinedMarkets = notBTCorETH(asset) ?
       btcMarkets.concat(ethMarkets).concat(marketUSD).concat(marketUSDC).concat(marketUSDT) :
       marketUSD.concat(marketUSDC).concat(marketUSDT);
   
-    const filteredMarkets = R.not(R.isEmpty(combinedMarkets)) ? filterByUSDbase(asset, combinedMarkets) : [];
+    const filteredMarkets = filterByUSDbase(asset, combinedMarkets);
  
     if (R.isEmpty(filteredMarkets)) return [];
 
-    return filteredMarkets.map((market: IMarketAsset) => {
-      if (market) {
-        return {
-          ...market,
-          price_quote: formatPrice(market.price_quote)
-        }
-      }
-    });
+    return filteredMarkets.map((market: IMarketAsset) => ({
+      ...market,
+      price_quote: formatPrice(market.price_quote)
+    }));
   };
 
 export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAsset[]) => {
@@ -163,24 +140,52 @@ export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAss
   return Number(assetExchange.price_quote);
 };
 
+// Update Portfolio with new updated Asset.
+export const remapUpdatedPortfolio = (portfolio: IAsset[], updatedCoin: IAsset) =>
+  portfolio.map((coin: IAsset) => {
+    if (updatedCoin && updatedCoin.currency === coin.currency) {
+      return {
+        ...coin,
+        position: updatedCoin.position,
+        value: updatedCoin.value
+      };
+    }
+    return coin;
+  });
+
+const totalValue = (portfolio: IAsset[]) => portfolio.reduce((acc: number, { price, position }: IAsset) => {
+  const valueAmount = position && price ? position * price : 0;
+  return acc + valueAmount;
+}, 0);
+
 // Add coin's percentage of portfolio.
-export const calculatePercentage = (portfolio: IAsset[], coin: IAsset) => {
+export const calculatePercentage = (type: string, portfolio: IAsset[], coin?: IAsset) => {
   if (coin) {
     portfolio.push(coin);
   }
 
-  const totalValue = portfolio.reduce((acc: number, { value }: IAsset) => {
-    const valueAmount = value ? value : 0;
-    return acc + valueAmount;
-  }, 0);
+  const newPortfolio = portfolio.map((coin) => {
+    let coinValue = 0;
 
-  const updatedPortfolio = portfolio.map((c) => {
-    const coinValue = c.value ? c.value : 0;
-    c.percentage = round((coinValue / totalValue) * 100);
-    return c;
+    if (type === 'ADD_COIN_PORTFOLIO' || type === 'REMOVE_COIN_PORTFOLIO') {
+      const { value } = coin;
+      if (value) coinValue = value ? value : 0;
+    }
+    else if (type === 'UPDATE_COIN_PORTFOLIO') {
+      const { position, price } = coin;
+      if (position && price) coinValue = position * price;
+    }
+
+    const percentage = round((coinValue / totalValue(portfolio)) * 100);
+
+    return {
+      ...coin,
+      percentage,
+      value: coinValue > 1 ? roundFloat(coinValue, 2) : coinValue
+    };
   });
 
-  return updatedPortfolio;
+  return newPortfolio;
 };
 
 export const updateWatchlist = (coin: IAsset, watchlist: IAsset[]) => {
