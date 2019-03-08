@@ -2,7 +2,7 @@ import { getPrices, getAvailableSupply, getMarkets } from '../services/api'
 import { fetchAll, combineExchangeData, formatAssets, formatCoinsList } from '../services/coinFactory'
 import {
   IAsset, DispatchAllAssets, DispatchMarketPrices, DispatchAddCoin, DispatchAddCoins, DispatchUpdateCoin,
-  IWatchlistAsset, DispatchAddCoinWatch, DispatchAddCoinsWatch, DispatchRemoveCoin
+  IWatchlistAsset, DispatchAddCoinWatch, DispatchAddCoinsWatch, DispatchRemoveCoin, DispatchRemoveWatch
 } from '../shared/types'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../shared/constants/copy'
 
@@ -52,6 +52,9 @@ const actionAddCoinWatchlist = (coin: IWatchlistAsset) =>
 const actionAddCoinsWatchlist = (watchlist: IWatchlistAsset[]) =>
   ({ type: Actions.ADD_COINS_WATCHLIST, watchlist });
 
+const removeCoinInWatchlist = (coin: IAsset) =>
+  ({ type: Actions.REMOVE_COIN_WATCHLIST, coin });
+
 // Fetch assets from Nomics API V1.
 export const fetchAllAssets = () => (dispatch: DispatchAllAssets) => {
   dispatch(actionGetAllAssets());
@@ -99,7 +102,7 @@ export const addCoinsWatchlist = (coins: IAsset[]) => (dispatch: DispatchAddCoin
   });
 }
 
-// Add a coin to your portfolio.
+// Add a coin to portfolio.
 export const addCoinPortfolio = (coin: IAsset) => (dispatch: DispatchAddCoin) => {
   dispatch(actionAddCoinPortfolio(coin));
 };
@@ -108,12 +111,17 @@ export const addCoinWatchlist = (coin: IWatchlistAsset) => (dispatch: DispatchAd
   dispatch(actionAddCoinWatchlist(coin));
 };
 
-// Update a coin in your portfolio.
+// Update a coin in portfolio.
 export const updateCoinPortfolio = (coin: IAsset) => (dispatch: DispatchUpdateCoin) => {
   dispatch(updateCoinInPortfolio(coin));
 };
 
-// Remove coin from your portfolio.
+// Remove coin from portfolio.
 export const removeCoinPortfolio = (coin: IAsset) => (dispatch: DispatchRemoveCoin) => {
   dispatch(removeCoinInPortfolio(coin));
+};
+
+// Remove coin from watchlist.
+export const removeCoinWatchlist = (coin: IAsset) => (dispatch: DispatchRemoveWatch) => {
+  dispatch(removeCoinInWatchlist(coin));
 };

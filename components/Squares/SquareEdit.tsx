@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bind } from 'decko'
 
 import { SquareRow } from '../../components'
-import { updateCoinPortfolio, removeCoinPortfolio } from '../../actions/assets';
+import { updateCoinPortfolio, removeCoinPortfolio, removeCoinWatchlist } from '../../actions/assets';
 import { IAsset } from '../../shared/types'
 import { colorBlack } from '../../shared/models/squares'
 import { styleModifier, setStyle, round, rounder } from '../../shared/utils'
@@ -16,6 +16,7 @@ interface IProps {
   toggle(toggle: boolean, coin?: IAsset): void;
   updateCoinPortfolio(asset: IAsset): void;
   removeCoinPortfolio(asset: IAsset): void;
+  removeCoinWatchlist(asset: IAsset): void;
 }
 
 interface IState {
@@ -68,9 +69,6 @@ class SquareEdit extends React.Component<IProps, IState> {
     const RemoveButton = () => <button onClick={this.handleRemove}>Remove</button>;
     const CancelButton = () => <button onClick={() => this.props.toggle(false)}>Cancel</button>;
     
-    console.log('editWatchCoin', isWatch);
-    console.log('coin', coin);
-
     const EditSquareWrapper = isWatch ? EditSquareWatch : EditSquare;
     const editSquareStyle = (currency: string, watch: boolean) => !watch ? setStyle(currency) : colorBlack;
     const editSquareClass = (currency: string, watch: boolean) => !watch ? styleModifier(currency) : '';
@@ -103,7 +101,7 @@ class SquareEdit extends React.Component<IProps, IState> {
           { isWatch && <SquareRow type={'Marketcap:'} data={marketCap} isWatchlist/> }
         </EditSquareData>
         <EditButtonsContainer>
-          <SaveButton/>
+          { isWatch ? <RemoveButton/> : <SaveButton/> }
           { inPortfolio && <RemoveButton/> }
           <CancelButton/>
         </EditButtonsContainer>
@@ -136,15 +134,17 @@ class SquareEdit extends React.Component<IProps, IState> {
 
   @bind
   private handleRemove() {
+    const { editWatchCoin: isWatch } = this.props;
     const { coin } = this.state;
-    this.props.removeCoinPortfolio(coin);
+    !isWatch ? this.props.removeCoinPortfolio(coin) : this.props.removeCoinWatchlist(coin);
     this.props.toggle(false);
   }
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
   updateCoinPortfolio: (coin: IAsset) => dispatch(updateCoinPortfolio(coin)),
-  removeCoinPortfolio: (coin: IAsset) => dispatch(removeCoinPortfolio(coin))
+  removeCoinPortfolio: (coin: IAsset) => dispatch(removeCoinPortfolio(coin)),
+  removeCoinWatchlist: (coin: IAsset) => dispatch(removeCoinWatchlist(coin))
 });
 
 export const SquareEditJest = SquareEdit;

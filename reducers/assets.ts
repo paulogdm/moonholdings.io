@@ -73,10 +73,22 @@ export const AssetsReducer = (state = defaultAssetsState, action: IActionReducer
         localStorage.setItem(MOON_PORTFOLIO, JSON.stringify(smallerPortfolio));
       } else {
         smallerPortfolio = [];
-        localStorage.clear();
+        localStorage.setItem(MOON_PORTFOLIO, '');
       }
 
       return { ...state, portfolio: smallerPortfolio };
+
+    case Actions.REMOVE_COIN_WATCHLIST:
+      let smallerWatchlist = state.watchlist.filter(c => c !== action.coin);
+
+      if (smallerWatchlist.length > 0) {
+        localStorage.setItem(MOON_WATCHLIST, JSON.stringify(smallerWatchlist));
+      } else {
+        smallerWatchlist = [];
+        localStorage.setItem(MOON_WATCHLIST, '');
+      }
+
+      return { ...state, watchlist: smallerWatchlist };
 
     default:
       return state;

@@ -41,7 +41,7 @@ const pluckValuableAssets = (assets: IAssetResponse[]) => {
     if (asset.price) return asset;
   });
   return cleanedAssets;
-}
+};
 
 export const sortByValue = (portfolio: IAsset[]) => portfolio.sort((a: IAsset, b: IAsset) => 
   b.value && a.value ? b.value - a.value : 0);
