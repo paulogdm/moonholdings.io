@@ -5,6 +5,7 @@ import { SquareRow } from '../../components'
 import { IAsset } from '../../shared/types'
 import { SquareShade, SquareInSearch, SquareShadeInSearch, CoinSquare, CoinRank, WatchlistSquare, WatchlistShade }
   from '../../styles'
+import { colorBlack } from '../../shared/models/squares'
 import { setStyle, styleModifier, capitalizeFirstLetter as capFirst } from '../../shared/utils'
 
 interface IProps {
@@ -12,7 +13,7 @@ interface IProps {
   index: number;
   inSearch?: boolean;
   watchlist?: boolean;
-  edit(toggle: boolean, coin: IAsset): void;
+  edit(toggle: boolean, coin: IAsset, editWatchlist: boolean): void;
 }
 
 export default class Square extends React.PureComponent<IProps> {
@@ -30,7 +31,8 @@ export default class Square extends React.PureComponent<IProps> {
     const exchangeName = !R.isEmpty(exchange) ? capFirst(exchange) : 'Aggregate';
     const displayRank = !watchlist && !inSearch;
     const rank = index + 1;
-    const colorBlack = { 'color': '#000' };
+    const allocation = percentage ? percentage : 0;
+    const editWatchlist = !!watchlist;
     const CurrencySymbol = () => <span><h1>{currency}</h1></span>;
     const CurrencyRank = () => <span><h4>#{rank}</h4></span>;
 
@@ -38,7 +40,7 @@ export default class Square extends React.PureComponent<IProps> {
       <div
         className={watchlist ? '' : styleModifier(coin.currency)}
         style={watchlist ? colorBlack : setStyle(coin.currency)}
-        onClick={() => edit(true, coin)}
+        onClick={() => edit(true, coin, editWatchlist)}
       >
         <SquareStyle className="coin-square">
           <Shade>
@@ -50,7 +52,7 @@ export default class Square extends React.PureComponent<IProps> {
             { inSearch && <SquareRow type={'Marketcap:'} data={marketCap}/> }
             { exchangeName && <SquareRow type={'Exchange:'} data={exchangeName}/> }
             { position && <SquareRow type={'Position:'} data={position}/> }
-            { percentage && <SquareRow type={'Allocation:'} data={percentage}/> }
+            { !watchlist && <SquareRow type={'Allocation:'} data={allocation}/> }
             { value && <SquareRow type={'Value:'} data={value}/> }
             { watchlist && <SquareRow type={'Marketcap:'} data={marketCap}/> }
           </Shade>

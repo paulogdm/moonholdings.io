@@ -1,4 +1,5 @@
 export interface IAsset {
+  [key: string]: string | number | undefined | boolean;
   availableSupply?: string;
   currency: string;
   exchange: string;
@@ -21,30 +22,21 @@ export interface IWatchlistAsset {
   price: number;
 }
 
+export interface ISearchAsset {
+  [key: string]: string | number;
+  availableSupply: string;
+  currency: string;
+  name: string;
+  price: string;
+  marketCap: number;
+}
+
 export interface IMarketAsset {
   exchange: string;
   base: string;
   quote: string;
   price_quote: string;
   timestamp: string;
-}
-
-export interface IinitialAssetsState {
-  assets: IAsset[];
-  portfolio: IAsset[];
-  watchlist: IAsset[];
-  exchanges: IMarketAsset[];
-  loading: boolean;
-  fetchingMarkets: boolean;
-}
-
-export interface IinitalBoardState {
-  overlay: boolean;
-}
-
-export interface IinitialState {
-  AssetsReducer: IinitialAssetsState;
-  BoardReducer: IinitalBoardState;
 }
 
 export interface IDisableCheck {

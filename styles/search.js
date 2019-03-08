@@ -114,7 +114,6 @@ export const SearchButtons = styled.section`
     margin-bottom: 1rem;
     height: 4rem;
     font-size: 1.2rem;
-
     &:last-child { margin-bottom: 0; }
   }
 `
@@ -193,7 +192,6 @@ export const AggregateInputDiv = styled.div`
     height: 30px;
     border-radius: 5px;
     transition: background 200ms ease-in-out;
-
     &:checked { background: ${props => props.theme.brightPurple}; }
   }
 

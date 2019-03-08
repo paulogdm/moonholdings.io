@@ -3,28 +3,31 @@ import * as R from 'ramda'
 import { USD_CURRENCIES } from '../shared/constants/api'
 import { IMarketAsset } from '../shared/types'
 
-const calculateBasePrice = (assetBtcPrice: string | number, btcPrice: string | number) => 
-  (Number(assetBtcPrice) * Number(btcPrice)).toString();
+const calculateBasePrice = (assetBtcPrice: string | number, usdPrice: string | number) => 
+  (Number(assetBtcPrice) * Number(usdPrice)).toString();
 
-export const filterByExchangeBase =
-  (exchanges: IMarketAsset[], usdtExchanges: IMarketAsset[], usdExchanges: IMarketAsset[]) =>
-    exchanges.filter((exchange) => {
+export const filterCryptoBase =
+  (exchanges: IMarketAsset[] | any, usdtExchanges: IMarketAsset[], usdExchanges: IMarketAsset[]) => {
+    return exchanges.map((exchange: IMarketAsset) => {
       let basePriced = usdtExchanges.filter((btcExchange) => btcExchange.exchange === exchange.exchange)[0];
-    
       if (!basePriced) {
         basePriced = usdExchanges.filter((btcExchange) => btcExchange.exchange === exchange.exchange)[0];
       }
-      
-      if (basePriced) {
-        const { price_quote: assetBtcPrice } = exchange;
-        const { price_quote: btcPrice } = basePriced;
+
+      if (exchange && basePriced && exchange.price_quote && basePriced.price_quote) {
+        const { price_quote: assetBtcPrice } = exchange; // Asset price in BTC/ETH
+        const { price_quote: usdPrice } = basePriced; // BTC/ETH price in USDT/USD
+        const price_quote = calculateBasePrice(assetBtcPrice, usdPrice).toString();
     
         return {
           ...exchange,
-          price_quote: calculateBasePrice(assetBtcPrice, btcPrice)
+          price_quote
         }
       }
+
+      return null;
     });
+  }
 
 export const filterByUSDbase = (asset: string, combinedMarkets?: IMarketAsset[] | undefined) => {
   if (!combinedMarkets) return [];
@@ -35,3 +38,5 @@ export const filterByUSDbase = (asset: string, combinedMarkets?: IMarketAsset[] 
       }
     }) : [];
 }
+
+export const notBTCorETH = (asset: string) => asset !== 'BTC' && asset !== 'ETH';

@@ -10,7 +10,6 @@ export const PortfolioBalance = styled.div`
 `
 
 export const PortfolioContainer = styled.div`
-  z-index: 1;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -24,7 +23,6 @@ export const PortfolioContainer = styled.div`
 `
 
 export const WatchlistContainer = styled.div`
-  z-index: 1;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;

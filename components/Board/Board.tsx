@@ -2,18 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bind } from 'decko'
 
-import {
-  Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Search, BlockLoader, Overlay
-}  from '../../components'
+import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Search, BlockLoader, Overlay }
+  from '../../components'
 import { addCoinsPortfolio, addCoinsWatchlist, fetchAllAssets } from '../../actions/assets'
 import { setOverlayState } from '../../actions/board'
 import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../../shared/constants/copy'
+import { sortByValue } from '../../services/coinFactory'
 import { StyledBoard, PortfolioContainer } from '../../styles'
 
 interface IState {
   coin: IAsset;
+  editWatchCoin: boolean;
   edit: boolean;
   search: boolean;
 }
@@ -38,6 +39,7 @@ class Board extends React.Component<IProps, IState> {
 
     this.state = {
       coin: coinModel,
+      editWatchCoin: false,
       edit: false,
       search: false
     };
@@ -54,12 +56,13 @@ class Board extends React.Component<IProps, IState> {
       const savedWatchlist = JSON.parse(localStorage.getItem(MOON_WATCHLIST) || '{}');
 
       if (savedPortfolio) {
+        // console.log('savedPortfolio', savedPortfolio);
         const reconstructedPortfolio = Object.values(savedPortfolio);
         this.props.addCoinsPortfolio(reconstructedPortfolio);
       }
 
       if (savedWatchlist) {
-        console.log('savedWatchlist', savedWatchlist);
+        // console.log('savedWatchlist', savedWatchlist);
         const reconstructedWatchlist = Object.values(savedWatchlist);
         this.props.addCoinsWatchlist(reconstructedWatchlist);
       }
@@ -68,7 +71,8 @@ class Board extends React.Component<IProps, IState> {
 
   render() {
     const { assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist } = this.props;
-    const { coin, edit, search } = this.state;
+    const { coin, edit, editWatchCoin, search } = this.state;
+    const sortedPortfolio = sortByValue(portfolio);
     const hasPortfolio = portfolio.length > 0;
 
     return (
@@ -76,7 +80,8 @@ class Board extends React.Component<IProps, IState> {
         { edit &&
           <SquareEditWrapper
             coin={coin}
-            portfolio={portfolio}
+            editWatchCoin={editWatchCoin}
+            portfolio={sortedPortfolio}
             toggle={this.toggleSquareEdit}
           /> }
         { search &&
@@ -89,7 +94,7 @@ class Board extends React.Component<IProps, IState> {
         { overlay && <Overlay handleClick={this.handleOverlayClick}/> }
         <StyledBoard>
           { loading ? <BlockLoader /> : !hasPortfolio ? <Welcome/>
-            : <Portfolio portfolio={portfolio} watchlist={watchlist} edit={this.toggleSquareEdit}/> }
+            : <Portfolio portfolio={sortedPortfolio} watchlist={watchlist} edit={this.toggleSquareEdit}/> }
           <PlusButton toggleSearch={this.handleOnSearch}/>
           <NomicsLink/>
           <Astronaut showLogo={hasPortfolio}/>
@@ -105,16 +110,17 @@ class Board extends React.Component<IProps, IState> {
   }
 
   @bind
-  private toggleSquareEdit(toggle: boolean, coin?: IAsset) {
-    coin ?
-      this.setState({ coin, edit: toggle }) :
-      this.setState({ edit: toggle });
+  private toggleSquareEdit(toggle: boolean, coin: IAsset, editWatchCoin?: boolean) {
+    !editWatchCoin ? 
+      this.setState({ coin, edit: toggle, editWatchCoin: false }) :
+      this.setState({ coin, edit: toggle, editWatchCoin });
  
     this.props.setOverlayState(toggle);
   }
 
   @bind
   private handleOverlayClick() {
+    console.log('handleOverlayClick...');
     const { edit, search } = this.state;
     if (edit) this.toggleSquareEdit(false, coinModel);
     if (search) this.setState({ search: false });

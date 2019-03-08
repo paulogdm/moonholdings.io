@@ -1,22 +1,21 @@
 import { IMarketAsset } from './'
 
 export interface IAssetResponse {
-  currency: boolean;
+  [key: string]: string | undefined;
+  currency: string;
   price?: string;
   availableSupply?: string;
   maxSupply?: string;
 }
 
 export interface IResponseConfig {
-  config: {
-    url: string;
-  };
-  data: IAssetResponse[];
-  headers: {};
-  request: XMLHttpRequest;
-  upload: XMLHttpRequestUpload;
-  status: number;
-  statusText: string;
+  config?: any;
+  data?: IAssetResponse[];
+  headers?: any;
+  request?: XMLHttpRequest;
+  upload?: XMLHttpRequestUpload;
+  status?: number;
+  statusText?: string;
 }
 
 export interface IGetMarketsRes {
