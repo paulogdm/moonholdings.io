@@ -74,6 +74,7 @@ class Board extends React.Component<IProps, IState> {
     const { coin, edit, editWatchCoin, search } = this.state;
     const sortedPortfolio = sortByValue(portfolio);
     const hasPortfolio = portfolio.length > 0;
+    const hasWatchlist = watchlist.length > 0;
 
     return (
       <PortfolioContainer>
@@ -93,7 +94,7 @@ class Board extends React.Component<IProps, IState> {
           /> }
         { overlay && <Overlay handleClick={this.handleOverlayClick}/> }
         <StyledBoard>
-          { loading ? <BlockLoader /> : !hasPortfolio ? <Welcome/>
+          { loading ? <BlockLoader /> : !hasPortfolio && !hasWatchlist ? <Welcome/>
             : <Portfolio portfolio={sortedPortfolio} watchlist={watchlist} edit={this.toggleSquareEdit}/> }
           <PlusButton toggleSearch={this.handleOnSearch}/>
           <NomicsLink/>

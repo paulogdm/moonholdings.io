@@ -1,8 +1,8 @@
 import * as R from 'ramda'
 
 import { filterCryptoBase, filterByUSDbase, notBTCorETH } from './exchangeFilters'
-import { additionalAssets, supportedAssets } from '../shared/models'
-import { IAsset, IAssetResponse, ISearchAsset, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
+import { additionalAssets, supportedAssets, coinModel } from '../shared/models'
+import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
 import { arrayToObject, multiply, roundFloat, round } from '../shared/utils'
 import { formatPrice } from '../shared/utils/math'
 import { MOON_PORTFOLIO } from '../shared/constants/copy'
@@ -17,10 +17,10 @@ const mergeByCurrency = (matchArray: IAssetResponse[], nextArray: IAssetResponse
 export const fetchAll = <T extends {}>(array: (T | Promise<T>)[]) => Promise.all(array);
 
 
-// Return coins that match text | search by currency symbol or name.
-export const findAsset = (txt: string, assets: ISearchAsset[]) => {
-  const checkText = (k: string, a: ISearchAsset) =>
-    (textMatch(txt.toLowerCase(), a[k].toString().toLowerCase()) ? a : null);
+// Return coins that match text search by currency symbol or name.
+export const findAsset = (txt: string, assets: IAsset[]) => {
+  const checkText = (k: string, a: IAsset) =>
+    (textMatch(txt.toLowerCase(), (a[k]||'').toString().toLowerCase()) ? a : coinModel);
   const curriedCheckText = R.curry(checkText);
   const byName = R.map(curriedCheckText('name'), assets);
   const bySymbol = R.map(curriedCheckText('currency'), assets);

@@ -15,17 +15,20 @@ export const SearchList = (props: IProps) => {
   return (
     <SearchListStyle>
       { searchList && searchList.length > 0
-        ? searchList.map((asset: IAsset, i: number) => (
-          <li
-            key={asset.currency}
-            role="button"
-            tabIndex={i}
-            onClick={() => onSelect(asset)}
-          >
-            <p>{asset.name}</p>
-            <span className="symbol">{asset.currency}</span>
-            <em>${numberWithCommas(Math.round(asset.marketCap))}</em>
-          </li>))
+        ? searchList.map((asset: IAsset, i: number) => {
+          if (asset.marketCap === 0) return null;
+          return (
+            <li
+              key={asset.currency}
+              role="button"
+              tabIndex={i}
+              onClick={() => onSelect(asset)}
+            >
+              <p>{asset.name}</p>
+              <span className="symbol">{asset.currency}</span>
+              <em>${numberWithCommas(Math.round(asset.marketCap))}</em>
+            </li>)
+        })
         : <SearchListLoader><BlockLoader/></SearchListLoader>
       }
     </SearchListStyle>
