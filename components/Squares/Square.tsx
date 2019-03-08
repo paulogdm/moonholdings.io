@@ -3,10 +3,9 @@ import * as R from 'ramda'
 
 import { SquareRow } from '../../components'
 import { IAsset } from '../../shared/types'
-import {
-  SquareShade, SquareInSearch, SquareShadeInSearch, CoinSquare, CoinRank,
-  WatchlistSquare, WatchlistShade
-} from '../../styles'
+import { SquareShade, SquareInSearch, SquareShadeInSearch, CoinSquare, CoinRank, WatchlistSquare, WatchlistShade }
+  from '../../styles'
+import { colorBlack } from '../../shared/models/squares'
 import { setStyle, styleModifier, capitalizeFirstLetter as capFirst } from '../../shared/utils'
 
 interface IProps {
@@ -32,7 +31,6 @@ export default class Square extends React.PureComponent<IProps> {
     const exchangeName = !R.isEmpty(exchange) ? capFirst(exchange) : 'Aggregate';
     const displayRank = !watchlist && !inSearch;
     const rank = index + 1;
-    const colorBlack = { 'color': '#000' };
     const allocation = percentage ? percentage : 0;
     const editWatchlist = !!watchlist;
     const CurrencySymbol = () => <span><h1>{currency}</h1></span>;

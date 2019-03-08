@@ -30,13 +30,12 @@ export const SquareRow = (props: IProps) => {
   return (
     <CoinRow title={displayTitle(isLargeNumber, data)}>
       <RowKey/>
-      {isPrice && <p>${priceUSD}</p>}
-      {/* {showMarketcap && <p>{`$${nFormatter(Number(data), 1)}`}</p>} */}
-      {showMarketcap && <p>{ isWatchlist ? `$${numberWithCommas(Math.round(Number(data)))}`: smallNumber }</p>}
-      {showValue && <p>{ `$${numberWithCommas(Number(data))}` }</p>}
-      {isExchangeRow && <p>{ data }</p>}
-      {isPosition && <p>{ data }</p>}
-      {isAllocation && <p>{ roundFloat(Number(data), 2) }%</p>}
+      { isPrice && <p>${priceUSD}</p> }
+      { showMarketcap && <p>{ isWatchlist ? `$${numberWithCommas(Math.round(Number(data)))}`: smallNumber }</p> }
+      { showValue && <p>{ `$${numberWithCommas(Number(data))}` }</p> }
+      { isExchangeRow && <p>{ data }</p> }
+      { isPosition && <p>{ data }</p> }
+      { isAllocation && <p>{ roundFloat(Number(data), 2) }%</p> }
     </CoinRow>
-  )
+  );
 }

@@ -129,6 +129,10 @@ export const EditButtonsContainer = styled.div`
   }
 `
 
+export const EditSquareWatch = styled(EditSquare)`
+  background: ${props => props.theme.brightPurple};
+`
+
 export const CoinRow = styled.div`
   display: flex;
   flex-direction: row;

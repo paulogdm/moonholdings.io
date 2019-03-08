@@ -5,8 +5,9 @@ import { bind } from 'decko'
 import { SquareRow } from '../../components'
 import { updateCoinPortfolio, removeCoinPortfolio } from '../../actions/assets';
 import { IAsset } from '../../shared/types'
+import { colorBlack } from '../../shared/models/squares'
 import { styleModifier, setStyle, round, rounder } from '../../shared/utils'
-import { EditSquare, EditSquareData, EditButtonsContainer } from '../../styles'
+import { EditSquare, EditSquareData, EditButtonsContainer, EditSquareWatch } from '../../styles'
 
 interface IProps {
   coin: IAsset;
@@ -58,7 +59,7 @@ class SquareEdit extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { editWatchCoin } = this.props;
+    const { editWatchCoin: isWatch } = this.props;
     const { coin, balance, value, inPortfolio } = this.state;
     const { currency, exchange, marketCap, percentage, position, price } = coin;
     
@@ -67,17 +68,24 @@ class SquareEdit extends React.Component<IProps, IState> {
     const RemoveButton = () => <button onClick={this.handleRemove}>Remove</button>;
     const CancelButton = () => <button onClick={() => this.props.toggle(false)}>Cancel</button>;
     
-    console.log('editWatchCoin', editWatchCoin);
+    console.log('editWatchCoin', isWatch);
     console.log('coin', coin);
 
+    const EditSquareWrapper = isWatch ? EditSquareWatch : EditSquare;
+    const editSquareStyle = (currency: string, watch: boolean) => !watch ? setStyle(currency) : colorBlack;
+    const editSquareClass = (currency: string, watch: boolean) => !watch ? styleModifier(currency) : '';
+    const editSquareTitle = (currency: string, watch: boolean) => !watch ?
+      <h3 style={setStyle(currency)}>{ EDIT_POSITION }</h3> :
+      <h3>{ coin.name }</h3>
+
     return (
-      <EditSquare className={styleModifier(currency)} style={setStyle(currency)}>
+      <EditSquareWrapper className={editSquareClass(currency, isWatch)} style={editSquareStyle(currency, isWatch)}>
         <header>
           <h2>{currency}</h2>
-          <h3 style={setStyle(currency)}>{ editWatchCoin ? coin.name : EDIT_POSITION }</h3>
+          { editSquareTitle(currency, isWatch) }
         </header>
         {
-          editWatchCoin ? null :
+          isWatch ? null :
           <input
             type="number"
             placeholder="0"
@@ -89,17 +97,17 @@ class SquareEdit extends React.Component<IProps, IState> {
         <EditSquareData>
           <SquareRow type={'Price:'} data={price}/>
           <SquareRow type={'Exchange:'} data={exchange}/>
-          { editWatchCoin ? null : <SquareRow type={'Position:'} data={position ? position : 0}/> }
-          { editWatchCoin ? null : <SquareRow type={'Allocation:'} data={percentage ? percentage : 0}/> }
-          { editWatchCoin ? null : <SquareRow type={'Value:'} data={value}/> }
-          { editWatchCoin && <SquareRow type={'Marketcap:'} data={marketCap} isWatchlist /> }
+          { isWatch ? null : <SquareRow type={'Position:'} data={position ? position : 0}/> }
+          { isWatch ? null : <SquareRow type={'Allocation:'} data={percentage ? percentage : 0}/> }
+          { isWatch ? null : <SquareRow type={'Value:'} data={value}/> }
+          { isWatch && <SquareRow type={'Marketcap:'} data={marketCap} isWatchlist/> }
         </EditSquareData>
         <EditButtonsContainer>
           <SaveButton/>
-          {inPortfolio && <RemoveButton/>}
+          { inPortfolio && <RemoveButton/> }
           <CancelButton/>
         </EditButtonsContainer>
-      </EditSquare>
+      </EditSquareWrapper>
     );
   }
 
