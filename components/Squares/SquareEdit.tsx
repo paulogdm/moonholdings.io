@@ -64,7 +64,6 @@ class SquareEdit extends React.Component<IProps, IState> {
     const { coin, balance, value, inPortfolio } = this.state;
     const { currency, exchange, marketCap, percentage, position, price } = coin;
     
-    const EDIT_POSITION = 'Edit your position below';
     const SaveButton = () => <button onClick={this.handleSave} disabled={balance <= 0}>Save</button>;
     const RemoveButton = () => <button onClick={this.handleRemove}>Remove</button>;
     const CancelButton = () => <button onClick={() => this.props.toggle(false)}>Cancel</button>;
@@ -73,7 +72,7 @@ class SquareEdit extends React.Component<IProps, IState> {
     const editSquareStyle = (currency: string, watch: boolean) => !watch ? setStyle(currency) : colorBlack;
     const editSquareClass = (currency: string, watch: boolean) => !watch ? styleModifier(currency) : '';
     const editSquareTitle = (currency: string, watch: boolean) => !watch ?
-      <h3 style={setStyle(currency)}>{ EDIT_POSITION }</h3> :
+      <h3 style={setStyle(currency)}>{ `Update your ${coin.name} position:` }</h3> :
       <h3>{ coin.name }</h3>
 
     return (

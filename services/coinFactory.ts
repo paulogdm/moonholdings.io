@@ -33,7 +33,7 @@ export const findAsset = (txt: string, assets: IAsset[]) => {
 export const filterAssets = (assets: IAssetResponse[]) => {
   const mergedAssets = mergeByCurrency(supportedAssets, assets);
   return mergedAssets.filter(asset => asset.name ? asset : null);
-};
+}
 
 const pluckValuableAssets = (assets: IAssetResponse[]) => {
   const cleanedAssets = assets.filter((asset) => {
@@ -41,7 +41,7 @@ const pluckValuableAssets = (assets: IAssetResponse[]) => {
     if (asset.price) return asset;
   });
   return cleanedAssets;
-};
+}
 
 export const sortByValue = (portfolio: IAsset[]) => portfolio.sort((a: IAsset, b: IAsset) => 
   b.value && a.value ? b.value - a.value : 0);
@@ -98,7 +98,7 @@ export const formatAssets = (responses: IResponseConfig[]) => {
   const sortedAssets = assetsWithMarketCap.sort((a, b) => b.marketCap - a.marketCap);
   additionalAssets.map((asset: any) => sortedAssets.push(asset));
   return sortedAssets;
-};
+}
 
 // Filter by BTC, ETH, USD, USDT or USDC prices
 // If asset has BTC/ETH pairing, obtain exchange BTC/ETH price to calculate assets USD/USDT value
@@ -133,12 +133,12 @@ export const combineExchangeData =
       ...market,
       price_quote: formatPrice(market.price_quote)
     }));
-  };
+  }
 
 export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAsset[]) => {
   const assetExchange = exchanges.filter(({ exchange }) => exchange === selectedExchange.toLowerCase())[0];
   return Number(assetExchange.price_quote);
-};
+}
 
 // Update Portfolio with new updated Asset.
 export const remapUpdatedPortfolio = (portfolio: IAsset[], updatedCoin: IAsset) =>
@@ -176,7 +176,7 @@ export const calculatePercentage = (type: string, portfolio: IAsset[], coin?: IA
       if (position && price) coinValue = position * price;
     }
 
-    const percentage = round((coinValue / totalValue(portfolio)) * 100);
+    const percentage = round((coinValue / totalValue(portfolio)) * 100)
 
     return {
       ...coin,
@@ -186,12 +186,12 @@ export const calculatePercentage = (type: string, portfolio: IAsset[], coin?: IA
   });
 
   return newPortfolio;
-};
+}
 
 export const updateWatchlist = (coin: IAsset, watchlist: IAsset[]) => {
   watchlist.push(coin);
   return watchlist.map((c) => c);
-};
+}
 
 export const formatCoinsList = (type: string, coins: IAsset[], data: IAsset[]) => {
   return coins.map((coin) => {

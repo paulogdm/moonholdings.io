@@ -77,10 +77,19 @@ export const fetchMarketPrices = (asset: string) => (dispatch: DispatchMarketPri
 }
 
 // Rebuild Portfolio form localStorage.
-export const addCoinsPortfolio = (coins: IAsset[]) => (dispatch: DispatchAddCoins) => {
+export const addCoinsPortfolio = (assets: IAsset[]) => (dispatch: DispatchAddCoins) => {
+  // If any asset has a selected exchange, fetchMarketPrices for that asset:
+  const assetsWithExchange = assets.filter((asset) => asset.exchange !== '');
+  console.log('assetsWithExchange', assetsWithExchange);
+
+  if (assetsWithExchange.length > 0) {
+    
+  }
+
+  // If all exchanges are aggregate:
   return getPrices().then((res) => {
     if (res && res.status === 200) {
-      const portfolioAssets = formatCoinsList(MOON_PORTFOLIO, coins, res.data);
+      const portfolioAssets = formatCoinsList(MOON_PORTFOLIO, assets, res.data);
       dispatch(actionAddCoinsPortfolio(portfolioAssets));
     }
     else {
@@ -105,23 +114,23 @@ export const addCoinsWatchlist = (coins: IAsset[]) => (dispatch: DispatchAddCoin
 // Add a coin to portfolio.
 export const addCoinPortfolio = (coin: IAsset) => (dispatch: DispatchAddCoin) => {
   dispatch(actionAddCoinPortfolio(coin));
-};
+}
 
 export const addCoinWatchlist = (coin: IWatchlistAsset) => (dispatch: DispatchAddCoinWatch) => {
   dispatch(actionAddCoinWatchlist(coin));
-};
+}
 
 // Update a coin in portfolio.
 export const updateCoinPortfolio = (coin: IAsset) => (dispatch: DispatchUpdateCoin) => {
   dispatch(updateCoinInPortfolio(coin));
-};
+}
 
 // Remove coin from portfolio.
 export const removeCoinPortfolio = (coin: IAsset) => (dispatch: DispatchRemoveCoin) => {
   dispatch(removeCoinInPortfolio(coin));
-};
+}
 
 // Remove coin from watchlist.
 export const removeCoinWatchlist = (coin: IAsset) => (dispatch: DispatchRemoveWatch) => {
   dispatch(removeCoinInWatchlist(coin));
-};
+}

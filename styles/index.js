@@ -1,5 +1,6 @@
 export * from './theme'
 export * from './astronaut'
+export * from './about'
 export * from './board'
 export * from './squares'
 export * from './page'

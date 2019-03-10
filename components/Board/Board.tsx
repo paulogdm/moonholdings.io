@@ -58,6 +58,7 @@ class Board extends React.Component<IProps, IState> {
       if (savedPortfolio) {
         // console.log('savedPortfolio', savedPortfolio);
         const reconstructedPortfolio = Object.values(savedPortfolio);
+        console.log('reconstructedPortfolio', reconstructedPortfolio);
         this.props.addCoinsPortfolio(reconstructedPortfolio);
       }
 
