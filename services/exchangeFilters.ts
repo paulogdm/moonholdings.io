@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 
 import { USD_CURRENCIES } from '../shared/constants/api'
-import { IMarketAsset } from '../shared/types'
+import { IAsset, IMarketAsset, IGetMarketsRes } from '../shared/types'
 
 const calculateBasePrice = (assetBtcPrice: string | number, usdPrice: string | number) => 
   (Number(assetBtcPrice) * Number(usdPrice)).toString();
@@ -40,3 +40,29 @@ export const filterByUSDbase = (asset: string, combinedMarkets?: IMarketAsset[] 
 }
 
 export const notBTCorETH = (asset: string) => asset !== 'BTC' && asset !== 'ETH';
+
+export const isNotAggregate = (exchange: string) => exchange !== '' && exchange !== 'Aggregate';
+
+export const extractExchangePrice =
+  (asset: IAsset, markets: IGetMarketsRes) => {
+    const { exchange_base: base, exchange, position } = asset;
+    const assetPosition = position ? position : 0;
+
+    const foundExchange = markets['market'+base].filter((market: IMarketAsset) => {
+      if (market.exchange === exchange) {
+        return market.base === asset.currency && market.quote === base;
+      }
+    })[0];
+
+    if (foundExchange) {
+      const price = Number(foundExchange.price_quote);
+
+      return {
+        ...asset,
+        price,
+        value: price * assetPosition
+      }
+    }
+
+    return asset;
+  }

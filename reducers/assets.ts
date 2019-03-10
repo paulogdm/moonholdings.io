@@ -36,8 +36,8 @@ export const AssetsReducer = (state = defaultAssetsState, action: IActionReducer
     }
 
     case Actions.ADD_COINS_PORTFOLIO:
-      const { assets } = action;
-      return { ...state, portfolio: assets };
+      const { assets, loading } = action;
+      return { ...state, portfolio: assets, loading };
 
     case Actions.ADD_COIN_PORTFOLIO:
       const { coin } = action;

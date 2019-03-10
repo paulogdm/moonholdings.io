@@ -37,7 +37,7 @@ export class ExchangeSelect extends React.Component<IProps> {
     const target = event.target as HTMLInputElement;
     const { value } = target;
     const { exchanges, onSelect } = this.props;
-    const selected = exchanges.find(exchange => exchange.exchange === value);
+    const selected = exchanges.find(ex => ex.exchange === value);
     if (selected) onSelect(selected);
   };
 }

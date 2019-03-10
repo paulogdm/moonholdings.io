@@ -9,6 +9,7 @@ export const Theme = {
   brightPurple: '#B987C0',
   lightPurple: '#8F6894',
   darkPurple: '#57385C',
+  darkestPurple: '#3e1f43',
   margin: 0,
   padding: 0,
   transitionAll: 'all .2s ease-in-out',

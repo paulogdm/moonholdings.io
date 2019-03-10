@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const AboutContainer = styled.div`
+  position: relative;
+  z-index: 2;
   padding: 30px;
   max-width: 600px;
 
@@ -32,12 +34,9 @@ export const TeamImages = styled.section`
 export const TeamImg = styled.img`
   border: 3px solid ${props => props.theme.brightPurple};
 `
-export const TeamDiv = styled.div`
-  width: 50%;
-`
+export const TeamDiv = styled.div`width: 50%;`
 
 export const TeamSocial = styled.div`
   margin-top: 1rem;
-
   img { margin: 0 0.5rem 0 0; }
 `

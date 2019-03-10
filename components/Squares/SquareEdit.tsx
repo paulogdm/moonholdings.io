@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import { bind } from 'decko'
 
 import { SquareRow } from '../../components'
-import { updateCoinPortfolio, removeCoinPortfolio, removeCoinWatchlist } from '../../actions/assets';
+import { updateCoinPortfolio, removeCoinPortfolio, removeCoinWatchlist } from '../../actions/assets'
+import { EditSquare, EditSquareData, EditButtonsContainer, EditSquareWatch, FunctionButton } from '../../styles'
 import { IAsset } from '../../shared/types'
 import { colorBlack } from '../../shared/models/squares'
 import { styleModifier, setStyle, round, rounder } from '../../shared/utils'
-import { EditSquare, EditSquareData, EditButtonsContainer, EditSquareWatch } from '../../styles'
 
 interface IProps {
   coin: IAsset;
@@ -22,7 +22,7 @@ interface IProps {
 interface IState {
   coin: IAsset;
   price: number;
-  balance: number;
+  balance: number | string;
   value: number;
   inPortfolio: boolean;
 }
@@ -64,9 +64,9 @@ class SquareEdit extends React.Component<IProps, IState> {
     const { coin, balance, value, inPortfolio } = this.state;
     const { currency, exchange, marketCap, percentage, position, price } = coin;
     
-    const SaveButton = () => <button onClick={this.handleSave} disabled={balance <= 0}>Save</button>;
-    const RemoveButton = () => <button onClick={this.handleRemove}>Remove</button>;
-    const CancelButton = () => <button onClick={() => this.props.toggle(false)}>Cancel</button>;
+    const SaveButton = () => <FunctionButton onClick={this.handleSave} disabled={balance <= 0}>Save</FunctionButton>;
+    const RemoveButton = () => <FunctionButton onClick={this.handleRemove}>Remove</FunctionButton>;
+    const CancelButton = () => <FunctionButton onClick={() => this.props.toggle(false)}>Cancel</FunctionButton>;
     
     const EditSquareWrapper = isWatch ? EditSquareWatch : EditSquare;
     const editSquareStyle = (currency: string, watch: boolean) => !watch ? setStyle(currency) : colorBlack;
@@ -85,7 +85,7 @@ class SquareEdit extends React.Component<IProps, IState> {
           isWatch ? null :
           <input
             type="number"
-            placeholder="0"
+            placeholder=""
             value={this.state.balance}
             onFocus={this.handleFocus}
             onChange={this.handleChange}
@@ -117,8 +117,9 @@ class SquareEdit extends React.Component<IProps, IState> {
   @bind
   private handleChange(event: React.FormEvent<HTMLInputElement>) {
     const target = event.target as HTMLInputElement;
-    const balance = Number(target.value);
-    const value = rounder(balance, this.state.price);
+    const parsed = parseFloat(target.value);
+    const balance = Number.isNaN(parsed) ? '' : parsed;
+    const value = rounder(Number(balance), this.state.price);
     this.setState({ balance, value });
   }
 
@@ -126,7 +127,11 @@ class SquareEdit extends React.Component<IProps, IState> {
   private handleSave() {
     const { coin, balance: position } = this.state;
     const coinValue = coin.value ? coin.value : 0;
-    const updatedCoin = { ...coin, position, value: coinValue * position };
+    const updatedCoin = {
+      ...coin,
+      position: Number(position),
+      value: coinValue * Number(position)
+    };
     this.props.updateCoinPortfolio(updatedCoin);
     this.props.toggle(false);
   }
