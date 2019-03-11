@@ -9,7 +9,7 @@ import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../shared/constants/copy'
 
 // ACTION TYPES
 export const Actions = {
-  LOADING_TRUE: 'LOADING_TRUE',
+  FETCH_MARKETS: 'FETCH_MARKETS',
   GET_ALL_ASSETS: 'GET_ALL_ASSETS',
   SET_ALL_ASSETS: 'SET_ALL_ASSETS',
   GET_MARKET_PRICES: 'GET_MARKET_PRICES',
@@ -24,8 +24,8 @@ export const Actions = {
 };
 
 // ACTION CREATORS
-const actionLoadingTrue = () =>
-  ({ type: Actions.LOADING_TRUE, loading: true });
+const actionFetchMarkets = () =>
+  ({ type: Actions.FETCH_MARKETS, fetchingMarkets: true });
 
 const actionGetAllAssets = () =>
   ({ type: Actions.GET_ALL_ASSETS, loading: true });
@@ -43,7 +43,7 @@ const actionAddCoinPortfolio = (coin: IAsset) =>
   ({ type: Actions.ADD_COIN_PORTFOLIO, coin });
 
 const actionAddCoinsPortfolio = (coins: IAsset[]) =>
-  ({ type: Actions.ADD_COINS_PORTFOLIO, assets: coins, loading: false });
+  ({ type: Actions.ADD_COINS_PORTFOLIO, assets: coins, loading: false, fetchingMarkets: false });
 
 const updateCoinInPortfolio = (coin: IAsset) =>
   ({ type: Actions.UPDATE_COIN_PORTFOLIO, coin });
@@ -83,16 +83,18 @@ export const fetchMarketPrices = (asset: string) => (dispatch: DispatchMarketPri
 
 // Rebuild Portfolio form localStorage.
 export const addCoinsPortfolio = (assets: IAsset[]) => (dispatch: DispatchAddCoins) => {
-  // If any asset has a selected exchange, fetchMarketPrices for that asset:
+  // If any asset has a selected exchange, get exchange price for that asset:
   const assetsWithExchange = assets.filter((asset) => isNotAggregate(asset.exchange));
 
   if (assetsWithExchange.length > 0) {
-    dispatch(actionLoadingTrue());
-    return getMarkets().then((markets) => {
-      if (markets) {
-        const assetsUpdatedPrices = assetsWithExchange.map((asset) => extractExchangePrice(asset, markets));
-        console.log('FINAL assetsUpdatedPrices:', assetsUpdatedPrices);
+    dispatch(actionFetchMarkets());
+    return getMarkets().then((res) => {
+      if (res) {
+        const assetsUpdatedPrices = assetsWithExchange.map((asset) => extractExchangePrice(asset, res));
         dispatch(actionAddCoinsPortfolio(assetsUpdatedPrices));
+      }
+      else {
+        console.error(`addCoinsPortfolio > getPrices request error: ${res}`);
       }
     });
   }

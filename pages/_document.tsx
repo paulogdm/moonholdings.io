@@ -7,8 +7,6 @@ export default class MyDocument extends Document {
   // @ts-ignore
   static async getInitialProps (ctx) {
     const sheet = new ServerStyleSheet();
-    const { originalUrl } = ctx.req || {};
-    console.log('originalUrl', originalUrl);
 
     const originalRenderPage = ctx.renderPage
     ctx.renderPage = () =>
@@ -20,7 +18,6 @@ export default class MyDocument extends Document {
     const initialProps = await Document.getInitialProps(ctx)
     return {
       ...initialProps,
-      originalUrl,
       styles: [...initialProps.styles, ...sheet.getStyleElement()]
     }
   }

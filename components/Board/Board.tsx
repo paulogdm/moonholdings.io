@@ -56,13 +56,11 @@ class Board extends React.Component<IProps, IState> {
       const savedWatchlist = JSON.parse(localStorage.getItem(MOON_WATCHLIST) || '{}');
 
       if (savedPortfolio) {
-        // console.log('savedPortfolio', savedPortfolio);
         const reconstructedPortfolio = Object.values(savedPortfolio);
         this.props.addCoinsPortfolio(reconstructedPortfolio);
       }
 
       if (savedWatchlist) {
-        // console.log('savedWatchlist', savedWatchlist);
         const reconstructedWatchlist = Object.values(savedWatchlist);
         this.props.addCoinsWatchlist(reconstructedWatchlist);
       }

@@ -13,8 +13,15 @@ export const defaultAssetsState: IInitState = {
   fetchingMarkets: false
 };
 
+const loadingStatus = (loading: boolean, fetching: boolean) => fetching ? true : loading;
+
 export const AssetsReducer = (state = defaultAssetsState, action: IActionReducer): IInitState => {
   switch (action.type) {
+    case Actions.FETCH_MARKETS: {
+      const { fetchingMarkets } = action;
+      return { ...state, fetchingMarkets };
+    }
+
     case Actions.GET_ALL_ASSETS: {
       const { loading } = action;
       return { ...state, loading };
@@ -22,7 +29,8 @@ export const AssetsReducer = (state = defaultAssetsState, action: IActionReducer
 
     case Actions.SET_ALL_ASSETS: {
       const { assets, loading } = action;
-      return { ...state, assets, loading };
+      const finishLoading = loadingStatus(loading, state.fetchingMarkets);
+      return { ...state, assets, loading: finishLoading };
     }
 
     case Actions.GET_MARKET_PRICES: {
@@ -36,8 +44,8 @@ export const AssetsReducer = (state = defaultAssetsState, action: IActionReducer
     }
 
     case Actions.ADD_COINS_PORTFOLIO:
-      const { assets, loading } = action;
-      return { ...state, portfolio: assets, loading };
+      const { assets, loading, fetchingMarkets } = action;
+      return { ...state, portfolio: assets, loading, fetchingMarkets };
 
     case Actions.ADD_COIN_PORTFOLIO:
       const { coin } = action;
