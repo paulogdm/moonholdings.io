@@ -47,6 +47,8 @@ export const extractExchangePrice = (asset: IAsset, markets: IGetMarketsRes) => 
   const { currency, exchange_base: base, exchange, position } = asset;
   const assetPosition = position ? position : 0;
 
+  console.log('base', base);
+
   const exchangeFiltered = markets['market'+base].filter((market: IMarketAsset) => {
     if (market.exchange === exchange) {
       return market.base === currency && market.quote === base;

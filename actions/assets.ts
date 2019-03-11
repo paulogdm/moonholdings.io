@@ -85,6 +85,7 @@ export const fetchMarketPrices = (asset: string) => (dispatch: DispatchMarketPri
 export const addCoinsPortfolio = (assets: IAsset[]) => (dispatch: DispatchAddCoins) => {
   // If any asset has a selected exchange, get exchange price for that asset:
   const assetsWithExchange = assets.filter((asset) => isNotAggregate(asset.exchange));
+  console.log('assetsWithExchange', assetsWithExchange);
 
   if (assetsWithExchange.length > 0) {
     dispatch(actionFetchMarkets());
