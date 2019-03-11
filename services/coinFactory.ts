@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 
-import { filterCryptoBase, filterByUSDbase, notBTCorETH } from './exchangeFilters'
+import { extractCryptoMarkets, filterByUSDbase, notBTCorETH } from './exchangeFilters'
 import { additionalAssets, supportedAssets, coinModel } from '../shared/models'
 import { IAsset, IAssetResponse, IResponseConfig, IMarketAsset, IGetMarketsRes } from '../shared/types'
 import { arrayToObject, multiply, roundFloat, round } from '../shared/utils'
@@ -104,22 +104,8 @@ export const formatAssets = (responses: IResponseConfig[]) => {
 // If asset has BTC/ETH pairing, obtain exchange BTC/ETH price to calculate assets USD/USDT value
 export const combineExchangeData =
   (asset: string, { marketBTC, marketETH, marketUSD, marketUSDT, marketUSDC }: IGetMarketsRes) => {
-    const btcBasedExchanges = marketBTC.filter((market: IMarketAsset) => market.base === asset);
-    const ethBasedExchanges = marketETH.filter((market: IMarketAsset) => market.base === asset);
-    const btcUSDTprices = marketUSDT.filter((market: IMarketAsset) => market.base === 'BTC');
-    const btcUSDprices = marketUSD.filter((market: IMarketAsset) => market.base === 'BTC');
-    const ethUSDTprices = marketUSDT.filter((market: IMarketAsset) => market.base === 'ETH');
-    const ethUSDprices = marketUSD.filter((market: IMarketAsset) => market.base === 'ETH');
-
-    const btcPricedMarkets = notBTCorETH(asset) ?
-      filterCryptoBase(btcBasedExchanges, btcUSDTprices, btcUSDprices) : [];
-    const ethPricedMarkets = notBTCorETH(asset) ?
-      filterCryptoBase(ethBasedExchanges, ethUSDTprices, ethUSDprices) : [];
-    
-    const btcMarkets = R.not(R.isEmpty(btcPricedMarkets)) ?
-      btcPricedMarkets.filter((market: IMarketAsset) => R.not(R.isNil(market))) : [];
-    const ethMarkets = R.not(R.isEmpty(ethPricedMarkets)) ?
-      ethPricedMarkets.filter((market: IMarketAsset) => R.not(R.isNil(market))) : [];
+    const cryptoMarkets = extractCryptoMarkets(asset, { marketBTC, marketETH, marketUSD, marketUSDT, marketUSDC });
+    const { btcMarkets, ethMarkets } = cryptoMarkets;
 
     const combinedMarkets = notBTCorETH(asset) ?
       btcMarkets.concat(ethMarkets).concat(marketUSD).concat(marketUSDC).concat(marketUSDT) :
