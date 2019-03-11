@@ -15,7 +15,12 @@ export const SquareEditWrapper = (props: IProps) => {
   const { coin, portfolio, editWatchCoin, toggle } = props;
   return (
     <EditSquareWrapper>
-      <SquareEdit coin={coin} portfolio={portfolio} editWatchCoin={editWatchCoin} toggle={toggle} />
+      <SquareEdit
+        coin={coin}
+        portfolio={portfolio}
+        editWatchCoin={editWatchCoin}
+        toggle={toggle}
+      />
     </EditSquareWrapper>
   );
 }

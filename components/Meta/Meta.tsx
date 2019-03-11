@@ -33,6 +33,6 @@ export default () => (
     <link rel="icon" type="image/x-icon" href="static/favicon.ico"/>
     <link rel="apple-touch-icon" sizes="180x180" href="static/apple-icon-180x180.png"/>
     <link rel="icon" type="image/png" sizes="192x192"  href="static/android-icon-192x192.png"/>
-    <link href="https://fonts.googleapis.com/css?family=Abel" rel="stylesheet"></link>
+    <link href="https://fonts.googleapis.com/css?family=Abel|Oswald:300" rel="stylesheet"></link>
   </Head>
 )

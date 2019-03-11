@@ -1,6 +1,17 @@
 import styled from 'styled-components'
 import { FadeIn } from './animations'
 
+export const StyleContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  flex-flow: row wrap;
+  flex-direction: row;
+  align-content: stretch;
+  margin-bottom: 2rem;
+  position: relative;
+`
+
 export const StyledBoard = styled.div`
   display: flex;
   flex-direction: row;

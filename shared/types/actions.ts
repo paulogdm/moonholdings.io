@@ -1,6 +1,7 @@
 import { IAsset, IMarketAsset, IWatchlistAsset } from '../../shared/types'
 
 export interface IActions {
+  FETCH_MARKETS: string;
   GET_ALL_ASSETS: string;
   SET_ALL_ASSETS: string;
   GET_MARKET_PRICES: string;
@@ -27,8 +28,9 @@ export interface ISetMarket {
 }
 
 export interface ICoinsPortfolio {
-  type: IActions['ADD_COINS_PORTFOLIO'];
-  assets: IAsset[];
+  type: IActions['ADD_COINS_PORTFOLIO'] | IActions['FETCH_MARKETS'];
+  assets?: IAsset[];
+  fetchingMarkets?: boolean;
 }
 
 export interface ICoinPortfolio {

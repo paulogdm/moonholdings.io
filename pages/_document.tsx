@@ -6,7 +6,7 @@ import { ServerStyleSheet } from 'styled-components';
 export default class MyDocument extends Document {
   // @ts-ignore
   static async getInitialProps (ctx) {
-    const sheet = new ServerStyleSheet()
+    const sheet = new ServerStyleSheet();
 
     const originalRenderPage = ctx.renderPage
     ctx.renderPage = () =>

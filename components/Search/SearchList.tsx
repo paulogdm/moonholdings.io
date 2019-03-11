@@ -3,7 +3,7 @@ import React from 'react'
 import { BlockLoader } from '../../components'
 import { IAsset } from '../../shared/types'
 import { SearchListStyle, SearchListLoader } from '../../styles'
-import { numberWithCommas } from '../../shared/utils/math'
+import { numberWithCommas as addCommas } from '../../shared/utils/math'
 
 interface IProps {
   searchList: IAsset[];
@@ -12,6 +12,8 @@ interface IProps {
 
 export const SearchList = (props: IProps) => {
   const { searchList, onSelect } = props;
+  const marketCap = (asset: IAsset) => addCommas(Math.round(asset.marketCap));
+
   return (
     <SearchListStyle>
       { searchList && searchList.length > 0
@@ -26,7 +28,7 @@ export const SearchList = (props: IProps) => {
             >
               <p>{asset.name}</p>
               <span className="symbol">{asset.currency}</span>
-              <em>${numberWithCommas(Math.round(asset.marketCap))}</em>
+              <em>${marketCap(asset)}</em>
             </li>)
         })
         : <SearchListLoader><BlockLoader/></SearchListLoader>
