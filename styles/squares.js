@@ -102,9 +102,19 @@ export const EditSquare = styled(CoinSquare)`
     width: 96%;
     height: 3.5rem;
     font-size: 1.5rem;
-    background: none;
-    border: 1px solid ${props => props.theme.offWhite};
+    color: ${props => props.theme.offWhite};
     outline-width: 0;
+    background: rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    border: 2px solid ${props => props.theme.offWhite};
+    box-shadow: inset 1em 1rem 6em rgba(0, 0, 0, .2);
+    transition: border 100ms ease-in-out;
+
+    &:hover {
+      color: ${props => props.theme.apricot};
+      background: rgba(0, 0, 0, .2);
+      border: 2px solid ${props => props.theme.apricot};
+    }
   }
 
   &:hover { border: 2px solid rgba(87, 56, 92, 0); opacity: 1; }
@@ -145,4 +155,4 @@ export const CoinRow = styled.div`
   p { margin: 0; }
 `
 
-export const CoinRank = styled(CoinRow)`margin-bottom: 0.5rem; border-bottom: none;`
+export const CoinRank = styled(CoinRow)`border-bottom: none;`

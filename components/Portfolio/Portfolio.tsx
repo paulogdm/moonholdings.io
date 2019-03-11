@@ -14,6 +14,7 @@ interface IProps {
 export default class Portfolio extends React.PureComponent<IProps> {
   public render() {
     const { portfolio, watchlist, edit } = this.props;
+    const hasPortfolio = portfolio.length > 0;
     const hasWatchList = watchlist.length > 0;
 
     return (
@@ -22,13 +23,13 @@ export default class Portfolio extends React.PureComponent<IProps> {
           ${calculateBalance(portfolio)}
         </PortfolioBalance>
         <PortfolioContainer>
-          <PortfolioTitle>Portfolio</PortfolioTitle>
+          { hasPortfolio && <PortfolioTitle>Portfolio</PortfolioTitle> }
           { portfolio.map((coin, i) =>
             (<Square key={coin.currency} coin={coin} edit={edit} index={i} />)) }
         </PortfolioContainer>
         { hasWatchList &&
           <WatchlistContainer>
-            <WatchlistTitle>Watchlist</WatchlistTitle>
+            { hasWatchList && <WatchlistTitle>Watchlist</WatchlistTitle> }
             { watchlist.map((coin, i) =>
               (<Square key={coin.currency} coin={coin} edit={edit} index={i} watchlist />)) }
           </WatchlistContainer> }

@@ -19,6 +19,7 @@ export interface IResponseConfig {
 }
 
 export interface IGetMarketsRes {
+  [key: string]: IMarketAsset[];
   marketBTC: IMarketAsset[];
   marketETH: IMarketAsset[];
   marketUSD: IMarketAsset[];

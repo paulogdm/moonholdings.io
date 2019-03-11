@@ -6,10 +6,7 @@ import { Theme, StyledPage, Inner } from '../../styles'
 import '../global.scss'
 
 injectGlobal`
-  a {
-    text-decoration: none;
-    color: ${Theme.offWhite};
-  }
+  a { text-decoration: none; }
 `;
 
 export default class Page extends Component {

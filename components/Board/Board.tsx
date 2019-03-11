@@ -10,7 +10,7 @@ import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../../shared/constants/copy'
 import { sortByValue } from '../../services/coinFactory'
-import { StyledBoard, PortfolioContainer } from '../../styles'
+import { StyleContainer, StyledBoard } from '../../styles'
 
 interface IState {
   coin: IAsset;
@@ -56,13 +56,11 @@ class Board extends React.Component<IProps, IState> {
       const savedWatchlist = JSON.parse(localStorage.getItem(MOON_WATCHLIST) || '{}');
 
       if (savedPortfolio) {
-        // console.log('savedPortfolio', savedPortfolio);
         const reconstructedPortfolio = Object.values(savedPortfolio);
         this.props.addCoinsPortfolio(reconstructedPortfolio);
       }
 
       if (savedWatchlist) {
-        // console.log('savedWatchlist', savedWatchlist);
         const reconstructedWatchlist = Object.values(savedWatchlist);
         this.props.addCoinsWatchlist(reconstructedWatchlist);
       }
@@ -74,9 +72,10 @@ class Board extends React.Component<IProps, IState> {
     const { coin, edit, editWatchCoin, search } = this.state;
     const sortedPortfolio = sortByValue(portfolio);
     const hasPortfolio = portfolio.length > 0;
+    const hasWatchlist = watchlist.length > 0;
 
     return (
-      <PortfolioContainer>
+      <StyleContainer>
         { edit &&
           <SquareEditWrapper
             coin={coin}
@@ -93,13 +92,13 @@ class Board extends React.Component<IProps, IState> {
           /> }
         { overlay && <Overlay handleClick={this.handleOverlayClick}/> }
         <StyledBoard>
-          { loading ? <BlockLoader /> : !hasPortfolio ? <Welcome/>
+          { loading ? <BlockLoader /> : !hasPortfolio && !hasWatchlist ? <Welcome/>
             : <Portfolio portfolio={sortedPortfolio} watchlist={watchlist} edit={this.toggleSquareEdit}/> }
           <PlusButton toggleSearch={this.handleOnSearch}/>
           <NomicsLink/>
           <Astronaut showLogo={hasPortfolio}/>
         </StyledBoard>
-      </PortfolioContainer>
+      </StyleContainer>
     );
   }
 
@@ -120,7 +119,6 @@ class Board extends React.Component<IProps, IState> {
 
   @bind
   private handleOverlayClick() {
-    console.log('handleOverlayClick...');
     const { edit, search } = this.state;
     if (edit) this.toggleSquareEdit(false, coinModel);
     if (search) this.setState({ search: false });
