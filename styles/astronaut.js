@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const AstronautContainer = styled.div`
+  z-index: 1;
   position: fixed;
   bottom: -5px;
   right: 40px;
