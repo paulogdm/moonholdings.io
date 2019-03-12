@@ -23,6 +23,7 @@ export const Actions = {
   ADD_COIN_WATCHLIST: 'ADD_COIN_WATCHLIST',
   ADD_COINS_WATCHLIST: 'ADD_COINS_WATCHLIST',
   REMOVE_COIN_WATCHLIST: 'REMOVE_COIN_WATCHLIST',
+  SET_NOTIFICATION: 'SET_NOTIFICATION'
 };
 
 // ACTION CREATORS
@@ -62,11 +63,22 @@ const actionAddCoinsWatchlist = (watchlist: IWatchlistAsset[]) =>
 const removeCoinInWatchlist = (coin: IAsset) =>
   ({ type: Actions.REMOVE_COIN_WATCHLIST, coin });
 
+const actionSetNotification = (notification: string, notificationError: boolean) =>
+  ({ type: Actions.SET_NOTIFICATION, notification, notificationError });
+
 // Fetch assets from Nomics API V1.
 export const fetchAllAssets = () => (dispatch: DispatchAllAssets) => {
   dispatch(actionGetAllAssets());
-  return fetchAll([getPrices(), getAvailableSupply()]).then((responses) =>
-    dispatch(actionSetAllAssets(formatAssets(responses))));
+  return fetchAll([getPrices(), getAvailableSupply()]).then((responses) => {
+
+    if (R.not(R.any(R.isNil)(responses))) {
+      dispatch(actionSetAllAssets(formatAssets(responses)));
+    }
+    else {
+      console.error(`fetchAllAssets > request error: ${responses}`);
+      dispatch(actionSetNotification('An error occured while fetching Nomics API all assets data.', true));
+    }
+  });
 }
 
 // Fetch USD, USDC & USDT markets to filter out Exchange List.
@@ -110,6 +122,7 @@ export const addCoinsPortfolio = (assets: IAsset[]) => (dispatch: DispatchAddCoi
       }
       else {
         console.error(`addCoinsPortfolio > getPrices request error: ${res}`);
+        dispatch(actionSetNotification('An error occured while getting Nomics API market data.', true));
       }
     });
   }
@@ -119,9 +132,6 @@ export const addCoinsPortfolio = (assets: IAsset[]) => (dispatch: DispatchAddCoi
     if (res && res.status === 200) {
       const portfolioAssets = formatCoinsList(MOON_PORTFOLIO, assets, res.data);
       dispatch(actionAddCoinsPortfolio(portfolioAssets));
-    }
-    else {
-      console.error(`addCoinsPortfolio > getPrices request error: ${res}`);
     }
   });
 }

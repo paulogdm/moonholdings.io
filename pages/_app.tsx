@@ -3,9 +3,11 @@ import { Provider } from 'react-redux'
 import Router, { SingletonRouter } from 'next/router'
 import App, { Container } from 'next/app'
 import withReduxStore from '../lib/withReduxStore'
+import { ThemeProvider } from 'styled-components'
 
 import Page from '../components/Page/Page'
-import { Nav, NavLink, NavActive, NavDisabled } from '../styles'
+import { Theme, Nav, NavLink, NavActive, NavDisabled } from '../styles'
+import '../styles/global.scss'
 
 interface IProps {
   Component: any;
@@ -47,20 +49,22 @@ class MoonApp extends App<IProps, IState> {
     const NavAbout = path === 'about' ? NavActive : NavLink;
 
     return (
-      <Container>
-        <Provider store={reduxStore}>
-          <Page>
-            <Nav>
-              <ol>
-                <li><NavPortfolio href="/">Portfolio</NavPortfolio></li>
-                <li><NavAbout href="/about">About</NavAbout></li>
-                <li><NavDisabled title="Moon Ranks coming">Moon Ranks</NavDisabled></li>
-              </ol>
-            </Nav>
-            <Component />
-          </Page>
-        </Provider>
-      </Container>
+      <ThemeProvider theme={Theme}>
+        <Container>
+          <Provider store={reduxStore}>
+            <Page>
+              <Nav>
+                <ol>
+                  <li><NavPortfolio href="/">Portfolio</NavPortfolio></li>
+                  <li><NavAbout href="/about">About</NavAbout></li>
+                  <li><NavDisabled title="Moon Ranks coming">Moon Ranks</NavDisabled></li>
+                </ol>
+              </Nav>
+              <Component />
+            </Page>
+          </Provider>
+        </Container>
+      </ThemeProvider>
     );
   }
 }

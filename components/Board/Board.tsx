@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bind } from 'decko'
 
-import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Search, BlockLoader, Overlay }
+import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Search, BlockLoader, Notification, Overlay }
   from '../../components'
 import { addCoinsPortfolio, addCoinsWatchlist, fetchAllAssets } from '../../actions/assets'
 import { setOverlayState } from '../../actions/board'
@@ -27,6 +27,8 @@ interface IProps {
   loading: boolean;
   overlay: boolean;
   fetchingMarkets: boolean;
+  notification: string;
+  notificationError: boolean;
   addCoinsPortfolio(assets: IAsset[] | {}[]): void;
   addCoinsWatchlist(assets: IAsset[] | {}[]): void;
   fetchAllAssets(): void;
@@ -68,7 +70,9 @@ class Board extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist } = this.props;
+    const {
+      assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist, notification, notificationError
+    } = this.props;
     const { coin, edit, editWatchCoin, search } = this.state;
     const sortedPortfolio = sortByValue(portfolio);
     const hasPortfolio = portfolio.length > 0;
@@ -76,6 +80,7 @@ class Board extends React.Component<IProps, IState> {
 
     return (
       <StyleContainer>
+        { notification !== '' && <Notification error message={notification}/> }
         { edit &&
           <SquareEditWrapper
             coin={coin}
@@ -140,7 +145,9 @@ const mapStateToProps = (state: IinitialState) => ({
   exchanges: state.AssetsReducer.exchanges,
   loading: state.AssetsReducer.loading,
   fetchingMarkets: state.AssetsReducer.fetchingMarkets,
-  overlay: state.BoardReducer.overlay
+  notification: state.AssetsReducer.notification,
+  notificationError: state.AssetsReducer.notificationError,
+  overlay: state.BoardReducer.overlay,
 });
 
 export const BoardJest = Board;

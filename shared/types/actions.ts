@@ -18,7 +18,9 @@ export interface IActions {
 export interface IAllAssets {
   type: IActions['GET_ALL_ASSETS'];
   assets?: IAsset[];
-  loading: boolean;
+  loading?: boolean;
+  notification?: string;
+  notificationError?: boolean;
 }
 
 export interface ISetMarket {
