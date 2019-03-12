@@ -16,7 +16,6 @@ const mergeByCurrency = (matchArray: IAssetResponse[], nextArray: IAssetResponse
 // Combines Promises and returns responses together.
 export const fetchAll = <T extends {}>(array: (T | Promise<T>)[]) => Promise.all(array);
 
-
 // Return coins that match text search by currency symbol or name.
 export const findAsset = (txt: string, assets: IAsset[]) => {
   const checkText = (k: string, a: IAsset) =>
@@ -102,24 +101,24 @@ export const formatAssets = (responses: IResponseConfig[]) => {
 
 // Filter by BTC, ETH, USD, USDT or USDC prices
 // If asset has BTC/ETH pairing, obtain exchange BTC/ETH price to calculate assets USD/USDT value
-export const combineExchangeData =
-  (asset: string, { marketBTC, marketETH, marketUSD, marketUSDT, marketUSDC }: IGetMarketsRes) => {
-    const cryptoMarkets = extractCryptoMarkets(asset, { marketBTC, marketETH, marketUSD, marketUSDT, marketUSDC });
-    const { btcMarkets, ethMarkets } = cryptoMarkets;
+export const combineExchangeData = (asset: string, markets: IGetMarketsRes) => {
+  const cryptoMarkets = extractCryptoMarkets(asset, markets);
+  const { btcMarkets, ethMarkets } = cryptoMarkets;
+  const { marketUSD, marketUSDT, marketUSDC } = markets;
 
-    const combinedMarkets = notBTCorETH(asset) ?
-      btcMarkets.concat(ethMarkets).concat(marketUSD).concat(marketUSDC).concat(marketUSDT) :
-      marketUSD.concat(marketUSDC).concat(marketUSDT);
-  
-    const filteredMarkets = filterByUSDbase(asset, combinedMarkets);
- 
-    if (R.isEmpty(filteredMarkets)) return [];
+  const combinedMarkets = notBTCorETH(asset) ?
+    btcMarkets.concat(ethMarkets).concat(marketUSD).concat(marketUSDC).concat(marketUSDT) :
+    marketUSD.concat(marketUSDC).concat(marketUSDT);
 
-    return filteredMarkets.map((market: IMarketAsset) => ({
-      ...market,
-      price_quote: formatPrice(market.price_quote)
-    }));
-  }
+  const filteredMarkets = filterByUSDbase(asset, combinedMarkets);
+
+  if (R.isEmpty(filteredMarkets)) return [];
+
+  return filteredMarkets.map((market: IMarketAsset) => ({
+    ...market,
+    price_quote: formatPrice(market.price_quote)
+  }));
+}
 
 export const getExchangePrice = (selectedExchange: string, exchanges: IMarketAsset[]) => {
   const assetExchange = exchanges.filter(({ exchange }) => exchange === selectedExchange.toLowerCase())[0];
@@ -146,9 +145,7 @@ const totalValue = (portfolio: IAsset[]) => portfolio.reduce((acc: number, { pri
 
 // Add coin's percentage of portfolio.
 export const calculatePercentage = (type: string, portfolio: IAsset[], coin?: IAsset) => {
-  if (coin) {
-    portfolio.push(coin);
-  }
+  if (coin) portfolio.push(coin);
 
   const newPortfolio = portfolio.map((coin) => {
     let coinValue = 0;
@@ -162,12 +159,13 @@ export const calculatePercentage = (type: string, portfolio: IAsset[], coin?: IA
       if (position && price) coinValue = position * price;
     }
 
-    const percentage = round((coinValue / totalValue(portfolio)) * 100)
+    const percentage = round((coinValue / totalValue(portfolio)) * 100);
+    const formattedValue = coinValue > 1 ? roundFloat(coinValue, 2) : coinValue;
 
     return {
       ...coin,
       percentage,
-      value: coinValue > 1 ? roundFloat(coinValue, 2) : coinValue
+      value: formattedValue
     };
   });
 
