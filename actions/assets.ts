@@ -1,3 +1,5 @@
+import * as R from 'ramda'
+
 import { getPrices, getAvailableSupply, getMarkets } from '../services/api'
 import { fetchAll, combineExchangeData, formatAssets, formatCoinsList } from '../services/coinFactory'
 import { extractExchangePrice, isNotAggregate } from '../services/exchangeFilters'
@@ -83,15 +85,28 @@ export const fetchMarketPrices = (asset: string) => (dispatch: DispatchMarketPri
 
 // Rebuild Portfolio form localStorage.
 export const addCoinsPortfolio = (assets: IAsset[]) => (dispatch: DispatchAddCoins) => {
-  // If any asset has a selected exchange, get exchange price for that asset:
-  const assetsWithExchange = assets.filter((asset) => isNotAggregate(asset.exchange));
+  const assetsExchange = assets.filter((asset) => isNotAggregate(asset.exchange));
+  const assetsAggregate = assets.filter((asset) => !isNotAggregate(asset.exchange));
 
-  if (assetsWithExchange.length > 0) {
+  // If some or all exchanges are specified.
+  if (assetsExchange.length > 0) {
+    // Set fetchingMarkets to true.
     dispatch(actionFetchMarkets());
     return getMarkets().then((res) => {
       if (res) {
-        const assetsUpdatedPrices = assetsWithExchange.map((asset) => extractExchangePrice(asset, res));
-        dispatch(actionAddCoinsPortfolio(assetsUpdatedPrices));
+        const assetsUpdatedPrices = assetsExchange.map((asset) => extractExchangePrice(asset, res));
+
+        if (assetsAggregate.length > 0) {
+          getPrices().then((res) => {
+            const aggregateAssets = formatCoinsList(MOON_PORTFOLIO, assetsAggregate, res.data);
+            const combinedAssets = R.concat(assetsUpdatedPrices, aggregateAssets);
+            // Set portfolio then loading and fetchingMarkets to false.
+            dispatch(actionAddCoinsPortfolio(combinedAssets));
+          });
+        }
+        else {
+          dispatch(actionAddCoinsPortfolio(assetsUpdatedPrices));
+        }
       }
       else {
         console.error(`addCoinsPortfolio > getPrices request error: ${res}`);
@@ -99,7 +114,7 @@ export const addCoinsPortfolio = (assets: IAsset[]) => (dispatch: DispatchAddCoi
     });
   }
 
-  // If all exchanges are aggregate:
+  // If all exchanges are aggregate.
   return getPrices().then((res) => {
     if (res && res.status === 200) {
       const portfolioAssets = formatCoinsList(MOON_PORTFOLIO, assets, res.data);
