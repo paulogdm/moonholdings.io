@@ -4,7 +4,8 @@ import { bind } from 'decko'
 
 import { SearchInput, SelectedAsset, SearchList, SearchSelect } from '../../components'
 import { IAsset, IMarketAsset } from '../../shared/types'
-import { SearchContainerDiv, SearchSection, SearchButtons, FunctionButton, CommonButton } from '../../styles'
+import { SearchContainerDiv, SearchSection, SearchButtons, FunctionButton, CommonButton, Note }
+  from '../../styles'
 import { setSearchBtnDisabled } from '../../shared/utils'
 import { findAsset, getExchangePrice } from '../../services/coinFactory';
 import { addCoinPortfolio, addCoinWatchlist, fetchMarketPrices } from '../../actions/assets'
@@ -24,6 +25,7 @@ interface IState {
   exchange_base: string;
   aggregate: boolean;
   position: number;
+  noAsset: boolean;
   selected: IAsset | null;
   searchList: IAsset[];
   saved: IAsset[];
@@ -39,6 +41,7 @@ class Search extends React.Component<IProps, IState> {
       aggregate: false,
       position: 0,
       selected: null,
+      noAsset: false,
       searchList: props.assets,
       saved: props.assets,
     }
@@ -58,12 +61,13 @@ class Search extends React.Component<IProps, IState> {
 
   render() {
     const { assets, cancel, exchanges, fetching } = this.props;
-    const { exchange, position, searchList, selected, aggregate } = this.state;
+    const { exchange, position, searchList, selected, aggregate, noAsset } = this.state;
 
     const portfolioCheck = { type: 'portfolio', position, selected, exchange, exchanges };
     const watchlistCheck = { type: 'watchlist', selected, exchange, exchanges };
     const disabledPort = setSearchBtnDisabled(portfolioCheck);
     const disabledWatch = aggregate ? false : setSearchBtnDisabled(watchlistCheck);
+    const NoAsset = () => <Note>We currently either do not support this asset, or it does not exist.</Note>;
 
     return (
       <SearchContainerDiv>
@@ -71,6 +75,7 @@ class Search extends React.Component<IProps, IState> {
           { selected
             ? <SelectedAsset asset={selected} clearSelected={this.handleClearSelected}/>
             : <SearchInput handleSearchTyping={this.handleSearchTyping}/> }
+          { noAsset && <NoAsset/> }
           { selected
             ? <SearchSelect
                 assets={assets}
@@ -177,10 +182,23 @@ class Search extends React.Component<IProps, IState> {
     const target = event.target as HTMLInputElement;
     const { value: searchText } = target;
 
+    const updateSearchList = (searchList: IAsset[], noAsset: boolean) => this.setState({ noAsset, searchList });
+
     const search = (text: string) => {
-      const { searchList } = this.state;
-      const searchedCoins = findAsset(text, searchList);
-      this.setState({ searchList: searchedCoins });
+      const searchedCoins = findAsset(text, this.state.saved);
+
+      if (text.length > 2 && searchedCoins.length === 1) {
+        // No asset found, display note.
+        if (searchedCoins[0].currency === '') {
+          updateSearchList(searchedCoins, true);
+        }
+        else {
+          updateSearchList(searchedCoins, false);
+        }
+      }
+      else {
+        updateSearchList(searchedCoins, false);
+      }
     };
 
     const clearSearch = () => this.setState({ searchList: this.state.saved });

@@ -197,3 +197,10 @@ export const AggregateInputDiv = styled.div`
 
   p { line-height: 2rem; }
 `
+
+export const Note = styled.p`
+  position: absolute;
+  top: 5rem;
+  width: 325px;
+  text-align: center;
+`
