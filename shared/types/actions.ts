@@ -57,7 +57,7 @@ export interface ICoinWatchlist {
 
 export interface ICoinsWatchlist {
   type: IActions['ADD_COINS_WATCHLIST'];
-  watchlist: IWatchlistAsset[];
+  watchlist?: IWatchlistAsset[];
 }
 
 export interface IRemoveWatch {
