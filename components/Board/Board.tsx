@@ -71,7 +71,8 @@ class Board extends React.Component<IProps, IState> {
 
   render() {
     const {
-      assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist, notification, notificationError
+      assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist,
+      notification, notificationError
     } = this.props;
     const { coin, edit, editWatchCoin, search } = this.state;
     const sortedPortfolio = sortByValue(portfolio);
@@ -80,7 +81,7 @@ class Board extends React.Component<IProps, IState> {
 
     return (
       <StyleContainer>
-        { notification !== '' && <Notification error message={notification}/> }
+        { notification !== '' && <Notification error={notificationError} message={notification}/> }
         { edit &&
           <SquareEditWrapper
             coin={coin}

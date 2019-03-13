@@ -1,6 +1,15 @@
 import styled from 'styled-components'
 
-export const Nav = styled.div`
+export const NavContainer = styled.div`
+  position: fixed;
+  z-index: 3;
+  width: 100%;
+  height: 5rem;
+  background-color: rgba(62,31,67, 0.5);
+  /* background: ${props => props.theme.darkestPurple}; */
+`
+
+export const Nav = styled.nav`
   width: 300px;
 
   ol {

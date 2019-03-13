@@ -5,8 +5,8 @@ import App, { Container } from 'next/app'
 import withReduxStore from '../lib/withReduxStore'
 import { ThemeProvider } from 'styled-components'
 
-import Page from '../components/Page/Page'
-import { Theme, Nav, NavLink, NavActive, NavDisabled } from '../styles'
+import { Page, Navigation } from '../components'
+import { Theme } from '../styles'
 import '../styles/global.scss'
 
 interface IProps {
@@ -44,22 +44,13 @@ class MoonApp extends App<IProps, IState> {
   render() {
     const { Component, reduxStore } = this.props;
     const { path } = this.state;
-   
-    const NavPortfolio = path === 'portfolio' ? NavActive : NavLink;
-    const NavAbout = path === 'about' ? NavActive : NavLink;
 
     return (
       <ThemeProvider theme={Theme}>
         <Container>
           <Provider store={reduxStore}>
             <Page>
-              <Nav>
-                <ol>
-                  <li><NavPortfolio href="/">Portfolio</NavPortfolio></li>
-                  <li><NavAbout href="/about">About</NavAbout></li>
-                  <li><NavDisabled title="Moon Ranks coming">Moon Ranks</NavDisabled></li>
-                </ol>
-              </Nav>
+              <Navigation path={path}/>
               <Component />
             </Page>
           </Provider>
