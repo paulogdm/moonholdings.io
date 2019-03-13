@@ -7,12 +7,12 @@ export interface IinitialAssetsState {
   exchanges: IMarketAsset[];
   loading: boolean;
   fetchingMarkets: boolean;
-  notification: string;
-  notificationError: boolean;
 }
 
 export interface IinitalBoardState {
   overlay: boolean;
+  notification: string;
+  notificationError: boolean;
 }
 
 export interface IinitialState {

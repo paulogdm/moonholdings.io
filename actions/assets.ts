@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 
 import { getPricesRequest, getAvailableSupply, getMarkets } from '../services/api'
+import { actionSetNotification } from './board' // actions/board
 import { fetchAll, combineExchangeData, formatAssets, formatCoinsList } from '../services/coinFactory'
 import { extractExchangePrice, isNotAggregate } from '../services/exchangeFilters'
 import {
@@ -29,7 +30,7 @@ export const Actions = {
   SET_NOTIFICATION: 'SET_NOTIFICATION'
 };
 
-// ACTION CREATORS
+// ACTION CREATORS /////////////////////////////////////////////////////////////////////////////////////////////////////
 const actionFetchMarkets = () =>
   ({ type: Actions.FETCH_MARKETS, fetchingMarkets: true });
 
@@ -66,8 +67,7 @@ const actionAddCoinsWatchlist = (watchlist: IWatchlistAsset[]) =>
 const removeCoinInWatchlist = (coin: IAsset) =>
   ({ type: Actions.REMOVE_COIN_WATCHLIST, coin });
 
-const actionSetNotification = (notification: string, notificationError: boolean) =>
-  ({ type: Actions.SET_NOTIFICATION, notification, notificationError });
+// Actions /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Fetch assets from Nomics API V1.
 export const fetchAllAssets = () => (dispatch: DispatchAllAssets) => {

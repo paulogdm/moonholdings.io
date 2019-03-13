@@ -11,8 +11,6 @@ export const NotificationDiv = styled.div`
   height: auto;
   text-align: center;
   color: ${props => props.theme.offWhite};
-  -webkit-animation: flip-horizontal-bottom 0.5s normal forwards ease-in-out;
-  animation: flip-horizontal-bottom 0.5s normal forwards ease-in-out;
   cursor: pointer;
 `
 

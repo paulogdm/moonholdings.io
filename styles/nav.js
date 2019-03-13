@@ -5,7 +5,7 @@ export const NavContainer = styled.div`
   z-index: 3;
   width: 100%;
   height: 5rem;
-  background-color: rgba(62,31,67, 0.5);
+  background-color: rgba(62,31,67, 0.75);
   /* background: ${props => props.theme.darkestPurple}; */
 `
 

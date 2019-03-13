@@ -1,5 +1,4 @@
 import React from 'react'
-import { bind } from 'decko'
 
 import { NavContainer, Nav, NavLink, NavActive, NavDisabled } from '../../styles'
 

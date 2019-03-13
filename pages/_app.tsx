@@ -5,7 +5,7 @@ import App, { Container } from 'next/app'
 import withReduxStore from '../lib/withReduxStore'
 import { ThemeProvider } from 'styled-components'
 
-import { Page, Navigation } from '../components'
+import { Page, Balance, Navigation } from '../components'
 import { Theme } from '../styles'
 import '../styles/global.scss'
 
@@ -33,7 +33,7 @@ const pathIs = (path: string) => {
 class MoonApp extends App<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    this.state = { path: '' }
+    this.state = { path: '' };
   }
 
   componentDidMount() {
@@ -50,6 +50,7 @@ class MoonApp extends App<IProps, IState> {
         <Container>
           <Provider store={reduxStore}>
             <Page>
+              { path === 'portfolio' && <Balance /> }
               <Navigation path={path}/>
               <Component />
             </Page>

@@ -5,7 +5,7 @@ import styled from 'styled-components'
 export const Block = styled.div`
   position: absolute;
   z-index: 100;
-  margin: 100px auto;
+  margin: 1rem auto;
   width: 40px;
   height: 40px;
   background: ${props => props.theme.apricot};
