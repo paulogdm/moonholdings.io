@@ -120,7 +120,8 @@ class Search extends React.Component<IProps, IState> {
   }
 
   @bind
-  addAssetToPortfolio(selected: IAsset, exchanges: IMarketAsset[]) {
+  addAssetToPortfolio(selected: IAsset, exchanges: IMarketAsset[], isFirstAsset: boolean) {
+    const { setNotification: setNote } = this.props;
     const { exchange, exchange_base, position } = this.state;
     const { currency, marketCap, name, price: defaultPrice, } = selected;
 
@@ -138,6 +139,8 @@ class Search extends React.Component<IProps, IState> {
       price,
       value: (price * position)
     }, selected));
+
+    isFirstAsset && setNote(`Congrats! You have added ${currency} as your first asset in your Portfolio.`, false);
   }
 
   @bind
@@ -147,9 +150,10 @@ class Search extends React.Component<IProps, IState> {
 
     if (selected) {
       const { currency } = selected;
+      const isFirstAsset = portfolio.length === 0;
 
       R.not(R.find(R.propEq('currency', currency))(portfolio))
-        ? this.addAssetToPortfolio(selected, exchanges)
+        ? this.addAssetToPortfolio(selected, exchanges, isFirstAsset)
         : setNotification(`${currency} ${ERROR_ALREADY_PORTFOLIO}`, true);
     }
 
@@ -157,16 +161,18 @@ class Search extends React.Component<IProps, IState> {
   }
 
   @bind
-  addAssetToWatchlist(selected: IAsset) {
+  addAssetToWatchlist(selected: IAsset, isFirstAsset: boolean) {
+    const { addCoinWatchlist, setNotification: setNote } = this.props;
     const { exchange, exchange_base } = this.state;
 
-    this.props.addCoinWatchlist({
+    addCoinWatchlist({
       ...selected,
       exchange,
       exchange_base
     });
-  }
 
+    isFirstAsset && setNote(`${selected.currency} saved in watchlist! Keep an eye on this one ;)`,  false);
+  }
 
   @bind
   handleAddWatchlist() {
@@ -175,9 +181,10 @@ class Search extends React.Component<IProps, IState> {
     
     if (selected) {
       const { currency } = selected;
+      const isFirstAsset = watchlist.length === 0;
 
       R.not(R.find(R.propEq('currency', currency))(watchlist))
-        ? this.addAssetToWatchlist(selected)
+        ? this.addAssetToWatchlist(selected, isFirstAsset)
         : setNotification(`${selected.currency} ${ERROR_ALREADY_WATCHLIST}`, true);
 
       closeSearchModal();
