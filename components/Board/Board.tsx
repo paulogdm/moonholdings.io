@@ -2,10 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bind } from 'decko'
 
-import { Welcome, Astronaut, NomicsLink, PlusButton, Portfolio, SquareEditWrapper, Search, BlockLoader, Overlay }
-  from '../../components'
+import {
+  Welcome, Astronaut, NomicsLink, PlusButton, Notification, Overlay,
+  Portfolio, SquareEditWrapper, Search, BlockLoader,
+} from '../../components'
 import { addCoinsPortfolio, addCoinsWatchlist, fetchAllAssets } from '../../actions/assets'
-import { setOverlayState } from '../../actions/board'
+import { setNotification, setOverlayState } from '../../actions/board'
 import { IinitialState, IMarketAsset, IAsset } from '../../shared/types'
 import { coinModel } from '../../shared/models'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../../shared/constants/copy'
@@ -17,6 +19,7 @@ interface IState {
   editWatchCoin: boolean;
   edit: boolean;
   search: boolean;
+  notificationClass: string;
 }
 
 interface IProps {
@@ -27,9 +30,12 @@ interface IProps {
   loading: boolean;
   overlay: boolean;
   fetchingMarkets: boolean;
+  notification: string;
+  notificationError: boolean;
   addCoinsPortfolio(assets: IAsset[] | {}[]): void;
   addCoinsWatchlist(assets: IAsset[] | {}[]): void;
   fetchAllAssets(): void;
+  setNotification(notification: string, notificationError: boolean): void;
   setOverlayState(overlay: boolean): void;
 }
 
@@ -41,7 +47,8 @@ class Board extends React.Component<IProps, IState> {
       coin: coinModel,
       editWatchCoin: false,
       edit: false,
-      search: false
+      search: false,
+      notificationClass: 'spin-in-notification'
     };
   }
 
@@ -68,14 +75,25 @@ class Board extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist } = this.props;
-    const { coin, edit, editWatchCoin, search } = this.state;
+    const {
+      assets, portfolio, watchlist, exchanges, loading, overlay,
+      fetchingMarkets, notification, notificationError
+    } = this.props;
+    const { coin, edit, editWatchCoin, search, notificationClass } = this.state;
     const sortedPortfolio = sortByValue(portfolio);
     const hasPortfolio = portfolio.length > 0;
     const hasWatchlist = watchlist.length > 0;
 
+    this.checkForSuccessNotification(this.props);
+
     return (
       <StyleContainer>
+        { notification !== '' &&
+          <Notification
+            class={notificationClass}
+            error={notificationError}
+            message={notification}
+            onClick={this.handleNotificationClick}/> }
         { edit &&
           <SquareEditWrapper
             coin={coin}
@@ -86,12 +104,14 @@ class Board extends React.Component<IProps, IState> {
         { search &&
           <Search
             assets={assets}
+            portfolio={portfolio}
+            watchlist={watchlist}
             exchanges={exchanges}
             cancel={this.handleOverlayClick}
             fetching={fetchingMarkets}
           /> }
         { overlay && <Overlay handleClick={this.handleOverlayClick}/> }
-        <StyledBoard>
+        <StyledBoard id="board">
           { loading ? <BlockLoader /> : !hasPortfolio && !hasWatchlist ? <Welcome/>
             : <Portfolio portfolio={sortedPortfolio} watchlist={watchlist} edit={this.toggleSquareEdit}/> }
           <PlusButton toggleSearch={this.handleOnSearch}/>
@@ -124,13 +144,39 @@ class Board extends React.Component<IProps, IState> {
     if (search) this.setState({ search: false });
     this.props.setOverlayState(false);
   }
+
+  @bind
+  resetNotification(): void {
+    this.setState({ notificationClass: 'spin-in-notification' });
+    this.props.setNotification('', false);
+  }
+
+  @bind
+  private handleNotificationClick() {
+    this.setState({ notificationClass: 'slide-out-bck-top' });
+
+    setTimeout(() => {
+      this.resetNotification();
+    }, 500);
+  }
+
+  @bind
+  private checkForSuccessNotification({ notification, notificationError }: IProps) {
+    if (notification !== '' && !notificationError) {
+      setTimeout(() => {
+        this.handleNotificationClick();
+      }, 5000);
+    }
+  }
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
   fetchAllAssets: () => dispatch(fetchAllAssets()),
   addCoinsPortfolio: (assets: IAsset[]) => dispatch(addCoinsPortfolio(assets)),
   addCoinsWatchlist: (assets: IAsset[]) => dispatch(addCoinsWatchlist(assets)),
-  setOverlayState: (overlay: boolean) => dispatch(setOverlayState(overlay))
+  setOverlayState: (overlay: boolean) => dispatch(setOverlayState(overlay)),
+  setNotification: (notification: string, notificationError: boolean) =>
+    dispatch(setNotification(notification, notificationError))
 });
 
 const mapStateToProps = (state: IinitialState) => ({
@@ -140,7 +186,9 @@ const mapStateToProps = (state: IinitialState) => ({
   exchanges: state.AssetsReducer.exchanges,
   loading: state.AssetsReducer.loading,
   fetchingMarkets: state.AssetsReducer.fetchingMarkets,
-  overlay: state.BoardReducer.overlay
+  notification: state.BoardReducer.notification,
+  notificationError: state.BoardReducer.notificationError,
+  overlay: state.BoardReducer.overlay,
 });
 
 export const BoardJest = Board;

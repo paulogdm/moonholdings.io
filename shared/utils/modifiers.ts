@@ -1,3 +1,5 @@
+import * as R from 'ramda'
+
 import styles from '../../coinStyles.json'
 import { IAsset, ICoinStyle, IDisableCheck } from '../types'
 import { defaultSquareStyle } from '../models'
@@ -56,3 +58,5 @@ export const arrayToObject = (array: IAsset[]) =>
     obj[item.currency] = item;
     return obj;
   }, {});
+
+const updateKey = <T, K extends string>(key: K) => R.lens(R.prop<K, T>(key), R.assoc(key));

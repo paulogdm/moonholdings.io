@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
+export const PortfolioWrapper = styled.div`z-index: 2;`
+
 export const PortfolioBalance = styled.div`
   position: fixed;
+  z-index: 4;
   top: 1rem;
   right: 2rem;
   height: 10rem;

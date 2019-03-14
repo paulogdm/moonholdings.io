@@ -18,7 +18,9 @@ export interface IActions {
 export interface IAllAssets {
   type: IActions['GET_ALL_ASSETS'];
   assets?: IAsset[];
-  loading: boolean;
+  loading?: boolean;
+  notification?: string;
+  notificationError?: boolean;
 }
 
 export interface ISetMarket {
@@ -55,7 +57,7 @@ export interface ICoinWatchlist {
 
 export interface ICoinsWatchlist {
   type: IActions['ADD_COINS_WATCHLIST'];
-  watchlist: IWatchlistAsset[];
+  watchlist?: IWatchlistAsset[];
 }
 
 export interface IRemoveWatch {

@@ -10,7 +10,7 @@ export const defaultAssetsState: IInitState = {
   watchlist: [],
   exchanges: [],
   loading: true,
-  fetchingMarkets: false
+  fetchingMarkets: false,
 };
 
 const loadingStatus = (loading: boolean, fetching: boolean) => fetching ? true : loading;

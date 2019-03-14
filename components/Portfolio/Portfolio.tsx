@@ -2,8 +2,8 @@ import React from 'react'
 
 import { Square } from '../../components'
 import { IAsset } from '../../shared/types'
-import { PortfolioBalance, PortfolioContainer, PortfolioTitle, WatchlistContainer, WatchlistTitle } from '../../styles'
-import { calculateBalance } from '../../shared/utils/math';
+import { PortfolioWrapper, PortfolioContainer, PortfolioTitle, WatchlistContainer, WatchlistTitle }
+  from '../../styles'
 
 interface IProps {
   portfolio: IAsset[];
@@ -18,10 +18,7 @@ export default class Portfolio extends React.PureComponent<IProps> {
     const hasWatchList = watchlist.length > 0;
 
     return (
-      <div>
-        <PortfolioBalance>
-          ${calculateBalance(portfolio)}
-        </PortfolioBalance>
+      <PortfolioWrapper>
         <PortfolioContainer>
           { hasPortfolio && <PortfolioTitle>Portfolio</PortfolioTitle> }
           { portfolio.map((coin, i) =>
@@ -33,7 +30,7 @@ export default class Portfolio extends React.PureComponent<IProps> {
             { watchlist.map((coin, i) =>
               (<Square key={coin.currency} coin={coin} edit={edit} index={i} watchlist />)) }
           </WatchlistContainer> }
-      </div>
+      </PortfolioWrapper>
     );
   }
 }

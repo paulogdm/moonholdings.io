@@ -11,6 +11,8 @@ export interface IinitialAssetsState {
 
 export interface IinitalBoardState {
   overlay: boolean;
+  notification: string;
+  notificationError: boolean;
 }
 
 export interface IinitialState {
@@ -26,4 +28,6 @@ export interface IActionReducer {
   exchanges: IMarketAsset[];
   loading: boolean;
   fetchingMarkets: boolean;
+  notification: string;
+  notificationError: boolean;
 }
