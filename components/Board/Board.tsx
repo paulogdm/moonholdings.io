@@ -76,13 +76,15 @@ class Board extends React.Component<IProps, IState> {
 
   render() {
     const {
-      assets, portfolio, loading, overlay, exchanges, fetchingMarkets, watchlist,
-      notification, notificationError
+      assets, portfolio, watchlist, exchanges, loading, overlay,
+      fetchingMarkets, notification, notificationError
     } = this.props;
     const { coin, edit, editWatchCoin, search, notificationClass } = this.state;
     const sortedPortfolio = sortByValue(portfolio);
     const hasPortfolio = portfolio.length > 0;
     const hasWatchlist = watchlist.length > 0;
+
+    this.checkForSuccessNotification(this.props);
 
     return (
       <StyleContainer>
@@ -156,6 +158,15 @@ class Board extends React.Component<IProps, IState> {
     setTimeout(() => {
       this.resetNotification();
     }, 500);
+  }
+
+  @bind
+  private checkForSuccessNotification({ notification, notificationError }: IProps) {
+    if (notification !== '' && !notificationError) {
+      setTimeout(() => {
+        this.handleNotificationClick();
+      }, 5000);
+    }
   }
 }
 

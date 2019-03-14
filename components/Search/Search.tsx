@@ -10,7 +10,8 @@ import { findAsset, getExchangePrice } from '../../services/coinFactory';
 import { IAsset, IMarketAsset } from '../../shared/types'
 import { setSearchBtnDisabled } from '../../shared/utils'
 import { ERROR_ALREADY_PORTFOLIO, ERROR_ALREADY_WATCHLIST } from '../../shared/constants/errors'
-import { ASSET_NOT_SUPPORTED } from '../../shared/constants/copy'
+import { ASSET_NOT_SUPPORTED, ADDED_FIRST_PORTFOLIO_ASSET, ADDED_FIRST_WATCHLIST_ASSET }
+  from '../../shared/constants/copy'
 import { SearchContainerDiv, SearchSection, SearchButtons, FunctionButton, CommonButton, Note }
   from '../../styles'
 
@@ -140,7 +141,7 @@ class Search extends React.Component<IProps, IState> {
       value: (price * position)
     }, selected));
 
-    isFirstAsset && setNote(`Congrats! You have added ${currency} as your first asset in your Portfolio.`, false);
+    isFirstAsset && setNote(ADDED_FIRST_PORTFOLIO_ASSET(currency), false);
   }
 
   @bind
@@ -171,7 +172,7 @@ class Search extends React.Component<IProps, IState> {
       exchange_base
     });
 
-    isFirstAsset && setNote(`${selected.currency} saved in watchlist! Keep an eye on this one ;)`,  false);
+    isFirstAsset && setNote(ADDED_FIRST_WATCHLIST_ASSET(selected.currency),  false);
   }
 
   @bind
