@@ -27,7 +27,7 @@ const prepHeaders = (currency: string) => {
 
 // GET Prices
 // http://docs.nomics.com/#operation/getPrices
-export const getPrices = async () => {
+export const getPricesRequest = async () => {
   const nomics = axios.create(headers);
 
   try {
@@ -47,7 +47,7 @@ export const getAvailableSupply = async () => {
     const supplies = await nomics.get('/dashboard');
     return supplies;
   } catch (err) {
-    console.error(err);
+    return err;
   }
 }
 
@@ -55,13 +55,10 @@ export const fetchMarket = async (currency: string): Promise<any> => {
   try {
     const request = prepHeaders(currency);
     const response =  await request.get(EXCHANGE_MARKET_PRICES);
-    if (!response) {
-      throw new Error('USD Markets unavailable.');
-    }
     return response.data;
   }
   catch(err) {
-    console.error(err);
+    return err;
   }
 }
 
@@ -84,7 +81,7 @@ export const getMarkets = async (): Promise<IGetMarketsRes | undefined> => {
       marketUSDC: markets['marketUSDC'],
       marketUSDT: markets['marketUSDT'],
     }
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    return err;
   }
 }

@@ -11,8 +11,6 @@ export const defaultAssetsState: IInitState = {
   exchanges: [],
   loading: true,
   fetchingMarkets: false,
-  notification: '',
-  notificationError: false
 };
 
 const loadingStatus = (loading: boolean, fetching: boolean) => fetching ? true : loading;
@@ -99,11 +97,6 @@ export const AssetsReducer = (state = defaultAssetsState, action: IActionReducer
       }
 
       return { ...state, watchlist: smallerWatchlist };
-
-    case Actions.SET_NOTIFICATION: {
-        const { notification, notificationError } = action;
-        return { ...state, notification, notificationError };
-      }
 
     default:
       return state;

@@ -1,22 +1,30 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bind } from 'decko'
+import * as R from 'ramda'
 
 import { SearchInput, SelectedAsset, SearchList, SearchSelect } from '../../components'
+import { addCoinPortfolio, addCoinWatchlist, fetchMarketPrices } from '../../actions/assets'
+import { setNotification } from '../../actions/board'
+import { findAsset, getExchangePrice } from '../../services/coinFactory';
 import { IAsset, IMarketAsset } from '../../shared/types'
+import { setSearchBtnDisabled } from '../../shared/utils'
+import { ERROR_ALREADY_PORTFOLIO, ERROR_ALREADY_WATCHLIST } from '../../shared/constants/errors'
+import { ASSET_NOT_SUPPORTED, ADDED_FIRST_PORTFOLIO_ASSET, ADDED_FIRST_WATCHLIST_ASSET }
+  from '../../shared/constants/copy'
 import { SearchContainerDiv, SearchSection, SearchButtons, FunctionButton, CommonButton, Note }
   from '../../styles'
-import { setSearchBtnDisabled } from '../../shared/utils'
-import { findAsset, getExchangePrice } from '../../services/coinFactory';
-import { addCoinPortfolio, addCoinWatchlist, fetchMarketPrices } from '../../actions/assets'
 
 interface IProps {
   assets: IAsset[];
+  portfolio: IAsset[];
+  watchlist: IAsset[];
   exchanges: IMarketAsset[];
   fetching: boolean;
   cancel(): void;
   addCoinPortfolio(coin: IAsset): void;
   addCoinWatchlist(coin: IAsset): void;
+  setNotification(notification: string, notificationError: boolean): void;
   fetchMarketPrices(asset: string | undefined): void;
 }
 
@@ -67,7 +75,7 @@ class Search extends React.Component<IProps, IState> {
     const watchlistCheck = { type: 'watchlist', selected, exchange, exchanges };
     const disabledPort = setSearchBtnDisabled(portfolioCheck);
     const disabledWatch = aggregate ? false : setSearchBtnDisabled(watchlistCheck);
-    const NoAsset = () => <Note>We currently either do not support this asset, or it does not exist.</Note>;
+    const NoAsset = () => <Note>{ASSET_NOT_SUPPORTED}</Note>;
 
     return (
       <SearchContainerDiv>
@@ -109,47 +117,77 @@ class Search extends React.Component<IProps, IState> {
   @bind
   handleEnterPosition(event: React.FormEvent<HTMLInputElement>) {
     const target = event.target as HTMLInputElement;
-    const { value } = target;
-    this.setState({ position: Number(value) });
+    this.setState({ position: Number(target.value) });
+  }
+
+  @bind
+  addAssetToPortfolio(selected: IAsset, exchanges: IMarketAsset[], isFirstAsset: boolean) {
+    const { setNotification: setNote } = this.props;
+    const { exchange, exchange_base, position } = this.state;
+    const { currency, marketCap, name, price: defaultPrice, } = selected;
+
+    const price = exchange
+        ? getExchangePrice(exchange, exchanges)
+        : Number(defaultPrice);
+
+    this.props.addCoinPortfolio(Object.assign({
+      currency,
+      exchange,
+      exchange_base,
+      name,
+      marketCap,
+      position,
+      price,
+      value: (price * position)
+    }, selected));
+
+    isFirstAsset && setNote(ADDED_FIRST_PORTFOLIO_ASSET(currency), false);
   }
 
   @bind
   handleAddPortfolio() {
-    const { exchanges, cancel: closeSearchModal } = this.props;
-    const { exchange, exchange_base, position, selected } = this.state;
+    const { exchanges, portfolio, cancel: closeSearchModal, setNotification } = this.props;
+    const { selected } = this.state;
 
     if (selected) {
-      const { currency, marketCap, name, price: defaultPrice, } = selected;
-      const price = exchange
-        ? getExchangePrice(exchange, exchanges)
-        : Number(defaultPrice);
+      const { currency } = selected;
+      const isFirstAsset = portfolio.length === 0;
 
-      this.props.addCoinPortfolio(Object.assign({
-        currency,
-        exchange,
-        exchange_base,
-        name,
-        marketCap,
-        position,
-        price,
-        value: (price * position)
-      }, selected));
-
-      closeSearchModal();
+      R.not(R.find(R.propEq('currency', currency))(portfolio))
+        ? this.addAssetToPortfolio(selected, exchanges, isFirstAsset)
+        : setNotification(`${currency} ${ERROR_ALREADY_PORTFOLIO}`, true);
     }
+
+    closeSearchModal();
+  }
+
+  @bind
+  addAssetToWatchlist(selected: IAsset, isFirstAsset: boolean) {
+    const { addCoinWatchlist, setNotification: setNote } = this.props;
+    const { exchange, exchange_base } = this.state;
+
+    addCoinWatchlist({
+      ...selected,
+      exchange,
+      exchange_base
+    });
+
+    isFirstAsset && setNote(ADDED_FIRST_WATCHLIST_ASSET(selected.currency),  false);
   }
 
   @bind
   handleAddWatchlist() {
-    const { cancel: closeSearchModal } = this.props;
-    const { exchange, exchange_base, selected } = this.state;
-
+    const { cancel: closeSearchModal, watchlist, setNotification } = this.props;
+    const { selected } = this.state;
+    
     if (selected) {
-      this.props.addCoinWatchlist({
-        ...selected,
-        exchange,
-        exchange_base
-      });
+      const { currency } = selected;
+      const isFirstAsset = watchlist.length === 0;
+
+      R.not(R.find(R.propEq('currency', currency))(watchlist))
+        ? this.addAssetToWatchlist(selected, isFirstAsset)
+        : setNotification(`${selected.currency} ${ERROR_ALREADY_WATCHLIST}`, true);
+
       closeSearchModal();
     }
   }
@@ -217,7 +255,9 @@ class Search extends React.Component<IProps, IState> {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchMarketPrices: (asset: string) => dispatch(fetchMarketPrices(asset)),
   addCoinPortfolio: (coin: IAsset) => dispatch(addCoinPortfolio(coin)),
-  addCoinWatchlist: (coin: IAsset) => dispatch(addCoinWatchlist(coin))
+  addCoinWatchlist: (coin: IAsset) => dispatch(addCoinWatchlist(coin)),
+  setNotification: (notification: string, notificationError: boolean) =>
+    dispatch(setNotification(notification, notificationError))
 });
 
 export const SearchJest = Search;

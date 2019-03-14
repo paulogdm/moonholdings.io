@@ -1,13 +1,17 @@
 import * as R from 'ramda'
 
-import { getPrices, getAvailableSupply, getMarkets } from '../services/api'
+import { getPricesRequest, getAvailableSupply, getMarkets } from '../services/api'
+import { actionSetNotification } from './board' // actions/board
 import { fetchAll, combineExchangeData, formatAssets, formatCoinsList } from '../services/coinFactory'
 import { extractExchangePrice, isNotAggregate } from '../services/exchangeFilters'
 import {
   IAsset, DispatchAllAssets, DispatchMarketPrices, DispatchAddCoin, DispatchAddCoins, DispatchUpdateCoin,
   IWatchlistAsset, DispatchAddCoinWatch, DispatchAddCoinsWatch, DispatchRemoveCoin, DispatchRemoveWatch
 } from '../shared/types'
+import { isError, noArrayResponseErrors } from '../shared/utils'
 import { MOON_PORTFOLIO, MOON_WATCHLIST } from '../shared/constants/copy'
+import { ERROR_API_ALL_ASSETS, ERROR_API_PRICES, ERROR_API_MARKETS, ERROR_API_AVAILABLE_SUPPLY }
+  from '../shared/constants/errors'
 
 // ACTION TYPES
 export const Actions = {
@@ -26,7 +30,7 @@ export const Actions = {
   SET_NOTIFICATION: 'SET_NOTIFICATION'
 };
 
-// ACTION CREATORS
+// ACTION CREATORS /////////////////////////////////////////////////////////////////////////////////////////////////////
 const actionFetchMarkets = () =>
   ({ type: Actions.FETCH_MARKETS, fetchingMarkets: true });
 
@@ -63,20 +67,26 @@ const actionAddCoinsWatchlist = (watchlist: IWatchlistAsset[]) =>
 const removeCoinInWatchlist = (coin: IAsset) =>
   ({ type: Actions.REMOVE_COIN_WATCHLIST, coin });
 
-const actionSetNotification = (notification: string, notificationError: boolean) =>
-  ({ type: Actions.SET_NOTIFICATION, notification, notificationError });
+// Actions /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Fetch assets from Nomics API V1.
 export const fetchAllAssets = () => (dispatch: DispatchAllAssets) => {
   dispatch(actionGetAllAssets());
-  return fetchAll([getPrices(), getAvailableSupply()]).then((responses) => {
+  return fetchAll([getPricesRequest(), getAvailableSupply()]).then((responses) => {
+    const getPricesResponse = responses[0];
+    const getAvailableSupplyResponse = responses[1];
 
-    if (R.not(R.any(R.isNil)(responses))) {
-      dispatch(actionSetAllAssets(formatAssets(responses)));
+    if (noArrayResponseErrors(responses)) {
+      return dispatch(actionSetAllAssets(formatAssets(responses)));
+    }
+    else if (isError(getPricesResponse)) {
+      return dispatch(actionSetNotification(ERROR_API_PRICES, true));
+    }
+    else if (isError(getAvailableSupplyResponse)) {
+      return dispatch(actionSetNotification(ERROR_API_AVAILABLE_SUPPLY, true));
     }
     else {
-      console.error(`fetchAllAssets > request error: ${responses}`);
-      dispatch(actionSetNotification('An error occured while fetching Nomics API all assets data.', true));
+      return dispatch(actionSetNotification(ERROR_API_ALL_ASSETS, true));
     }
   });
 }
@@ -95,6 +105,31 @@ export const fetchMarketPrices = (asset: string) => (dispatch: DispatchMarketPri
   });
 }
 
+const fetchPrices = (
+  assets: IAsset[],
+  dispatch: any,
+  assetsUpdatedPrices?: IAsset[],
+  assetsAggregate?: IAsset[]
+) => {
+  return getPricesRequest().then((res) => {
+    if (res && res.status === 200) {
+
+      if (assetsAggregate && assetsUpdatedPrices) {
+        const aggregateAssets = formatCoinsList(MOON_PORTFOLIO, assetsAggregate, res.data);
+        const combinedAssets = R.concat(assetsUpdatedPrices, aggregateAssets);
+        // Set portfolio then loading and fetchingMarkets to false.
+        return dispatch(actionAddCoinsPortfolio(combinedAssets));
+      }
+
+      const portfolioAssets = formatCoinsList(MOON_PORTFOLIO, assets, res.data);
+      return dispatch(actionAddCoinsPortfolio(portfolioAssets));
+    }
+    else {
+      return dispatch(actionSetNotification(ERROR_API_PRICES, true));
+    }
+  });
+}
+
 // Rebuild Portfolio form localStorage.
 export const addCoinsPortfolio = (assets: IAsset[]) => (dispatch: DispatchAddCoins) => {
   const assetsExchange = assets.filter((asset) => isNotAggregate(asset.exchange));
@@ -104,47 +139,37 @@ export const addCoinsPortfolio = (assets: IAsset[]) => (dispatch: DispatchAddCoi
   if (assetsExchange.length > 0) {
     // Set fetchingMarkets to true.
     dispatch(actionFetchMarkets());
+
     return getMarkets().then((res) => {
       if (res) {
         const assetsUpdatedPrices = assetsExchange.map((asset) => extractExchangePrice(asset, res));
 
         if (assetsAggregate.length > 0) {
-          getPrices().then((res) => {
-            const aggregateAssets = formatCoinsList(MOON_PORTFOLIO, assetsAggregate, res.data);
-            const combinedAssets = R.concat(assetsUpdatedPrices, aggregateAssets);
-            // Set portfolio then loading and fetchingMarkets to false.
-            dispatch(actionAddCoinsPortfolio(combinedAssets));
-          });
+          return fetchPrices(assets, dispatch, assetsAggregate);
         }
         else {
-          dispatch(actionAddCoinsPortfolio(assetsUpdatedPrices));
+          return dispatch(actionAddCoinsPortfolio(assetsUpdatedPrices));
         }
       }
       else {
-        console.error(`addCoinsPortfolio > getPrices request error: ${res}`);
-        dispatch(actionSetNotification('An error occured while getting Nomics API market data.', true));
+        return dispatch(actionSetNotification(ERROR_API_MARKETS, true));
       }
     });
   }
 
-  // If all exchanges are aggregate.
-  return getPrices().then((res) => {
-    if (res && res.status === 200) {
-      const portfolioAssets = formatCoinsList(MOON_PORTFOLIO, assets, res.data);
-      dispatch(actionAddCoinsPortfolio(portfolioAssets));
-    }
-  });
+  // All assets exchanges are set to aggregate.
+  return fetchPrices(assets, dispatch);
 }
 
 // Rebuild Watchlist form localStorage.
 export const addCoinsWatchlist = (coins: IAsset[]) => (dispatch: DispatchAddCoinsWatch) => {
-  return getPrices().then((res) => {
+  return getPricesRequest().then((res) => {
     if (res && res.status === 200) {
       const watchlistAssets = formatCoinsList(MOON_WATCHLIST, coins, res.data);
       dispatch(actionAddCoinsWatchlist(watchlistAssets));
     }
     else {
-      console.error(`addCoinsWatchlist > getPrices request error: ${res}`);
+      return dispatch(actionSetNotification(ERROR_API_PRICES, true));
     }
   });
 }

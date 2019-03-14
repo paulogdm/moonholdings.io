@@ -4,7 +4,7 @@ import thunkMiddleware from 'redux-thunk'
 
 import { IinitialState } from './shared/types'
 import { AssetsReducer, defaultAssetsState } from './reducers/assets'
-import { BoardReducer } from './reducers/board'
+import { BoardReducer, defaultBoardState } from './reducers/board'
 
 const rootReducer = combineReducers({
   AssetsReducer,
@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
 
 export const defaultInitialState: IinitialState = {
   AssetsReducer: defaultAssetsState,
-  BoardReducer: { overlay: false },
+  BoardReducer: defaultBoardState,
 }
 
 export function initializeStore(initialState: IinitialState = defaultInitialState) {
