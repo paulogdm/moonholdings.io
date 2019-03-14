@@ -6,7 +6,7 @@ import * as R from 'ramda'
 import { SearchInput, SelectedAsset, SearchList, SearchSelect } from '../../components'
 import { addCoinPortfolio, addCoinWatchlist, fetchMarketPrices } from '../../actions/assets'
 import { setNotification } from '../../actions/board'
-import { findAsset, getExchangePrice } from '../../services/coinFactory';
+import { findAsset, getExchangePrice, assetNotInside } from '../../services/coinFactory';
 import { IAsset, IMarketAsset } from '../../shared/types'
 import { setSearchBtnDisabled } from '../../shared/utils'
 import { ERROR_ALREADY_PORTFOLIO, ERROR_ALREADY_WATCHLIST } from '../../shared/constants/errors'
@@ -153,7 +153,7 @@ class Search extends React.Component<IProps, IState> {
       const { currency } = selected;
       const isFirstAsset = portfolio.length === 0;
 
-      R.not(R.find(R.propEq('currency', currency))(portfolio))
+      assetNotInside(currency, portfolio)
         ? this.addAssetToPortfolio(selected, exchanges, isFirstAsset)
         : setNotification(`${currency} ${ERROR_ALREADY_PORTFOLIO}`, true);
     }
@@ -184,12 +184,12 @@ class Search extends React.Component<IProps, IState> {
       const { currency } = selected;
       const isFirstAsset = watchlist.length === 0;
 
-      R.not(R.find(R.propEq('currency', currency))(watchlist))
+      assetNotInside(currency, watchlist)
         ? this.addAssetToWatchlist(selected, isFirstAsset)
         : setNotification(`${selected.currency} ${ERROR_ALREADY_WATCHLIST}`, true);
-
-      closeSearchModal();
     }
+
+    closeSearchModal();
   }
 
   @bind

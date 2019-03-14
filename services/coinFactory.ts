@@ -213,3 +213,6 @@ export const formatCoinsList = (type: string, coins: IAsset[], data: IAsset[]) =
 
 // Formats assets from local storage into IAsset array.
 export const jsonFormatFromObject = (list: IAsset[]) => JSON.stringify(arrayToObject(list));
+
+export const assetNotInside = (currency: string, list: IAsset[]) =>
+R.not(R.find(R.propEq('currency', currency))(list));
