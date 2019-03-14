@@ -12,10 +12,11 @@ interface IProps {
 class Balance extends React.PureComponent<IProps> {
   public render() {
     const { portfolio } = this.props;
+    const balance = calculateBalance(portfolio);
 
     return (
       <PortfolioBalance>
-        ${calculateBalance(portfolio)}
+        { Number(balance) > 0 && `$${balance}` }
       </PortfolioBalance>
     );
   }

@@ -10,6 +10,7 @@ import { findAsset, getExchangePrice } from '../../services/coinFactory';
 import { IAsset, IMarketAsset } from '../../shared/types'
 import { setSearchBtnDisabled } from '../../shared/utils'
 import { ERROR_ALREADY_PORTFOLIO, ERROR_ALREADY_WATCHLIST } from '../../shared/constants/errors'
+import { ASSET_NOT_SUPPORTED } from '../../shared/constants/copy'
 import { SearchContainerDiv, SearchSection, SearchButtons, FunctionButton, CommonButton, Note }
   from '../../styles'
 
@@ -73,7 +74,7 @@ class Search extends React.Component<IProps, IState> {
     const watchlistCheck = { type: 'watchlist', selected, exchange, exchanges };
     const disabledPort = setSearchBtnDisabled(portfolioCheck);
     const disabledWatch = aggregate ? false : setSearchBtnDisabled(watchlistCheck);
-    const NoAsset = () => <Note>We currently either do not support this asset, or it does not exist.</Note>;
+    const NoAsset = () => <Note>{ASSET_NOT_SUPPORTED}</Note>;
 
     return (
       <SearchContainerDiv>
